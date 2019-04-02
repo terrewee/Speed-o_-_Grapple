@@ -13,9 +13,9 @@ void exit_signal_handler(int signo);
 
 /*
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	Author		:	Duur Alblas
+	Author		  :	Duur Alblas
 	Description :
-		Short code to set motor encoders.
+		          Short code to set motor encoders.
 */
 void encodeMotors(int32_t lpos , int32_t rpos)
 {
@@ -24,9 +24,9 @@ void encodeMotors(int32_t lpos , int32_t rpos)
 }
 
 /*
-	Author		:	Joram van Leeuwen, Duur Alblas
+	Author		  :	Joram van Leeuwen, Duur Alblas
 	Description :
-		Code om de waardes van geëncodeerde motors uit te lezen
+		          Code om de waardes van geëncodeerde motors uit te lezen
 */
 
 void readEncodedMotor(char motor)
@@ -50,8 +50,8 @@ if(signo == SIGINT)
 
 int main()
 {
-	signal(SIGINT, exit_signal_handler);
-  	BP.detect();
+  signal(SIGINT, exit_signal_handler);
+  BP.detect();
 	char dePort;
 	cout << "Programma om geëncodeerde motors te testen" << endl << "Geef de port van de motor [A/B/C/D]: ";
 	cin >> dePort;
