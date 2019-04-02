@@ -26,64 +26,68 @@ struct gridPoints{
 void exit_signal_handler(int signo);
 
 vector<vector<bool>> makeGrid(gridPoints & GP) {
-    //Makes a grid from x and y input.
-    vector<vector<bool>> grid = { {} };
+	//Makes a grid from x and y input.
+	vector<vector<bool>> grid = { {} };
 	int targetX = GP.targetRelCoordinates.x;
 	int targetY = GP.targetRelCoordinates.y;
 
 	if (targetX < 0) {
 		targetX = targetX * -1;
-	}else if (targetY < 0) {
+	}
+	else if (targetY < 0) {
 		targetY = targetY * -1;
 	}
-    for (int i = 0; i < targetY + 2; i++){
-        vector<bool> tempRow = {};
+	for (int i = 0; i < targetY + 2; i++) {
+		vector<bool> tempRow = {};
 
-        for (int j = 0; j < targetX + 2; j++){
-            tempRow.push_back(true);
-        }
+		for (int j = 0; j < targetX + 2; j++) {
+			tempRow.push_back(true);
+		}
 
-        grid.push_back(tempRow);
-    }
+		grid.push_back(tempRow);
+	}
 
-    //Prints the grid to test it, this can be deleted later on.
-    // for (size_t k = 0; k < grid.size(); k++) {
-    //     for (size_t l = 0; l < grid[k].size(); l++) {
-    //         cout << grid[k][l];
-    //     }
-    //     cout << endl;
-    // }
+	//Prints the grid to test it, this can be deleted later on.
+	// for (size_t k = 0; k < grid.size(); k++) {
+	//     for (size_t l = 0; l < grid[k].size(); l++) {
+	//         cout << grid[k][l];
+	//     }
+	//     cout << endl;
+	// }
 
-    return grid;
+	return grid;
 }
 
-vector<vector<bool>> getGrid(gridPoints & GP){
-  vector<vector<bool>> grid= {{}};
-    
-  cout << "Please give the relative x coordinate of the object to be found." < <endl;
-  cin >> GP.targetRelCoordinates.x;
-  cout << "Please give the relative y coordinate of the object to be found." < <endl;
-  cin >> GP.targetRelCoordinates.y;
-    
-  grid = makeGrid(GP);
-  
-  return grid;
+vector<vector<bool>> getGrid(gridPoints & GP) {
+	vector<vector<bool>> grid = { {} };
+
+	cout << "Please give the relative x coordinate of the object to be found." << endl;
+	cin >> GP.targetRelCoordinates.x;
+	cout << "Please give the relative y coordinate of the object to be found." << endl;
+	cin >> GP.targetRelCoordinates.y;
+
+	grid = makeGrid(GP);
+
+	return grid;
 }
 
 void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
 	//Set home coordinates
-	if (GP.targetRelCoordinate.x == > 0&& GP.targetRelCoordinate.y == > 0) {		//if X-Coordinate is + and Y-Coordinate is +
+	if (GP.targetRelCoordinates.x >= 0 && GP.targetRelCoordinates.y >= 0) {		//if X-Coordinate is + and Y-Coordinate is +
 		GP.homeCoordinates.x = 2;
 		GP.homeCoordinates.y = 2;
-	}else if(GP.targetRelCoordinate.x == < 0 && GP.targetRelCoordinate.y == < 0){	//if X-Coordinate is - and Y-Coordinate is -
+	}
+	else if (GP.targetRelCoordinates.x <= 0 && GP.targetRelCoordinates.y <= 0) {	//if X-Coordinate is - and Y-Coordinate is -
 		GP.homeCoordinates.x = xSize - 2;
 		GP.homeCoordinates.y = ySize - 2;
-	}else if (GP.targetRelCoordinates.x > 0 && GP.targetRelCoordinates.y < 0) {		//if X-Coordinate is + and Y-Coordinate is -
+	}
+	else if (GP.targetRelCoordinates.x > 0 && GP.targetRelCoordinates.y < 0) {		//if X-Coordinate is + and Y-Coordinate is -
 		GP.homeCoordinates.x = 2;
 		GP.homeCoordinates.y = ySize - 2;
-	}else {																			//if X-Coordinate is - and Y-Coordinate is +
+	}
+	else {																			//if X-Coordinate is - and Y-Coordinate is +
 		GP.homeCoordinates.x = xSize - 2;
 		GP.homeCoordinates.y = 2;
 	}
@@ -91,14 +95,29 @@ void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	GP.targetCoordinates.x = GP.homeCoordinates.x + GP.targetRelCoordinates.x;
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
 
-	return GP;
+}
+void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
+	for (size_t i = 0; i < grid.size(); i++) {
+		for (size_t j = 0; j < grid[i].size(); j++) {
+			if (GP.targetCoordinates.x == j && GP.targetCoordinates.y == i) {
+				cout << 'T';
+			}
+			else if (GP.homeCoordinates.x == j && GP.homeCoordinates.y == i) {
+				cout << 'H';
+			}
+			else {
+				cout << grid[i][j];
+			}
+		}
+		cout << endl;
+	}
 }
 
 int main(){
   gridPoints GP;
   vector<vector<bool> grid = getGrid(GP);
   getCoordinates(GP, grid);
-
+  testFunctie(GP, grid);
   return 0;
 }
 
