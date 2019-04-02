@@ -36,11 +36,18 @@ void exit_signal_handler(int signo);
 vector<vector<bool>> makeGrid(coordinates userInput) {
     //Makes a grid from x and y input.
     vector<vector<bool>> grid = { {} };
+	int targetX = userInput.x;
+	int = userInput.y;
 
-    for (int i = 0; i < userInput.y + 2; i++){
+	if (targetX < 0) {
+		targetX = targetX * -1;
+	}else if (targetY < 0) {
+		targetY = targetY * -1;
+	}
+    for (int i = 0; i < targetY + 2; i++){
         vector<bool> tempRow = {};
 
-        for (int j = 0; j < userInput.x + 2; j++){
+        for (int j = 0; j < targetX + 2; j++){
             tempRow.push_back(true);
         }
 
