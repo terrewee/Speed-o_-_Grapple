@@ -1,0 +1,20 @@
+motorA - beweging
+motorB - grijper
+touch sensor
+
+//indien nodig
+if(object gedetecteerd && object kleur == juist)
+{
+rijd achteruit en stop //stel achteruit rijden af op afstand sensor en grijper
+}
+
+
+//nodig
+draai motorA(x) // tot juiste plek grijper - x
+
+
+if(touch == true && kleur == juist)
+{
+draai motorB(y) // y kracht
+		// pakt voorwerp op
+}

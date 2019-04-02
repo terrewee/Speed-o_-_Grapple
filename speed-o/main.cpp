@@ -31,15 +31,25 @@ void fwd(int lspd , int rspd)                                                   
 	BP.set_motor_power(PORT_C, rspd);
 }
 
+/*
+    Author: Joram van Leeuwen
+    Description: Functie voor het detecteren van een object binnen een gegeven afstand en met een als parameter gegeven kleurcode
+                 vervolgens rijdt de robot tot de klauw boven het object hangt
+*/
+
 void detecteerObject(int kleurVanObject)
 {
     if(Ultrasonic2.cm <= 10 && Color1.color == kleurVanObject) //10cm als voorbeeld -- kan worden aangepast
     {}                                                                                      //rijd totdat het object onder de klauw ligt -- encoder?
 }
 
+/*
+    Author: Joram van Leeuwen
+    Description: Grijpt een object in de klauw indien de touch sensor iets aanraakt. Dit is een puur iets waarvan ik niet zeker ben of het werkt
+*/
 void grijpObject(int motorKracht)
 {
-    if(Touch3 == true)                                                                      //check hoe touch werkt
+    if(Touch3.pressed == true)                                                              //controleer of touch werkt
     {
         BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor sluiten grijper
         sleep(2);
@@ -67,7 +77,7 @@ int main()
     while(true)
     {
         detecteerObject();                                                                  //set kleurcode
-        sleep(3);
+        sleep(3);   //sleep om te voorkomen dat het té abrupt gaat
         grijpObject();                                                                      //set motorkracht
     }
 }
