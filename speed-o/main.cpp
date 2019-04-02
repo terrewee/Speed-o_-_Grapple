@@ -43,10 +43,10 @@ vector<vector<bool>> makeGrid(coordinates userInput) {
     //Makes a grid from x and y input.
     vector<vector<bool>> grid = { {} };
 
-    for (int i = 0; i < y + 2; i++){
+    for (int i = 0; i < userInput.y + 2; i++){
         vector<bool> tempRow = {};
 
-        for (int j = 0; j < x + 2; j++){
+        for (int j = 0; j < userInput.x + 2; j++){
             tempRow.push_back(true);
         }
 
