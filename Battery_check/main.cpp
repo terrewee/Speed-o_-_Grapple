@@ -10,14 +10,17 @@ BrickPi3 BP;
 
 void exit_signal_handler(int signo);
 
+bool battery = true;
+
 void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
     if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood." << endl;
+      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      ::battery = false;
     }
     else{
-      cout <<"We good fam" << endl;
+      ::battery = true;
     }
     sleep(5);
   }
