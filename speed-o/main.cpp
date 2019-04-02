@@ -20,6 +20,7 @@ struct gridPoints{
   coordinates targetCoordinates;
   coordinates targetRelCoordinates;
   coordinates homeCoordinates;
+  coordinates currentLocation;
 };
 
 void exit_signal_handler(int signo);
