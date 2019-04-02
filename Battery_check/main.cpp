@@ -2,21 +2,28 @@
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
+#include <thread>       // thread
 
 BrickPi3 BP;
 
 void exit_signal_handler(int signo);
 
 void batteryLevel(void){
-  printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  printf("9v voltage      : %.3f\n", BP.get_voltage_9v());
-  printf("5v voltage      : %.3f\n", BP.get_voltage_5v());
-  printf("3.3v voltage    : %.3f\n", BP.get_voltage_3v3());
+  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
+  while(true){
+    if(BP.get_voltage_battery <= 9.0){
+      cout << "Yeeter de yoot de batterij is dood." << endl;
+    }
+    sleep(5);
+  }
 }
 
 
 int main(){
-  batteryLevel();
+  thread checkBattery (batteryLevel)
+  while(true){
+    sleep(5);
+  }
   return 0;
 }
 
