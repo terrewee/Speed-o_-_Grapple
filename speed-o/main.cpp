@@ -61,9 +61,9 @@ vector<vector<bool>> getGrid(gridPoints & GP){
   vector<vector<bool>> grid= {{}};
     
   cout << "Please give the relative x coordinate of the object to be found." < <endl;
-  cin >> userInput.x;
+  cin >> GP.targetRelCoordinates.x;
   cout << "Please give the relative y coordinate of the object to be found." < <endl;
-  cin >> userInput.y;
+  cin >> GP.targetRelCoordinates.y;
     
   grid = makeGrid(GP);
   
