@@ -84,12 +84,14 @@ void checkSensor(){
           cout << " ambient : " << Color.ambient << endl;
           cout << " color code : " << (int) Color.color << endl;
         }
+        sleep(5);
       }
     case 2:
       for (int i = 0; i < nTimes; ++i) {
         if(BP.get_sensor(portValue,Ultrasonic) == 0){
           cout << Ultrasonic.cm << " cm" << endl;
         }
+        sleep(5);
       }
     case 3:
       for (int i = 0; i < nTimes; ++i) {
@@ -97,12 +99,14 @@ void checkSensor(){
           cout << " ambient : " << Light.ambient << endl;
           cout << " reflected : " << Light.reflected << endl;
         }
+        sleep(5);
       }
     case 4:
       for (int i = 0; i < nTimes; ++i) {
         if(BP.get_sensor(portValue,Touch) == 0){
           cout << "pressed : " << Touch.pressed << endl;
         }
+        sleep(5);
       }
   }
 
@@ -111,7 +115,7 @@ void checkSensor(){
 int main(){
   //thread checkBattery (batteryLevel);
   //setSensors();
-  bool loop = true
+  bool loop = true;
   while(loop){
     int keuze;
     cout << "Kies een funtie: "<< endl;
@@ -122,7 +126,7 @@ int main(){
       case 1:
         checkSensor();
         break;
-      case default:
+      default:
         cout << "Het programma word afgebroken" << endl;
         loop = false;
         break;
