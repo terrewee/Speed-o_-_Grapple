@@ -25,22 +25,7 @@ struct gridPoints{
 
 void exit_signal_handler(int signo);
 
-// vector<vector<bool>> getGrid(){
-//     vector<vector<bool>> grid= {{}};
-//     int x = 0;
-//     int y = 0;
-    
-//     cout << "Please give the relative x coordinate of the object to be found." < <endl;
-//     cin >> x;
-//     cout << "Please give the relative y coordinate of the object to be found." < <endl;
-//     cin >> y;
-    
-//     grid = makeGrid(x, y);
-    
-//     return grid;
-// }
-
-vector<vector<bool>> makeGrid(gridPoints GP) {
+vector<vector<bool>> makeGrid(gridPoints & GP) {
     //Makes a grid from x and y input.
     vector<vector<bool>> grid = { {} };
 	int targetX = GP.targetRelCoordinates.x;
@@ -72,9 +57,8 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
     return grid;
 }
 
-vector<vector<bool>> getGrid(){
+vector<vector<bool>> getGrid(gridPoints & GP){
   vector<vector<bool>> grid= {{}};
-  gridPoints GP;
     
   cout << "Please give the relative x coordinate of the object to be found." < <endl;
   cin >> userInput.x;
@@ -86,7 +70,7 @@ vector<vector<bool>> getGrid(){
   return grid;
 }
 
-gridPoints getCoordinates(gridPoints GP, vector<vector<bool>> grid) {
+void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
 	//Set home coordinates
@@ -111,7 +95,11 @@ gridPoints getCoordinates(gridPoints GP, vector<vector<bool>> grid) {
 }
 
 int main(){
-    return 0;
+  gridPoints GP;
+  vector<vector<bool> grid = getGrid(GP);
+  getCoordinates(GP, grid);
+
+  return 0;
 }
 
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
