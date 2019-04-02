@@ -16,6 +16,12 @@ struct coordinates{
   int y;
 };
 
+struct gridPoints{
+  coordinates targetCoordinates;
+  coordinates targetRelCoordinates;
+  coordinates homeCoordinates;
+};
+
 void exit_signal_handler(int signo);
 
 // vector<vector<bool>> getGrid(){
@@ -65,9 +71,10 @@ vector<vector<bool>> makeGrid(coordinates userInput) {
     return grid;
 }
 
+
 vector<vector<bool>> getGrid(){
   vector<vector<bool>> grid= {{}};
-  coordinates userInput;
+  gridPoints GP;
     
   cout << "Please give the relative x coordinate of the object to be found." < <endl;
   cin >> userInput.x;
@@ -75,10 +82,9 @@ vector<vector<bool>> getGrid(){
   cin >> userInput.y;
     
   grid = makeGrid(coordinates);
-    
+  
   return grid;
 }
-
 
 
 
