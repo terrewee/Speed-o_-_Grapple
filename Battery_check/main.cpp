@@ -7,10 +7,10 @@
 
 using namespace std;
 BrickPi3 BP;
-bool battery = true;    //battery level function
 
 void exit_signal_handler(int signo);
 
+bool battery = true;    //battery level function
 /* 
   Author:       Maaike & Duur
   Description:  Bateryscheck which changes the 

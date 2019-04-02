@@ -111,8 +111,22 @@ void checkSensor(){
 int main(){
   //thread checkBattery (batteryLevel);
   //setSensors();
-  while(true){
-    sleep(5);
+  bool loop = true
+  while(loop){
+    int keuze;
+    cout << "Kies een funtie: "<< endl;
+    cout << "1. Getsensor" << endl;
+    cin >> keuze;
+
+    switch(keuze){
+      case 1:
+        checkSensor();
+        break;
+      case default:
+        cout << "Het programma word afgebroken" << endl;
+        loop = false;
+        break;
+    }
   }
   return 0;
 }
