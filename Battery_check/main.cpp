@@ -7,10 +7,16 @@
 
 using namespace std;
 BrickPi3 BP;
+bool battery = true;    //battery level function
 
 void exit_signal_handler(int signo);
 
-bool battery = true;
+/* 
+  Author:       Maaike & Duur
+  Description:  Bateryscheck which changes the 
+                global bool battery to false if battery is low
+*/
+
 
 void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
