@@ -1,60 +1,42 @@
-#include "BrickPi3.h"   // for BrickPi3                                                     //TE DOEN
+#include "BrickPi3.h"   // for BrickPi3
 #include <iostream>     // for printf
 #include <unistd.h>     // for usleep and sleep
 #include <signal.h>     // for catching exit signals
 #include <iomanip>		// for setw and setprecision
+#include <string>		// for strings
 
 using namespace std;
-
-sensor_color_t Color1;                                                                      //check de ports voor cohesie in sensornamen
-sensor_ultrasonic_t Ultrasonic2;
-sensor_touch_t Touch3;
-sensor_light_t Light4;
 
 BrickPi3 BP;
 
 void exit_signal_handler(int signo);
 
-void setSensors()                                                                           //check of de ports juist ingesteld staan
+/*
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	Author		:	Duur Alblas
+	Description :
+		Short code to set motor encoders.
+*/
+void encodeMotors(int32_t lpos , int32_t rpos)
 {
-	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
-	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
-	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
-	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
-}
-
-void fwd(int lspd , int rspd)                                                               //check of de ports de juisten zijn
-{                                                                                           //check of de waardes nog negatief moeten zijn
-	lspd *=-1;
-	rspd *=-1;
-	BP.set_motor_power(PORT_B, lspd);
-	BP.set_motor_power(PORT_C, rspd);
+	BP.set_motor_position_relative(PORT_B, lpos);
+	BP.set_motor_position_relative(PORT_C, rpos);
 }
 
 /*
-    Author: Joram van Leeuwen
-    Description: Functie voor het detecteren van een object binnen een gegeven afstand en met een als parameter gegeven kleurcode
-                 vervolgens rijdt de robot tot de klauw boven het object hangt
+	Author		:	Joram van Leeuwen, Duur Alblas
+	Description :
+		Code om de waardes van geëncodeerde motors uit te lezen
 */
 
-void detecteerObject(int kleurVanObject)
+void readEncodedMotor(char motor)
 {
-    if(Ultrasonic2.cm <= 10 && Color1.color == kleurVanObject) //10cm als voorbeeld -- kan worden aangepast
-    {}                                                                                      //rijd totdat het object onder de klauw ligt -- encoder?
-}
+	string port = "PORT_" + motor;
+	BP.offset_motor_encoder(port, BP.get_motor_encoder(port));
+	int32_t encoded = BP.get_motor_encoder(port);
 
-/*
-    Author: Joram van Leeuwen
-    Description: Grijpt een object in de klauw indien de touch sensor iets aanraakt. Dit is een puur iets waarvan ik niet zeker ben of het werkt
-*/
-void grijpObject(int motorKracht)
-{
-    if(Touch3.pressed == true)                                                              //controleer of touch werkt
-    {
-        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor sluiten grijper
-        sleep(2);
-        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor omhoog halen grijper
-    }
+    cout << "Motor: " << motor << endl;
+   	cout << "Encoded: " << encoded << endl;
 }
 
 void exit_signal_handler(int signo)
@@ -68,16 +50,14 @@ if(signo == SIGINT)
 
 int main()
 {
-    signal(SIGINT, exit_signal_handler);
+	signal(SIGINT, exit_signal_handler);
   	BP.detect();
-  	BP.set_motor_limits(PORT_B, 60, 0);                                                     //check of de ports de juisten zijn
-	BP.set_motor_limits(PORT_C, 60, 0);
-	setSensors();
-
-    while(true)
-    {
-        detecteerObject();                                                                  //set kleurcode
-        sleep(3);   //sleep om te voorkomen dat het té abrupt gaat
-        grijpObject();                                                                      //set motorkracht
-    }
+	char dePort;
+	cout << "Programma om geëncodeerde motors te testen" << endl << "Geef de port van de motor [A/B/C/D]: ";
+	cin >> dePort;
+	if(dePort != 'A' || dePort != 'B' || dePort != 'C' || dePort != 'D'){exit;}
+	while(true)
+	{
+		readEncodedMotor(dePort);
+	}
 }
