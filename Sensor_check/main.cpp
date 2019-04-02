@@ -76,9 +76,7 @@ void checkSensor(){
 
   switch(sensorNr){
     case 1:
-      cout << "Case 1" << endl;
       for (int i = 0; i < nTimes; ++i) {
-        cout << :"In de Case 1 Loop nr : " << i << endl;
         if(BP.get_sensor(portValue,Color) == 0){
           cout << " red : " << Color.reflected_red;
           cout << " green : " << Color.reflected_green;
@@ -88,6 +86,7 @@ void checkSensor(){
         }
         sleep(5);
       }
+      break;
     case 2:
       cout << "Case 2" << endl;
       for (int i = 0; i < nTimes; ++i) {
@@ -97,6 +96,7 @@ void checkSensor(){
         }
         sleep(5);
       }
+      break;
     case 3:
       for (int i = 0; i < nTimes; ++i) {
         if(BP.get_sensor(portValue,Light) == 0){
@@ -105,6 +105,7 @@ void checkSensor(){
         }
         sleep(5);
       }
+      break;
     case 4:
       for (int i = 0; i < nTimes; ++i) {
         if(BP.get_sensor(portValue,Touch) == 0){
@@ -112,6 +113,7 @@ void checkSensor(){
         }
         sleep(5);
       }
+      break;
   }
 
 }
@@ -123,7 +125,7 @@ int main(){
   while(loop){
     int keuze;
     cout << "Kies een funtie: "<< endl;
-    cout << "1. Getsensor" << endl;
+    cout << "1. Getsensor *werkt niet todat setSensors() werkt" << endl;
     cin >> keuze;
 
     switch(keuze){
