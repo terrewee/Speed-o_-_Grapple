@@ -76,7 +76,9 @@ void checkSensor(){
 
   switch(sensorNr){
     case 1:
+      cout << "Case 1" << endl;
       for (int i = 0; i < nTimes; ++i) {
+        cout << :"In de Case 1 Loop nr : " << i << endl;
         if(BP.get_sensor(portValue,Color) == 0){
           cout << " red : " << Color.reflected_red;
           cout << " green : " << Color.reflected_green;
@@ -87,7 +89,9 @@ void checkSensor(){
         sleep(5);
       }
     case 2:
+      cout << "Case 2" << endl;
       for (int i = 0; i < nTimes; ++i) {
+        cout << "In de case 2 loop nr : " << i << endl;
         if(BP.get_sensor(portValue,Ultrasonic) == 0){
           cout << Ultrasonic.cm << " cm" << endl;
         }
