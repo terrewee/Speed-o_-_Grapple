@@ -39,11 +39,11 @@ void exit_signal_handler(int signo);
 //     return grid;
 // }
 
-vector<vector<bool>> makeGrid(coordinates userInput) {
+vector<vector<bool>> makeGrid(gridPoints GP) {
     //Makes a grid from x and y input.
     vector<vector<bool>> grid = { {} };
-	int targetX = userInput.x;
-	int = userInput.y;
+	int targetX = GP.targetRelCoordinates.x;
+	int targetY = GP.targetRelCoordinates.y;
 
 	if (targetX < 0) {
 		targetX = targetX * -1;
@@ -71,7 +71,6 @@ vector<vector<bool>> makeGrid(coordinates userInput) {
     return grid;
 }
 
-
 vector<vector<bool>> getGrid(){
   vector<vector<bool>> grid= {{}};
   gridPoints GP;
@@ -81,12 +80,34 @@ vector<vector<bool>> getGrid(){
   cout << "Please give the relative y coordinate of the object to be found." < <endl;
   cin >> userInput.y;
     
-  grid = makeGrid(coordinates);
+  grid = makeGrid(GP);
   
   return grid;
 }
 
+gridPoints getCoordinates(gridPoints GP, vector<vector<bool>> grid) {
+	int ySize = grid.size();
+	int xSize = grid[1].size();
+	//Set home coordinates
+	if (GP.targetRelCoordinate.x == > 0&& GP.targetRelCoordinate.y == > 0) {		//if X-Coordinate is + and Y-Coordinate is +
+		GP.homeCoordinates.x = 2;
+		GP.homeCoordinates.y = 2;
+	}else if(GP.targetRelCoordinate.x == < 0 && GP.targetRelCoordinate.y == < 0){	//if X-Coordinate is - and Y-Coordinate is -
+		GP.homeCoordinates.x = xSize - 2;
+		GP.homeCoordinates.y = ySize - 2;
+	}else if (GP.targetRelCoordinates.x > 0 && GP.targetRelCoordinates.y < 0) {		//if X-Coordinate is + and Y-Coordinate is -
+		GP.homeCoordinates.x = 2;
+		GP.homeCoordinates.y = ySize - 2;
+	}else {																			//if X-Coordinate is - and Y-Coordinate is +
+		GP.homeCoordinates.x = xSize - 2;
+		GP.homeCoordinates.y = 2;
+	}
+	//Set target coordinates
+	GP.targetCoordinates.x = GP.homeCoordinates.x + GP.targetRelCoordinates.x;
+	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
 
+	return GP;
+}
 
 int main(){
     return 0;
