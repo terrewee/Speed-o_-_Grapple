@@ -15,27 +15,66 @@ void exit_signal_handler(int signo);
 */
 
 bool obstakelInRange = false;
+
 void lookLeft(sensor_ultrasonic_t Ultrasoni){
   //look left
   BP.set_motor_dps(PORT_B, -5);
   sleep(1);
   stop();
+  
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
       som += Ultrasonic.cm;
   }
   float gemiddelde = som/3;
-
+  if (gemiddelde <= 10.0){
+    obstakelInRange = true
+  }
+  //reset to middle
+  BP.set_motor_dps(PORT_B, 5);
+  sleep(1);
+  stop();
+  
   break;
 }
 
-void lookRight(sensor_ultrasonic_t Ultrasoni){
+void lookRight(sensor_ultrasonic_t Ultrasonic){
   //look right
   BP.set_motor_dps(PORT_B, 5);
   sleep(1);
   stop();
+  
+  int som = 0;
+  for(unsigned int i = 0; i < 3; i++){
+    if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
+      som += Ultrasonic.cm;
+  }
+  float gemiddelde = som/3;
+  if (gemiddelde <= 10.0){
+    obstakelInRange = true
+  }
+  //reset to middle
+  BP.set_motor_dps(PORT_B, 5);
+  sleep(1);
+  stop();
+  
+  BP.set_motor_dps(PORT_B, -5);
+  sleep(1);
+  stop();
   break;
+}
+
+void lookForward(sensor_ultrasonic_t Ultrasonic){
+  int som = 0;
+  for(unsigned int i = 0; i < 3; i++){
+    if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
+      som += Ultrasonic.cm;
+  }
+  float gemiddelde = som/3;
+  if (gemiddelde <= 10.0){
+    obstakelInRange = true
+  }
 }
 
 void stop(){
