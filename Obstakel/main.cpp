@@ -15,7 +15,9 @@ void exit_signal_handler(int signo);
                 ontwijking hiervan.
 */
 
-bool obstakelInRange = false;
+bool obstakelInRangeLeft = false;
+bool obstakelInRangeRight = false;
+bool obstakelInRangeForward = false;
 
 void lookLeft(sensor_ultrasonic_t Ultrasoni){
   //look left
@@ -30,7 +32,10 @@ void lookLeft(sensor_ultrasonic_t Ultrasoni){
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
-    obstakelInRange = true
+    obstakelInRangeLeft = true;
+  }
+  else{
+    obstakelInRangeLeft = false;
   }
   //reset to middle
   BP.set_motor_dps(PORT_A, 5);
@@ -53,7 +58,10 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
-    obstakelInRange = true
+    obstakelInRangeRight = true;
+  }
+  else{
+    obstakelInRangeRight = false;
   }
   //reset to middle 
   BP.set_motor_dps(PORT_A, -5);
@@ -70,7 +78,10 @@ void lookForward(sensor_ultrasonic_t Ultrasonic){
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
-    obstakelInRange = true
+    obstakelInRangeForward = true;
+  }
+  else{
+    obstakelInRangeForward = false;
   }
 }
 
