@@ -86,7 +86,7 @@ void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     cout << "test3" << endl;
-    if(BP.get_sensor(PORT_2, Ultrasonic) == 0){
+    if(BP.get_sensor(PORT_2, Ultrasonic) != 0){
       cout << "Afstand" << Ultrasonic.cm << endl;
       som += Ultrasonic.cm;
       sleep(2);
