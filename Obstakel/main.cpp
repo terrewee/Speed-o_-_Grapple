@@ -22,7 +22,7 @@ struct range {
   bool obstakelcurrent= false;
 };;
 
-void lookLeft(sensor_ultrasonic_t Ultrasoni){
+void lookLeft(sensor_ultrasonic_t Ultrasoni, range obstakel){
   //look left
   BP.set_motor_dps(PORT_A, -5);
   sleep(1);
@@ -35,10 +35,10 @@ void lookLeft(sensor_ultrasonic_t Ultrasoni){
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
-    range.obstakelInRangeLeft = true;
+    obstakel.obstakelInRangeLeft = true;
   }
   else{
-    range.obstakelInRangeLeft = false;
+    obstakel.obstakelInRangeLeft = false;
   }
   //reset to middle
   BP.set_motor_dps(PORT_A, 5);
@@ -48,7 +48,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasoni){
   break;
 }
 
-void lookRight(sensor_ultrasonic_t Ultrasonic){
+void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
   //look right
   BP.set_motor_dps(PORT_A, 5);
   sleep(1);
@@ -61,10 +61,10 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
-    range.obstakelInRangeRight = true;
+    obstakel.obstakelInRangeRight = true;
   }
   else{
-    range.obstakelInRangeRight = false;
+    obstakel.obstakelInRangeRight = false;
   }
   //reset to middle 
   BP.set_motor_dps(PORT_A, -5);
@@ -73,7 +73,7 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
   break;
 }
 
-void lookForward(sensor_ultrasonic_t Ultrasonic){
+void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
@@ -81,10 +81,10 @@ void lookForward(sensor_ultrasonic_t Ultrasonic){
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
-    range.obstakelInRangeForward = true;
+    obstakel.obstakelInRangeForward = true;
   }
   else{
-    range.obstakelInRangeForward = false;
+    obstakel.obstakelInRangeForward = false;
   }
 }
 
