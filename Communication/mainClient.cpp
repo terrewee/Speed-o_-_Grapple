@@ -2,51 +2,64 @@
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
+#include <sys/types.h>  //voor gebruik syscall
+#include <sys/socket.h> //include voor het gebruik van sockets
+#include <netinet/in.h> //staan de structs uit communication in
 
 BrickPi3 BP;
-using namespace std;
 
 void exit_signal_handler(int signo);
-
 /*
-  Author:       Mathilde, Maaike
-  Description:  Functie voor het detecteren van obstakels en de 
-                ontwijking hiervan.
+  Author:       Maaike
+  Description:  Client voor het ontvangen van coordinaten van de server pi.
 */
-
-void lookLeft(){
-  //look left
-  BP.set_motor_dps(PORT_B, -5);
-  sleep(1);
-  stop();
-  break;
-}
-
-void lookRight(){
-  //look right
-  BP.set_motor_dps(PORT_B, 5);
-  sleep(1);
-  stop();
-  break;
-}
-
-void stop(){
-  //reset de motor dps
-  BP.set_motor_dps(PORT_B, 0);
-  break;
-}
-
-
-void obstakelDetectie(){
-  //main van obstakel
-  BP.detect();
+void communicationClient(){
+  int sockfd;
+  int newsockfd;
+  int portno;
+  int clilen;
+  int charNumber;
   
-  BP.set_motor_power(PORT_A, 10);
-  
+  struct sockaddr_in serv_addr;
+  struct hostent *server;
 
+  char buffer[256];
+  if (argc < 3) {
+    fprintf(stderr,"usage %s hostname port\n", argv[0]);
+    exit(0);
+  }
+
+  portno = atoi(argv[2]);
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd < 0) 
+    error("ERROR opening socket");
+    server = gethostbyname(argv[1]);
+  if (server == NULL) {
+    fprintf(stderr,"ERROR, no such host\n");
+    exit(0);
+  }
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+  bcopy((char *)server->h_addr, 
+        (char *)&serv_addr.sin_addr.s_addr,
+        server->h_length);
+  serv_addr.sin_port = htons(portno);
+  if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
+    error("ERROR connecting");
+  printf("Please enter the message: ");
+  bzero(buffer,256);
+  fgets(buffer,255,stdin);
+  n = write(sockfd,buffer,strlen(buffer));
+  if (n < 0) 
+    error("ERROR writing to socket");
+  bzero(buffer,256);
+  n = read(sockfd,buffer,255);
+  if (n < 0) 
+    error("ERROR reading from socket");
+  printf("%s\n",buffer);
+  close(sockfd);
+  return 0;
 }
-
-
 
 /*
   Author:       Duur
@@ -157,9 +170,9 @@ void checkSensor(){
 }
 
 bool battery = true;    //battery level function
-/* 
+/*
   Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the 
+  Description:  Bateryscheck which changes the
                 global bool battery to false if battery is low
 */
 
