@@ -239,6 +239,7 @@ void checkSensor(){
 int main(){
 //thread checkBattery (batteryLevel);
   //setSensors();
+  range obstacle;
   bool loop = true;
   while(loop){
     int keuze;
@@ -252,7 +253,7 @@ int main(){
         checkSensor();
         break;
       case 2:
-        obstakelDetectie();
+        obstakelDetectie(obstacle);
         break;
       default:
         cout << "Het programma word afgebroken" << endl;
