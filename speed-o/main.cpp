@@ -107,9 +107,18 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
-//Moves robot forward one gridPoint.
-void moveToHomepoint(){
-  //move()
+void moveToHomepoint(gridPoints GP){
+	turnLeft(GP);
+  moveForwardDistance(GP);
+	if(GP.targetCoordinates.y == 0){
+		if		 (GP.targetCoordinates.x == 0){/*communicate();*/}
+		else if(GP.targetCoordinates.x > 0){turnRight(GP);}
+		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
+	}
+	else if(GP.targetCoordinates.y > 0){turnRight(GP);}
+	else if(GP.targetCoordinates.y < 0){turnLeft(GP);}
+
+
 };
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
@@ -188,7 +197,7 @@ int main(){
   vector<vector<bool>> grid = getGrid(GP);
   getCoordinates(GP, grid);
   testFunctie(GP, grid);
-  moveToHomepoint();
+  moveToHomepoint(GP);
   resetCurrentLocation();
   return 0;
 }
