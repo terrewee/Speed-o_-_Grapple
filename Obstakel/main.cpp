@@ -8,6 +8,7 @@ BrickPi3 BP;
 using namespace std;
 
 void exit_signal_handler(int signo);
+bool battery = true;    //battery level function
 
 /*
   Author:       Mathilde, Maaike
@@ -51,8 +52,6 @@ void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
   BP.set_motor_dps(PORT_A, 5);
   sleep(1);
   stop();
-  
-  break;
 }
 
 void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
@@ -80,7 +79,6 @@ void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
   BP.set_motor_dps(PORT_A, -5);
   sleep(1);
   stop();
-  break;
 }
 
 void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
@@ -101,7 +99,7 @@ void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
   }
 }
 
-void obstakelDetectie(range obstacle, ){
+void obstakelDetectie(range obstacle){
   //main van obstakel
     BP.detect();
     BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
@@ -110,7 +108,7 @@ void obstakelDetectie(range obstacle, ){
 
     while (obstacle.obstakelInRangeForward== true){
         stop;
-        Ultrasonic.lookLeft;
+        lookLeft(Ultrasonic, obstakel);
         if (obstacle.obstakelInRangeLeft == true){
             cout << "cant go left" << endl;
         }
@@ -118,12 +116,12 @@ void obstakelDetectie(range obstacle, ){
             cout << "can go left" << endl;
         }
         sleep (1);
-        Ultrasonic.lookRight;
+        lookRight(Ultrasonic, obstakel);
         if (obstacle.obstakelInRangeRight == true){
-            cout << "cant go right" endl;
+            cout << "cant go right" << endl;
         }
         else{
-            cout << "can go right" endl;
+            cout << "can go right" << endl;
         }
         sleep (1);
 
@@ -238,7 +236,6 @@ void checkSensor(){
 
 }
 
-bool battery = true;    //battery level function
 /* 
   Author:       Maaike & Duur
   Description:  Bateryscheck which changes the 
