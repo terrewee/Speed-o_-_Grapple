@@ -137,6 +137,10 @@ void batteryLevel(void){
   }
 }
 
+void iServer(int portNr){
+  //zet alles op voor connectie en wacht op connectie.
+  //ontvang coordinaten en roep functie voor het omzetten van chars
+}
 
 int main(){
   thread checkBattery (batteryLevel);
