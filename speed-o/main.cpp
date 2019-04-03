@@ -23,10 +23,8 @@ void setSensors()                                                               
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
 }
 
-void fwd(int lspd , int rspd)                                                               //check of de ports de juisten zijn
-{                                                                                           //check of de waardes nog negatief moeten zijn
-	lspd *=-1;
-	rspd *=-1;
+void fwd(int lspd , int rspd)
+{
 	BP.set_motor_power(PORT_B, lspd);
 	BP.set_motor_power(PORT_C, rspd);
 }
@@ -70,8 +68,6 @@ int main()
 {
     signal(SIGINT, exit_signal_handler);
   	BP.detect();
-  	BP.set_motor_limits(PORT_B, 60, 0);                                                     //check of de ports de juisten zijn
-	BP.set_motor_limits(PORT_C, 60, 0);
 	setSensors();
 
     while(true)
