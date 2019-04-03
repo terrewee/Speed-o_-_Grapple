@@ -2,7 +2,7 @@
 #define NAVIGATION_HPP
 
 struct coordinates;
-struct girdPoints;
+struct gridPoints;
 
 vector<vector<bool>> makeGrid(gridPoints GP);
 vector<vector<bool>> getGrid(gridPoints & GP);
