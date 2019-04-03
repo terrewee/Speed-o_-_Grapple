@@ -110,7 +110,7 @@ void obstakelDetectie(range obstacle){
     cout << "test" << endl;
     lookForward(Ultrasonic, obstacle);
     while (obstacle.obstakelInRangeForward== true){
-        stop;
+        stop();
         lookLeft(Ultrasonic, obstacle);
         if (obstacle.obstakelInRangeLeft == true){
             cout << "cant go left" << endl;
