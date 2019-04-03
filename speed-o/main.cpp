@@ -139,7 +139,7 @@ void moveForward(){
   
 }
 
-void turnLeft(){
+void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
   }
@@ -154,7 +154,7 @@ void turnLeft(){
   }
 }
 
-void turnRight(){
+void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
   }
@@ -169,7 +169,7 @@ void turnRight(){
   }
 }
 
-void moveForwardDistance(unsigned int distance){
+void moveForwardDistance(gridPoints & GP, unsigned int distance){
   int count = 0;
 
   while(count < distance){
