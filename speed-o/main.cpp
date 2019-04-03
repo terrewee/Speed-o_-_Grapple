@@ -50,7 +50,6 @@ void encodeMotor(int32_t pos)
 */
 void klauwNaarBeneden()
 {
-<<<<<<< HEAD
 	BP.set_motor_limits(PORT_A, 5, 0); 	// speed 5 als limiet voor het naar beneden gaan.
 	encodeMotor(-110);			// rotatie is ~110. Negatief voor neerwaarts.
 }
@@ -59,14 +58,6 @@ void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 20, 0);	// speed 20 als limiet voor opwaartse beweging.
 	encodeMotor(110);			// rotatie is ~110.
-=======
-    if(Touch3.pressed == true)                                                              //controleer of touch werkt
-    {
-//        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor sluiten grijper
-        sleep(2);
-//        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor omhoog halen grijper
-    }
->>>>>>> 625d417a42ae4ae1a7d624f76f9b0e26f6275f94
 }
 
 void exit_signal_handler(int signo)
@@ -80,28 +71,10 @@ if(signo == SIGINT)
 
 int main()
 {
-<<<<<<< HEAD
 	signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	//setSensors();
 	klauwNaarBeneden();
 	sleep(10);				// sleep nu op 10 - pas aan zoals noodzakelijk is.
 	klauwOmhoog();
-=======
-	int kracht;
-	signal(SIGINT, exit_signal_handler);
-  	BP.detect();
-	//setSensors();
-
-    while(true)
-    {
-	cout << "Geef kracht: ";
-	cin >> kracht;
-	testGrijpDing(kracht);
-        //detecteerObject();                                                                  //set kleurcode
-        sleep(1);   //sleep om te voorkomen dat het té abrupt gaat
-	fwd(0,0);
-        //grijpObject();                                                                      //set motorkracht
-    }
->>>>>>> 625d417a42ae4ae1a7d624f76f9b0e26f6275f94
 }
