@@ -64,16 +64,25 @@ if(signo == SIGINT)
     }
 }
 
+void testGrijpDing(int x)
+{
+	BP.set_motor_power(PORT_A, x);
+}
+
 int main()
 {
+	int kracht;
     signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	setSensors();
 
     while(true)
     {
-        detecteerObject();                                                                  //set kleurcode
+	cout << "Geef kracht: ";
+	cin >> kracht;
+	testGrijpDing(kracht);
+        //detecteerObject();                                                                  //set kleurcode
         sleep(3);   //sleep om te voorkomen dat het té abrupt gaat
-        grijpObject();                                                                      //set motorkracht
+        //grijpObject();                                                                      //set motorkracht
     }
 }
