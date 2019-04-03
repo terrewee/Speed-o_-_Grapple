@@ -14,11 +14,13 @@ void exit_signal_handler(int signo);
                 ontwijking hiervan.
 */
 
+bool obstakelInRange = false;
 void lookLeft(){
   //look left
   BP.set_motor_dps(PORT_B, -5);
   sleep(1);
   stop();
+
   break;
 }
 
@@ -40,7 +42,7 @@ void stop(){
 void obstakelDetectie(){
   //main van obstakel
   BP.detect();
-  
+
   BP.set_motor_power(PORT_A, 10);
   
 
