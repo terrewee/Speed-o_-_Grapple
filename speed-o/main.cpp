@@ -25,36 +25,55 @@ struct gridPoints{
 
 void exit_signal_handler(int signo);
 
+vector<vector<bool>> makeBaseGrid(gridPoints & GP){
+  vector<vector<bool>> baseGrid = {};
+  int targetX = GP.targetRelCoordinates.x;
+  int targetY = GP.targetRelCoordinates.y;
+
+  if (targetX < 0) {
+      targetX = targetX * -1;
+  }
+  else if (targetY < 0) {
+      targetY = targetY * -1;
+  }
+
+  for(int i = 0; i <= targetY; i++){
+    baseGrid.push_back({});
+  }
+
+  for(int j = 0; j < baseGrid.size(); j++){
+    for(int k = 0; k <= targetX; k++){
+      push_back(1);
+    }
+  }
+
+  return baseGrid
+}
+
+void addGridPadding(gridPoints GP, vector<vector<bool>> & baseGrid){
+  int yPadding = 0;
+
+  while(yPadding < 4){
+    baseGrid.push_back({});
+    yPadding++
+  }
+
+  for(unsigned int l = baseGrid.size() - 5; l < baseGrid.size(); l++){
+    for(unsigned int m = 0; m <= GP.targetRelCoordinates; m++){
+      baseGrid.push_back(1);
+    }
+  }
+
+  for(unsigned int n = 0; n < baseGrid.size(); n++){
+    for(int o; o < 4; o++){
+      baseGrid.push_back(1);
+    }
+  }
+  
+}
+
 vector<vector<bool>> makeGrid(gridPoints & GP) {
-	//Makes a grid from x and y input.
-	vector<vector<bool>> grid = { {} };
-	int targetX = GP.targetRelCoordinates.x;
-	int targetY = GP.targetRelCoordinates.y;
-
-	if (targetX < 0) {
-		targetX = targetX * -1;
-	}
-	else if (targetY < 0) {
-		targetY = targetY * -1;
-	}
-	for (int i = 0; i < targetY + 2; i++) {
-		vector<bool> tempRow = {};
-
-		for (int j = 0; j < targetX + 2; j++) {
-			tempRow.push_back(true);
-		}
-
-		grid.push_back(tempRow);
-	}
-
-	//Prints the grid to test it, this can be deleted later on.
-	// for (size_t k = 0; k < grid.size(); k++) {
-	//     for (size_t l = 0; l < grid[k].size(); l++) {
-	//         cout << grid[k][l];
-	//     }
-	//     cout << endl;
-	// }
-
+  addGridPadding(GP, makeBaseGrid(GP))
 	return grid;
 }
 
