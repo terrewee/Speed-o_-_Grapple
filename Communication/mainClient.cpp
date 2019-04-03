@@ -23,25 +23,6 @@ void setSensors(){
 
 /*
   Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the
-                global bool battery to false if battery is low
-*/
-void batteryLevel(void){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
-  }
-}
-
-/*
-  Author:       Maaike & Duur
   Description:  Asks the user to supply a port and a sensor type to check the output
                 of said function for a certain amount of time.
 */
@@ -132,7 +113,7 @@ void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
     if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      cout << "de batterij is dood. T_T" << endl;
       ::battery = false;
     }
     else{
