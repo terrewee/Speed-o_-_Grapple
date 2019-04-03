@@ -109,6 +109,7 @@ void obstakelDetectie(range obstacle){
     BP.set_motor_power(PORT_A, 5);
     cout << "test" << endl;
     lookForward(Ultrasonic, obstacle);
+    stop();
     while (obstacle.obstakelInRangeForward== true){
         stop();
         lookLeft(Ultrasonic, obstacle);
