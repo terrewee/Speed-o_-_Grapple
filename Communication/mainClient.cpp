@@ -6,8 +6,10 @@
 #include <sys/socket.h> //include voor het gebruik van sockets
 #include <netinet/in.h>
 #include <netdb.h>
+#include <string>
 
 BrickPi3 BP;
+using namespace std;
 
 void exit_signal_handler(int signo);
 /*
@@ -176,6 +178,16 @@ void iClient(char *hostName, int portNr, char message[256]){
 
 int main(){
   thread checkBattery (batteryLevel);
+  string hostName;
+  int portNr;
+  string message;
+  cout << "Geef hostname" << endl;
+  cin >> hostName;
+  cout << "Geef port" << endl;
+  cin >> portNr;
+  cout << "Message: " << endl;
+  cin >> message;
+  iClient(hostName,portNr,message);
   while(true){
     sleep(5);
   }

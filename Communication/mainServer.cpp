@@ -2,13 +2,14 @@
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
-#include <stdlib.h>     
+#include <stdlib.h>
 #include <string.h>     //strings
 #include <sys/types.h>  //voor gebruik syscall
 #include <sys/socket.h> //voor gebruik sockets
 #include <netinet/in.h>
 
-BrickPi3 BP;
+BrickPi3 BP
+using namespace std;
 /*
   Author:       Duur
   Description:  setSensors set all the sensors for a specific robot
@@ -194,7 +195,7 @@ void iServer(int portNr){
 
 int main(){
   thread checkBattery (batteryLevel);
-  thread comminucation (iServer);
+  iServer(6969);
   while(true){
     sleep(5);
   }
