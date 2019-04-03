@@ -101,8 +101,15 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
-void moveToHomepoint(){
-  //move()
+void moveToHomepoint(gridPoints GP){
+	//rotateLeft(GP)
+  //move(GP)
+	if(GP.targetCoordinates.y == 0){
+		if(GP.targetCoordinates.x == 0){/*commLoc*/}
+	}
+	else if(GP.targetCoordinates.y > 0){/*rotateRight()*/;}
+
+
 };
 
 void resetCurrentLocation(gridPoints & GP){
@@ -119,7 +126,7 @@ int main(){
   vector<vector<bool>> grid = getGrid(GP);
   getCoordinates(GP, grid);
   testFunctie(GP, grid);
-  moveToHomepoint();
+  moveToHomepoint(GP);
   resetCurrentLocation();
   return 0;
 }
