@@ -30,7 +30,7 @@ void readEncodedMotor()
 		int32_t encodedB = BP.get_motor_encoder(PORT_B);
 		int32_t encodedC = BP.get_motor_encoder(PORT_C);
 		int32_t encodedD = BP.get_motor_encoder(PORT_D);
-	    	cout << "Motor A: " << endl << "Encoded: " << encodedA << endl << "--------------------------------" << endl;
+    	cout << "Motor A: " << endl << "Encoded: " << encodedA << endl << "--------------------------------" << endl;
 		cout << "Motor B: " << endl << "Encoded: " << encodedB << endl << "--------------------------------" << endl;
 		cout << "Motor C: " << endl << "Encoded: " << encodedC << endl << "--------------------------------" << endl;
 		cout << "Motor D: " << endl << "Encoded: " << encodedD << endl << "--------------------------------" << endl << endl;
