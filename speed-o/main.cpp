@@ -17,6 +17,7 @@ struct coordinates{
   int y;
 };
 
+//contains information on all needed grid coordinates, and facing direction of robot.
 struct gridPoints{
   coordinates targetCoordinates;
   coordinates targetRelCoordinates;
@@ -27,6 +28,7 @@ struct gridPoints{
 
 void exit_signal_handler(int signo);
 
+//Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
 vector<vector<bool>> makeGrid(gridPoints GP) {
 	vector<vector<bool>> grid;
 	int targetX = GP.targetRelCoordinates.x;
@@ -47,6 +49,7 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
 	return grid;
 }
 
+//Asks user for GP.targetRelCoordinates for grid generation.
 vector<vector<bool>> getGrid(gridPoints & GP) {
 	vector<vector<bool>> grid = { {} };
 
@@ -59,6 +62,8 @@ vector<vector<bool>> getGrid(gridPoints & GP) {
 
 	return grid;
 }
+
+//Sets all the coordinates for GP.homeCoordinates and GP.targetCoordinates based on GP.targetRelCoordinates.
 void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
@@ -84,6 +89,7 @@ void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
 }
 
+//Prints grid for debugging and testing grid generation.
 void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	for (size_t i = 0; i < grid.size(); i++) {
 		for (size_t j = 0; j < grid[i].size(); j++) {
@@ -101,15 +107,18 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
+//Moves robot forward one gridPoint.
 void moveToHomepoint(){
   //move()
 };
 
+//Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
 void resetCurrentLocation(gridPoints & GP){
   GP.currentLocation.x = GP.homeCoordinates.x;
   GP.currentLocation.y = GP.homeCoordinates.y;
 }
 
+//Updates GP.currentCoordinates according to distance moved and GP.direction.
 void updateLocation(gridPoints & GP, int distance){
   if(GP.direction == 'n'){
     GP.currentLocation.y -= distance;
@@ -125,10 +134,12 @@ void updateLocation(gridPoints & GP, int distance){
   }
 }
 
+//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void moveForward(){
   
 }
 
+//Turns the rorbot to the right, and updates the value of GP.direction.
 void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
@@ -144,6 +155,7 @@ void turnLeft(gridPoints & GP){
   }
 }
 
+//Turns the rorbot to the left, and updates the value of GP.direction.
 void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
@@ -159,6 +171,7 @@ void turnRight(gridPoints & GP){
   }
 }
 
+//Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints & GP, unsigned int distance){
   int count = 0;
 
