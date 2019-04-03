@@ -15,16 +15,22 @@ void exit_signal_handler(int signo);
 */
 
 bool obstakelInRange = false;
-void lookLeft(){
+void lookLeft(sensor_ultrasonic_t Ultrasoni){
   //look left
   BP.set_motor_dps(PORT_B, -5);
   sleep(1);
   stop();
+  int som = 0;
+  for(unsigned int i = 0; i < 3; i++){
+    if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
+      som += Ultrasonic.cm;
+  }
+  float gemiddelde = som/3;
 
   break;
 }
 
-void lookRight(){
+void lookRight(sensor_ultrasonic_t Ultrasoni){
   //look right
   BP.set_motor_dps(PORT_B, 5);
   sleep(1);
@@ -42,6 +48,8 @@ void stop(){
 void obstakelDetectie(){
   //main van obstakel
   BP.detect();
+  BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
+  sensor_ultrasonic_t Ultrasonic;
 
   BP.set_motor_power(PORT_A, 10);
   
