@@ -1,4 +1,5 @@
-#include "BrickPi3.h" // for BrickPi3
+#include "BrickPi3.h"	// for BrickPi3
+#include "Navigation.h"	// for Navigation
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
@@ -242,6 +243,7 @@ void turn(char direction, gridPoints GP) {
 		}
 	}
 }
+
 int main(){
   gridPoints GP;
   vector<vector<bool>> grid = getGrid(GP);
