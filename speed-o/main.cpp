@@ -49,9 +49,9 @@ void grijpObject(int motorKracht)
 {
     if(Touch3.pressed == true)                                                              //controleer of touch werkt
     {
-        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor sluiten grijper
+//        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor sluiten grijper
         sleep(2);
-        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor omhoog halen grijper
+//        BP.set_motor_power(PORT_, motorKracht)                                              //set motorport voor omhoog halen grijper
     }
 }
 
@@ -72,9 +72,9 @@ void testGrijpDing(int x)
 int main()
 {
 	int kracht;
-    signal(SIGINT, exit_signal_handler);
+	signal(SIGINT, exit_signal_handler);
   	BP.detect();
-	setSensors();
+	//setSensors();
 
     while(true)
     {
@@ -82,7 +82,8 @@ int main()
 	cin >> kracht;
 	testGrijpDing(kracht);
         //detecteerObject();                                                                  //set kleurcode
-        sleep(3);   //sleep om te voorkomen dat het té abrupt gaat
+        sleep(1);   //sleep om te voorkomen dat het té abrupt gaat
+	fwd(0,0);
         //grijpObject();                                                                      //set motorkracht
     }
 }
