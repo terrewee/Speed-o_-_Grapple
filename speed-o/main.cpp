@@ -110,8 +110,64 @@ void resetCurrentLocation(gridPoints & GP){
   GP.currentLocation.y = GP.homeCoordinates.y;
 }
 
-void updateLocation(griPoints & GP){
+void updateLocation(gridPoints & GP, int distance){
+  if(GP.direction == 'n'){
+    GP.currentLocation.y -= distance;
+  }
+  else if(GP.direction == 's'){
+    GP.currentLocation.y += distance;
+  }
+  else if if(GP.direction == 'w'){
+    GP.currentLocation.x += distance;
+  }
+  else{
+    GP.currentLocation.y -= distance;
+  }
+}
 
+void moveForward(){
+  
+}
+
+void turnLeft(){
+  if(GP.direction == 'n'){
+    GP.direction = 'e';
+  }
+  else if(GP.direction == 'w'){
+    GP.direction = 'n';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'w';
+  }
+  else{
+    GP.direction = 's';
+  }
+}
+
+void turnRight(){
+  if(GP.direction == 'n'){
+    GP.direction = 'w';
+  }
+  else if(GP.direction == 'w'){
+    GP.direction = 's';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'e';
+  }
+  else{
+    GP.direction = 'n';
+  }
+}
+
+void moveForwardDistance(unsigned int distance){
+  int count = 0;
+
+  while(count < distance){
+    moveForward();
+    count++;
+  }
+
+  updateLocation(GP, int distance);
 }
 
 int main(){
