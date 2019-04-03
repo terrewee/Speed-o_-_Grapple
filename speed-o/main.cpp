@@ -145,7 +145,7 @@ void updateLocation(gridPoints & GP, int distance){
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void moveForward(){
-  
+   
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -191,7 +191,57 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
 
   updateLocation(GP, int distance);
 }
-
+// Tells the robot which way to turn
+void turn(char direction, gridPoints GP) {
+	if (GP.currentLocation == 'n') {
+		if (direction == 'w') {
+			turnLeft();
+		}
+		else if (direction == 's') {
+			turnLeft();
+			turnLeft();
+		}
+		else if (direction == 'e') {
+			turnRight();
+		}
+	}
+	else if (GP.currentLocation == 'e') {
+		if (direction == 'w') {
+			turnLeft();
+			turnLeft();
+		}
+		else if (direction == 's') {
+			turnRight();
+		}
+		else if (direction == 'n') {
+			turnLeft();
+		}
+	}
+	else if (GP.currentLocation == 's') {
+		if (direction == 'e') {
+			turnLeft();
+		}
+		else if (direction == 'n') {
+			turnLeft();
+			turnLeft();
+		}
+		else if (direction == 'w') {
+			turnRight();
+		}
+	}
+	else if (GP.currentLocation == 'w') {
+		if (direction == 's') {
+			turnLeft();
+		}
+		else if (direction == 'e') {
+			turnLeft();
+			turnLeft();
+		}
+		else if (direction == 'n') {
+			turnRight();
+		}
+	}
+}
 int main(){
   gridPoints GP;
   vector<vector<bool>> grid = getGrid(GP);
