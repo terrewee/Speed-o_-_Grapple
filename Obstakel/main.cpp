@@ -108,7 +108,7 @@ void obstakelDetectie(range obstacle){
 
     while (obstacle.obstakelInRangeForward== true){
         stop;
-        lookLeft(Ultrasonic, obstakel);
+        lookLeft(Ultrasonic, obstacle);
         if (obstacle.obstakelInRangeLeft == true){
             cout << "cant go left" << endl;
         }
@@ -116,7 +116,7 @@ void obstakelDetectie(range obstacle){
             cout << "can go left" << endl;
         }
         sleep (1);
-        lookRight(Ultrasonic, obstakel);
+        lookRight(Ultrasonic, obstacle);
         if (obstacle.obstakelInRangeRight == true){
             cout << "cant go right" << endl;
         }
@@ -235,28 +235,6 @@ void checkSensor(){
   }
 
 }
-
-/* 
-  Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the 
-                global bool battery to false if battery is low
-*/
-
-
-void batteryLevel(void){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
-  }
-}
-
 
 int main(){
 //thread checkBattery (batteryLevel);
