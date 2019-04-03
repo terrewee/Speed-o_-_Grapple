@@ -22,6 +22,11 @@ struct range {
   bool obstakelcurrent= false;
 };;
 
+void stop(){
+  //reset de motor dps
+  BP.set_motor_dps(PORT_A, 0);
+  break;
+}
 void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
   //look left
   BP.set_motor_dps(PORT_A, -5);
@@ -94,13 +99,6 @@ void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
   }
 }
 
-void stop(){
-  //reset de motor dps
-  BP.set_motor_dps(PORT_A, 0);
-  break;
-}
-
-
 oid obstakelDetectie(range obstacle, ){
   //main van obstakel
     BP.detect();
@@ -128,10 +126,7 @@ oid obstakelDetectie(range obstacle, ){
         sleep (1)
 
     }
-
 }
-
-
 
 /*
   Author:       Duur
