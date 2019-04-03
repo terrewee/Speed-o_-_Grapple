@@ -5,6 +5,7 @@
 #include <sys/types.h>  //voor gebruik syscall
 #include <sys/socket.h> //include voor het gebruik van sockets
 #include <netinet/in.h>
+#include <netdb.h>
 
 BrickPi3 BP;
 
@@ -138,9 +139,38 @@ void batteryLevel(void){
     sleep(5);
   }
 }
-
-void iClient(char *hostName, int portNr){
+/*
+  Author:       Duur
+  Description:  Verstuur bericht naar opgegeven hostname en port.
+*/
+void iClient(char *hostName, int portNr, char message[256]){
   //zet de connectie op voor het verzenden van een message.
+  char buffer[256];
+  int socketFD, n;
+  struct sockaddr_in serv_addr;
+  struct hostent *server;
+  socketFD = socket(AF_INET, SOCK_STREAM, 0);
+  server = gethostbyname(hostName);
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+  bcopy((char *)server->h_addr,
+      (char *)&serv_addr.sin_addr.s_addr,
+      server->h_length);
+  serv_addr.sin_port = htons(portNr);
+  if (connect(socketFD,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
+    error("ERROR connecting");
+  }
+  bzero(buffer,256);
+  bcopy(message,buffer,strlen(message));
+  n = write(socketFD,buffer,strlen(buffer));
+  if (n < 0)
+    error("ERROR writing to socket");
+  bzero(buffer,256);
+  n = read(socketFD,buffer,255);
+  if (n < 0)
+    error("ERROR reading from socket");
+  printf("%s\n",buffer);
+  close(socketFD);
   //roep functie voor het maken van een message van de vector
 }
 

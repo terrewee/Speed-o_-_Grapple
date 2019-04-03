@@ -139,6 +139,30 @@ void batteryLevel(void){
 
 void iServer(int portNr){
   //zet alles op voor connectie en wacht op connectie.
+  int socketFD, newSocketFD, n;
+  socklen_t clilen;
+  char buffer[256];
+  struct sockaddr_in serv_addr, cli_addr;
+  socketFD = socket(AF_INET, SOCK_STREAM, 0);
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  serv_addr.sin_port = htons(portNr);
+  if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
+    error("ERROR on binding");
+  }
+  listen(sockfd,5);
+  clilen = sizeof(cli_addr);
+  newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+  if (newsockfd < 0)
+    error("ERROR on accept");
+  bzero(buffer,256);
+  n = read(newSocketFD,buffer,255);
+  if (n < 0) error("ERROR reading from socket");
+  printf("Here is the message: %s\n",buffer);
+  n = write(newSocketFD,"I got your message",18);
+  if (n < 0) error("ERROR writing to socket");
+  close(newsockfd);
+  close(sockfd);
   //ontvang coordinaten en roep functie voor het omzetten van chars
 }
 
