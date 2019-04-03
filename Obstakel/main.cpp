@@ -244,11 +244,15 @@ int main(){
     int keuze;
     cout << "Kies een funtie: "<< endl;
     cout << "1. Getsensor *werkt niet todat setSensors() werkt" << endl;
+    cout << "2. Obstakel detectie" << endl;
     cin >> keuze;
 
     switch(keuze){
       case 1:
         checkSensor();
+        break;
+      case 2:
+        obstakelDetectie();
         break;
       default:
         cout << "Het programma word afgebroken" << endl;
