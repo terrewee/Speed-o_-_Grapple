@@ -108,11 +108,11 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 }
 
 void moveToHomepoint(gridPoints GP){
+	if(GP.targetCoordinates.y == 0) && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
   moveForwardDistance(GP);
 	if(GP.targetCoordinates.y == 0){
-		if		 (GP.targetCoordinates.x == 0){/*communicate();*/}
-		else if(GP.targetCoordinates.x > 0){turnRight(GP);}
+		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
 	}
 	else if(GP.targetCoordinates.y > 0){turnRight(GP);}
