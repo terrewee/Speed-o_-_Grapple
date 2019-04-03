@@ -36,8 +36,8 @@ void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_2, Ultrasonic) == 0){
-      cout << "Afstand" << Ultrasonic.cm << endl;
-      som += Ultrasonic.cm;
+      cout << "Afstand" << (int) Ultrasonic.cm << endl;
+      som += (int) Ultrasonic.cm;
       sleep(2);
     }
   }
@@ -63,8 +63,8 @@ void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_2, Ultrasonic) == 0){
-      cout << "Afstand" << Ultrasonic.cm << endl;
-      som += Ultrasonic.cm;
+      cout << "Afstand" << (int) Ultrasonic.cm << endl;
+      som += (int) Ultrasonic.cm;
       sleep(2);
     }  
   }
@@ -87,8 +87,8 @@ void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
   for(unsigned int i = 0; i < 3; i++){
     cout << "test3" << endl;
     if(BP.get_sensor(PORT_2, Ultrasonic) != 0){
-      cout << "Afstand" << Ultrasonic.cm << endl;
-      som += Ultrasonic.cm;
+      cout << "Afstand" << (int) Ultrasonic.cm << endl;
+      som += (int) Ultrasonic.cm;
       sleep(2);
     }
   }
