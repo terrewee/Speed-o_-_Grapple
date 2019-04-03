@@ -2,11 +2,13 @@
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
+#include <stdlib.h>     
+#include <string.h>     //strings
+#include <sys/types.h>  //voor gebruik syscall
+#include <sys/socket.h> //voor gebruik sockets
+#include <netinet/in.h>
 
 BrickPi3 BP;
-
-void exit_signal_handler(int signo);
-
 /*
   Author:       Duur
   Description:  setSensors set all the sensors for a specific robot
@@ -16,24 +18,6 @@ void setSensors(){
   //BP.set_sensor_type();
 }
 
-/*
-  Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the
-                global bool battery to false if battery is low
-*/
-void batteryLevel(void){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
-  }
-}
 
 /*
   Author:       Maaike & Duur
@@ -127,7 +111,7 @@ void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
     if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      cout << " de batterij is dood. T_T" << endl;
       ::battery = false;
     }
     else{
@@ -135,6 +119,12 @@ void batteryLevel(void){
     }
     sleep(5);
   }
+}
+
+void error(const char *msg)
+{
+  perror(msg);
+  exit(1);
 }
 
 void iServer(int portNr){
@@ -164,10 +154,47 @@ void iServer(int portNr){
   close(newsockfd);
   close(sockfd);
   //ontvang coordinaten en roep functie voor het omzetten van chars
+  int sockfd, newsockfd;
+  socklen_t clilen;
+  char buffer[256];
+  struct sockaddr_in serv_addr, cli_addr;
+  int n;
+  if (argc < 2) {
+    fprintf(stderr,"ERROR, no port provided\n");
+    exit(1);
+  }
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd < 0)
+    error("ERROR opening socket");
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+//  portNr = atoi(argv[1]);
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  serv_addr.sin_port = htons(portNr);
+  if (bind(sockfd, (struct sockaddr *) &serv_addr,
+           sizeof(serv_addr)) < 0)
+    error("ERROR on binding");
+  listen(sockfd,5);
+  clilen = sizeof(cli_addr);
+  newsockfd = accept(sockfd,
+                     (struct sockaddr *) &cli_addr,
+                     &clilen);
+  if (newsockfd < 0)
+    error("ERROR on accept");
+  bzero(buffer,256);
+  n = read(newsockfd,buffer,255);
+  if (n < 0) error("ERROR reading from socket");
+  printf("Here is the message: %s\n",buffer);
+  n = write(newsockfd,"I got your message",18);
+  if (n < 0) error("ERROR writing to socket");
+  close(newsockfd);
+  close(sockfd);
+  return 0;
 }
 
 int main(){
   thread checkBattery (batteryLevel);
+  thread comminucation (iServer);
   while(true){
     sleep(5);
   }
