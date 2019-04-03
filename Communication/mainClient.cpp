@@ -7,11 +7,15 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <string>
+#include <iostream>
+#include <thread>
+
 
 BrickPi3 BP;
 using namespace std;
-
 void exit_signal_handler(int signo);
+
+
 /*
   Author:       Duur
   Description:  setSensors set all the sensors for a specific robot
@@ -122,6 +126,14 @@ void batteryLevel(void){
     sleep(5);
   }
 }
+
+void error(const char *msg)
+{
+  perror(msg);
+  exit(1);
+}
+
+
 /*
   Author:       Duur
   Description:  Verstuur bericht naar opgegeven hostname en port.
@@ -157,11 +169,20 @@ void iClient(char *hostName, int portNr, char message[256]){
   //roep functie voor het maken van een message van de vector
 }
 
+
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
 int main(){
   thread checkBattery (batteryLevel);
   string hostName;
   int portNr;
-  string message;
+  char message[256];
   cout << "Geef hostname" << endl;
   cin >> hostName;
   cout << "Geef port" << endl;
@@ -173,12 +194,4 @@ int main(){
     sleep(5);
   }
   return 0;
-}
-
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
 }

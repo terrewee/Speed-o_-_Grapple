@@ -7,9 +7,15 @@
 #include <sys/types.h>  //voor gebruik syscall
 #include <sys/socket.h> //voor gebruik sockets
 #include <netinet/in.h>
+#include <iostream>
+#include <thread>
 
-BrickPi3 BP
+
+BrickPi3 BP;
 using namespace std;
+void exit_signal_handler(int signo);
+
+
 /*
   Author:       Duur
   Description:  setSensors set all the sensors for a specific robot
@@ -168,6 +174,15 @@ void iServer(int portNr){
   return 0;
 }
 
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+
 int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   thread checkBattery (batteryLevel);
@@ -176,12 +191,4 @@ int main(){
     sleep(5);
   }
   return 0;
-}
-
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
 }
