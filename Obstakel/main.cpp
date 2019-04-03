@@ -22,7 +22,7 @@ struct range {
   bool obstakelcurrent= false;
 };;
 
-void lookLeft(sensor_ultrasonic_t Ultrasoni, range obstakel){
+void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
   //look left
   BP.set_motor_dps(PORT_A, -5);
   sleep(1);
@@ -30,8 +30,10 @@ void lookLeft(sensor_ultrasonic_t Ultrasoni, range obstakel){
   
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-    if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
+    if(BP.get_sensor(PORT_2, Ultrasonic) == 0){
+      cout << "Afstand" << Ultrasonic.cm << endl;
       som += Ultrasonic.cm;
+      sleep(2);
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
@@ -56,8 +58,10 @@ void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
   
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-    if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
+    if(BP.get_sensor(PORT_2, Ultrasonic) == 0){
+      cout << "Afstand" << Ultrasonic.cm << endl;
       som += Ultrasonic.cm;
+      sleep(2);
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
@@ -76,8 +80,10 @@ void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
 void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-    if(BP.get_sensor(PORT_2, Ultrasonic2) == 0){
+    if(BP.get_sensor(PORT_2, Ultrasonic) == 0){
+      cout << "Afstand" << Ultrasonic.cm << endl;
       som += Ultrasonic.cm;
+      sleep(2);
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
@@ -95,14 +101,33 @@ void stop(){
 }
 
 
-void obstakelDetectie(){
+oid obstakelDetectie(range obstacle, ){
   //main van obstakel
-  BP.detect();
-  BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
-  sensor_ultrasonic_t Ultrasonic;
+    BP.detect();
+    BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
+    sensor_ultrasonic_t Ultrasonic;
+    BP.set_motor_power(PORT_A, 5);
 
-  BP.set_motor_power(PORT_A, 5);
-  
+    while (obstacle.obstakelInRangeForward== true){
+        stop;
+        Ultrasonic.lookLeft;
+        if (obstacle.obstakelInRangeLeft == true){
+            cout << "cant go left" << endl;
+        }
+        else{
+            cout << "can go left" << endl;
+        }
+        sleep (1)
+        Ultrasonic.lookRight;
+        if (obstacle.obstakelInRangeRight == true){
+            cout << "cant go right" endl;
+        }
+        else{
+            cout << "can go right" endl;
+        }
+        sleep (1)
+
+    }
 
 }
 
