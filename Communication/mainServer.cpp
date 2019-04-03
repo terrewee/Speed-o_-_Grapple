@@ -171,7 +171,6 @@ void iServer(int portNr){
   close(socketFD);
 
   //ontvang coordinaten en roep functie voor het omzetten van chars
-  return 0;
 }
 
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
