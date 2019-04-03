@@ -18,7 +18,7 @@ bool obstakelInRange = false;
 
 void lookLeft(sensor_ultrasonic_t Ultrasoni){
   //look left
-  BP.set_motor_dps(PORT_B, -5);
+  BP.set_motor_dps(PORT_A, -5);
   sleep(1);
   stop();
   
@@ -32,7 +32,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasoni){
     obstakelInRange = true
   }
   //reset to middle
-  BP.set_motor_dps(PORT_B, 5);
+  BP.set_motor_dps(PORT_A, 5);
   sleep(1);
   stop();
   
@@ -41,7 +41,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasoni){
 
 void lookRight(sensor_ultrasonic_t Ultrasonic){
   //look right
-  BP.set_motor_dps(PORT_B, 5);
+  BP.set_motor_dps(PORT_A, 5);
   sleep(1);
   stop();
   
@@ -54,12 +54,8 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
   if (gemiddelde <= 10.0){
     obstakelInRange = true
   }
-  //reset to middle
-  BP.set_motor_dps(PORT_B, 5);
-  sleep(1);
-  stop();
-  
-  BP.set_motor_dps(PORT_B, -5);
+  //reset to middle 
+  BP.set_motor_dps(PORT_A, -5);
   sleep(1);
   stop();
   break;
@@ -79,7 +75,7 @@ void lookForward(sensor_ultrasonic_t Ultrasonic){
 
 void stop(){
   //reset de motor dps
-  BP.set_motor_dps(PORT_B, 0);
+  BP.set_motor_dps(PORT_A, 0);
   break;
 }
 
@@ -90,7 +86,7 @@ void obstakelDetectie(){
   BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
   sensor_ultrasonic_t Ultrasonic;
 
-  BP.set_motor_power(PORT_A, 10);
+  BP.set_motor_power(PORT_A, 5);
   
 
 }
