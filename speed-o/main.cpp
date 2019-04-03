@@ -22,6 +22,7 @@ struct gridPoints{
   coordinates targetRelCoordinates;
   coordinates homeCoordinates;
   coordinates currentLocation;
+  char direction;
 };
 
 void exit_signal_handler(int signo);
@@ -100,11 +101,26 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
+void moveToHomepoint(){
+  //move()
+};
+
+void resetCurrentLocation(gridPoints & GP){
+  GP.currentLocation.x = GP.homeCoordinates.x;
+  GP.currentLocation.y = GP.homeCoordinates.y;
+}
+
+void updateLocation(griPoints & GP){
+
+}
+
 int main(){
   gridPoints GP;
   vector<vector<bool>> grid = getGrid(GP);
   getCoordinates(GP, grid);
   testFunctie(GP, grid);
+  moveToHomepoint();
+  resetCurrentLocation();
   return 0;
 }
 
