@@ -102,6 +102,6 @@ int main()
 	klauwNaarBeneden();
 	cout << "Klaar met naar beneden" << endl;
 	sleep(5);
-	klauwOmhoog();
+//	klauwOmhoog();
 	//testValues();
 }
