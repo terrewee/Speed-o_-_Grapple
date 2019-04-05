@@ -100,6 +100,8 @@ int main()
   	BP.detect();
 	setSensors();
 	klauwNaarBeneden();
+	cout << "Klaar met naar beneden" << endl;
+	sleep(5);
 	klauwOmhoog();
 	//testValues();
 }
