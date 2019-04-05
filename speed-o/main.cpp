@@ -311,26 +311,6 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
-void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
-	bool targetFound = false;
-	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
-	vector<int> queue = updateQueue(homeGridPointNumber, grid);
-	vector<vector<int>> prevCoordinatesVector(grid.size() * grid[0].size());
-	i = 1;
-
-	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
-		updateQueue(queue[i], grid, prevCoordinatesVector);
-
-		for(unsigned int i = 0; i < queue.size(); i++){
-			if(getGridPointCoordinates(queue[i], grid, prevCoordinatesVector) == GP.homeCoordinates){
-				targetFound == true;
-			}
-		}
-		i++;
-	}
-
-}
-
 void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
 	bool optionFound = false;
 	int gridPointNumber = getGridPointNumber(option, grid);
@@ -345,6 +325,21 @@ void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>>
 		queue.push_back(gridPointNumber);
 		updatePrevCoordinates(option, gridPoint, prevCoordinatesVector, grid);
 	}
+}
+
+//Check if point is on the grid.
+bool checkInGrid(coordinates pathCheck, vector<vector<bool>> & grid){
+	if			(pathCheck.x < 0)									{return 0;}
+	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
+	else if	(pathCheck.y < 0)									{return 0;}
+	else if	(pathCheck.y > grid.size()-1)			{return 0;}
+	else 																			{return 1;}
+}
+
+//Check if grid point is end point.
+bool checkIfTarget(coordinates targetCheck, gridPoints GP){
+	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
+	else {return 0;}
 }
 
 //Check bordering gridpoints and calls addToQueue if they are on grid.
@@ -368,19 +363,24 @@ vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinateV
 	return queue;
 }
 
-//Check if point is on the grid.
-bool checkInGrid(coordinates pathCheck, vector<vector<bool>> & grid){
-	if			(pathCheck.x < 0)									{return 0;}
-	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
-	else if	(pathCheck.y < 0)									{return 0;}
-	else if	(pathCheck.y > grid.size()-1)			{return 0;}
-	else 																			{return 1;}
-}
+void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
+	bool targetFound = false;
+	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
+	vector<int> queue = updateQueue(homeGridPointNumber, grid);
+	vector<vector<int>> prevCoordinatesVector(grid.size() * grid[0].size());
+	i = 1;
 
-//Check if grid point is end point.
-bool checkIfTarget(coordinates targetCheck, gridPoints GP){
-	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
-	else {return 0;}
+	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
+		updateQueue(queue[i], grid, prevCoordinatesVector);
+
+		for(unsigned int i = 0; i < queue.size(); i++){
+			if(getGridPointCoordinates(queue[i], grid, prevCoordinatesVector) == GP.homeCoordinates){
+				targetFound == true;
+			}
+		}
+		i++;
+	}
+
 }
 
 int main(){
