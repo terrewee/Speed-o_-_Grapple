@@ -38,11 +38,13 @@ void lookLeft(range obstakel){
   
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-    BP.get_sensor(PORT_3, Ultrasonic);
+    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
     cout << "Afstand " << (int)Ultrasonic.cm << endl;
     som += (int) Ultrasonic.cm;
-    sleep(2);
-    
+    }
+    else{
+      cout << "FUCK" << endl;
+    }
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
@@ -68,11 +70,13 @@ void lookRight(range obstakel){
   
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-    BP.get_sensor(PORT_3, Ultrasonic);
+    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
     cout << "Afstand " << (int)Ultrasonic.cm << endl;
     som += (int) Ultrasonic.cm;
-    sleep(2);
-    
+    }
+    else{
+      cout << "FUCK" << endl;
+    }
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
@@ -93,9 +97,13 @@ void lookForward(range obstakel){
   sensor_ultrasonic_t Ultrasonic;
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-    BP.get_sensor(PORT_3, Ultrasonic);
+    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
     cout << "Afstand " << (int)Ultrasonic.cm << endl;
     som += (int) Ultrasonic.cm;
+    }
+    else{
+      cout << "FUCK" << endl;
+    }
     sleep(2);
   }
   float gemiddelde = som/3;
