@@ -262,12 +262,12 @@ void turn(char direction, gridPoints GP) {
 void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid){
 	unsigned int columnAmount = grid.size();
 	unsigned int rowAmount = grid[0].size();
-	vector<int> gridPointVector[2];
+	vector<int> gridPointVector;
 	
 	gridPointVector[0] = prevCoordinates.x;
 	gridPointVector[1] = prevCoordinates.y;
 
-	prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
+	//prevCoordinatesVector = gridPointVector;
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -301,7 +301,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 
 	return gridPointNumber;
 }
-
+/*
 //Check bordering gridpoints and put them in a list if they are on grid.
 vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool>> grid){
 	vector<int> queue;
@@ -347,7 +347,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
 	else {return 0;}
 }
-
+*/
 int main(){
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
