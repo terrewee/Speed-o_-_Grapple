@@ -13,6 +13,8 @@
 
 BrickPi3 BP;
 using namespace std;
+
+int ComPortNr = 6969; //Port number for communication
 void exit_signal_handler(int signo);
 
 
@@ -134,7 +136,19 @@ void error(const char *msg)
   exit(1);
 }
 
-void iServer(int portNr){
+
+/*
+  Author:       Gerjan
+  Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
+*/
+
+void SetComm(){
+  cout << endl << "Geef het poort-nummer op: ";
+  cin >> ::ComPortNr; cout << endl;
+}
+
+
+void iServer(){
   //zet alles op voor connectie en wacht op connectie.
   int socketFD, newSocketFD, n;
   socklen_t clilen;
@@ -144,7 +158,7 @@ void iServer(int portNr){
   socketFD = socket(AF_INET, SOCK_STREAM, 0);
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_addr.s_addr = INADDR_ANY;
-  serv_addr.sin_port = htons(portNr);
+  serv_addr.sin_port = htons(::ComPortNr);
 
   if (bind(socketFD, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
     error("ERROR on binding");
@@ -185,7 +199,8 @@ void exit_signal_handler(int signo){
 int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   thread checkBattery (batteryLevel);
-  iServer(6969);
+  SetComm();
+  iServer();
   while(true){
     sleep(5);
   }

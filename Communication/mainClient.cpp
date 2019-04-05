@@ -13,6 +13,7 @@
 
 BrickPi3 BP;
 using namespace std;
+
 void exit_signal_handler(int signo);
 
 
@@ -127,46 +128,68 @@ void batteryLevel(void){
   }
 }
 
+/*
+  Author:       Gerjan
+  Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
+*/
+
+
+int ComPortNr = 6969; //Port number for communication
+string ComHostName = "dex2"; //Hostname for communication
+
+void SetComm(){
+  cout << endl << "Geef het poort-nummer op: ";
+  cin >> ::ComPortNr; cout << endl;
+  cout << endl << "Geef de host-name op: ";
+  cin >> ::ComHostName; cout << endl;
+}
+
 void error(const char *msg)
 {
   perror(msg);
   exit(1);
 }
 
-
 /*
   Author:       Duur
-  Description:  Verstuur bericht naar opgegeven hostname en port.
+  Description:  Verstuur bericht naar opgegeven hostname en port, neemt input van een string en verzend die via STREAM naar server-host.
 */
-void iClient(char *hostName, int portNr, string message){
+void iClient(string message){
   //zet de connectie op voor het verzenden van een message.
   char buffer[256];
   int socketFD, n;
   struct sockaddr_in serv_addr;
   struct hostent *server;
+
   socketFD = socket(AF_INET, SOCK_STREAM, 0);
-  server = gethostbyname(hostName);
+  server = gethostbyname(::ComHostName);
   bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
+
   bcopy((char *)server->h_addr,
       (char *)&serv_addr.sin_addr.s_addr,
       server->h_length);
-  serv_addr.sin_port = htons(portNr);
+  serv_addr.sin_port = htons(::ComPortNr);
+
   if (connect(socketFD,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
     error("ERROR connecting");
   }
+
   bzero(buffer,256);
   bcopy(message,buffer,strlen(message));
   n = write(socketFD,buffer,strlen(buffer));
+
   if (n < 0)
     error("ERROR writing to socket");
+
   bzero(buffer,256);
   n = read(socketFD,buffer,255);
+
   if (n < 0)
     error("ERROR reading from socket");
+
   printf("%s\n",buffer);
   close(socketFD);
-  //roep functie voor het maken van een message van de vector
 }
 
 
@@ -180,16 +203,13 @@ void exit_signal_handler(int signo){
 
 int main(){
   thread checkBattery (batteryLevel);
-  string hostName;
-  int portNr;
+
+  SetComm()
+
   string message;
-  cout << "Geef hostname" << endl;
-  cin >> hostName;
-  cout << "Geef port" << endl;
-  cin >> portNr;
   cout << "Message: " << endl;
   cin >> message;
-  iClient(hostName,portNr,message);
+  iClient(message);
   while(true){
     sleep(5);
   }
