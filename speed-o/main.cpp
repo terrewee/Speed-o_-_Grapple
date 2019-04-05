@@ -77,13 +77,14 @@ void klauwNaarBeneden()
 
 void gelijdelijkDownLoop()
 {
-	//BP.set_motor_limits(PORT_A, 80, 0);
+	int counter = 0;
 	encodeMotor(-60);
-	while(true)
+	while(counter < 20)
 	{
 		cout <<"Ik doe iets"<<endl;
 		sleep(1);
 		encodeMotor(-3);
+		counter++;
 	}
 }
 
@@ -116,8 +117,8 @@ void klauwDownTest(int startPos)
 
 void klauwOmhoog()
 {
-	BP.set_motor_limits(PORT_A, 40, 0);	// speed 20 als limiet voor opwaartse beweging.
-	encodeMotor(110);			// rotatie is ~110.
+	BP.set_motor_limits(PORT_A, 70, 0);	// speed 20 als limiet voor opwaartse beweging.
+	encodeMotor(70);			// rotatie is ~110.
 }
 
 void klauwOpen()
@@ -162,7 +163,10 @@ int main()
 	signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	setSensors();
-	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	int startPos = BP.get_motor_encoder(PORT_A);
-	
+	klauwOpen();
+	gelijdelijkDownLoop();
+	sleep(1);
+	klauwDicht();
+	sleep(1);
+	klauwOmhoog();
 }
