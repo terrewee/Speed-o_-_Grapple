@@ -4,10 +4,12 @@
 #include <signal.h>     // for catching exit signals
 #include <iostream>     //voor cout enz.
 
-BrickPi3 BP;
 using namespace std;
 
+BrickPi3 BP;
+
 void exit_signal_handler(int signo);
+
 bool battery = true;    //battery level function
 /*
   Author:       Duur
@@ -15,14 +17,14 @@ bool battery = true;    //battery level function
                 and immediatly sets them.
 */
 void setSensors(){
-  BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
 }
 
 void readme(){
   sensor_ultrasonic_t ultraS;
   while(true){
-    if(BP.get_sensor(PORT_3, ultraS) == 0){
-      cout << (int)ultraS.cm << " CM" << endl;
+    if(BP.get_sensor(PORT_2, ultraS) == 0){
+      cout << ultraS.cm << " CM" << endl;
     } else {
       cout << "Nope." << endl;
     }
@@ -258,8 +260,8 @@ int main(){
   BP.detect();
   setSensors();
  // range obstacle;
-
-  cout << check();
+  readme();
+ // cout << check();
 
   // bool loop = true;
   // while(loop){
