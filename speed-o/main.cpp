@@ -145,8 +145,30 @@ void updateLocation(gridPoints & GP, int distance){
 }
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
+int turnMotorPowerUp(int motorPower) {
+	while (motorPower < 60) {
+		BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_C, motorPower);
+		motorPower += 5;
+		usleep(0.1);
+	}
+	return motorPower;
+}
+
+void turnMotorPowerDown(int motorPower) {
+	while (motorPower > 10) {
+		BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_C, motorPower);
+		motorPower -= 5;
+		usleep(0.1);
+	}
+}
+
 void moveForward(){
-   
+	int motorPower = 10;
+	turnMotorPowerUp(motorPower);
+	sleep(1);
+	turnMotorPowerDown(motorPower);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -193,7 +215,7 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
   updateLocation(GP, int distance);
 }
 
-// Tells the robot which way to turn
+// Tells the robot which way to turn.
 void turn(char direction, gridPoints GP) {
 	if (GP.currentLocation == 'n') {
 		if (direction == 'w') {
@@ -245,14 +267,80 @@ void turn(char direction, gridPoints GP) {
 	}
 }
 
+//updates the current coordinate in prevCoordinatesVector with previous coordinates.
+void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid){
+	unsigned int columnAmount = grid.size();
+	unsigned int rowAmount = grid[0].size();
+	vector<int> gridPointVector[2];
+	
+	gridPointVector[0] = prevCoordinates.x;
+	gridPointVector[1] = prevCoordinates.y;
+
+	prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
+}
+
+//Gets the coordinates of a gridPoint from its number.
+coordinates getGridPointCoordinates(int number, vector<vector<bool>> & grid){
+	unsigned int columnAmount = grid.size();
+	unsigned int rowAmount = grid[0].size();
+	unsigned int gridsize = rowAmount * columnAmount;
+	coordinates gridPointCoordinates;
+
+	if(number < rowAmount){
+		gridPointCoordinates.x = number;
+		gridPointCoordinates.y = 0;
+	}
+	else{
+		gridPointCoordinates.x = number % rowAmount;
+		gridPointCoordinates.y = number / columnAmount;
+	}
+
+	return gridPoint;
+	
+}
+
+//Gets the number of a gridPoint from coordinates.
+int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
+	unsigned int columnAmount = grid.size();
+	unsigned int rowAmount = grid[0].size();
+	unsigned int gridsize = rowAmount * columnAmount;
+	int gridPointNumber;
+
+	gridPointNumber = gridPoint.x + (gridPoint.y *rowAmount);
+
+	return gridPointNumber;
+}
+
 int main(){
-  gridPoints GP;
-  vector<vector<bool>> grid = getGrid(GP);
-  getCoordinates(GP, grid);
-  testFunctie(GP, grid);
-  moveToHomepoint(GP);
-  resetCurrentLocation();
-  return 0;
+	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
+
+	//Reset the encoders
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
+	BP.offset_motor_encoder(PORT_C, BP.get_motor_encoder(PORT_C));
+	BP.offset_motor_encoder(PORT_D, BP.get_motor_encoder(PORT_D));
+
+	// Read the encoders
+	int32_t EncoderA = BP.get_motor_encoder(PORT_A);
+	int32_t EncoderB = BP.get_motor_encoder(PORT_B);
+	int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+	int32_t EncoderD = BP.get_motor_encoder(PORT_D);
+
+	// Use the encoder value from motor A to control motors B, C, and D
+	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
+	BP.set_motor_dps(PORT_C, EncoderA);
+	BP.set_motor_position(PORT_D, EncoderA);
+
+	gridPoints GP;
+	vector<vector<bool>> grid = getGrid(GP);
+	getCoordinates(GP, grid);
+	testFunctie(GP, grid);
+	moveToHomepoint(GP);
+	resetCurrentLocation();
+
+	moveForward();
+
+	return 0;
 }
 
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
