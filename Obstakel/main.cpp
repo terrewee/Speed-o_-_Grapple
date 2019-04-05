@@ -27,7 +27,7 @@ void stop(){
   //reset de motor dps
   BP.set_motor_dps(PORT_A, 0);
 }
-void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
+void lookLeft(range obstakel){
   //look left
   cout << "left" << endl;
   BP.detect();
@@ -58,7 +58,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
   stop();
 }
 
-void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
+void lookRight(range obstakel){
   //look right
   cout << "right" << endl;
   BP.detect();
@@ -89,7 +89,7 @@ void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
   stop();
 }
 
-void lookForward(sensor_ultrasonic_t Ultrasonic, range obstakel){
+void lookForward(range obstakel){
   cout << "test2" << endl;
   BP.detect();
   BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
@@ -120,13 +120,13 @@ void obstakelDetectie(range obstacle){
     BP.set_motor_power(PORT_A, 5);
 
     cout << "Forward" << endl;
-    lookForward(Ultrasonic, obstacle);
+    lookForward(obstacle);
 
     cout << "left" << endl;
-    lookLeft(Ultrasonic, obstacle);
+    lookLeft(obstacle);
 
     cout << "right" << endl;
-    lookRight(Ultrasonic, obstacle);
+    lookRight(obstacle);
     // lookForward(Ultrasonic, obstacle);
     // stop();
     // while (obstacle.obstakelInRangeForward== true){
