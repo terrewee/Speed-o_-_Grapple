@@ -1,5 +1,5 @@
 #include "BrickPi3.h"	// for BrickPi3
-#include "Navigation.h"	// for Navigation
+//#include "Navigation.h"	// for Navigation
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
@@ -109,9 +109,9 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 }
 
 void moveToHomepoint(gridPoints GP){
-	if(GP.targetCoordinates.y == 0) && GP.targetCoordinates.x == 0){/*communicate();*/}
+	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
-  moveForwardDistance(GP);
+  moveForwardDistance(GP, 1);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
@@ -136,11 +136,11 @@ void updateLocation(gridPoints & GP, int distance){
   else if(GP.direction == 's'){
     GP.currentLocation.y += distance;
   }
-  else if if(GP.direction == 'w'){
-    GP.currentLocation.x += distance;
+  else if(GP.direction == 'w'){
+    GP.currentLocation.x -= distance;
   }
   else{
-    GP.currentLocation.y -= distance;
+    GP.currentLocation.y += distance;
   }
 }
 
@@ -212,7 +212,7 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
     count++;
   }
 
-  updateLocation(GP, int distance);
+  updateLocation(GP, distance);
 }
 
 // Tells the robot which way to turn.
@@ -276,7 +276,7 @@ void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevC
 	gridPointVector[0] = prevCoordinates.x;
 	gridPointVector[1] = prevCoordinates.y;
 
-	prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
+	//prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -311,7 +311,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
-void searchPath(gridPoint & GP, vector<vector<bool>> & grid){
+void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<int> queue = updateQueue(homeGridPointNumber, grid);
