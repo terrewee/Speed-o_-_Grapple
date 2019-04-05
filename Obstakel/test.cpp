@@ -20,7 +20,7 @@ void stop(){
 }
 
 int measure(sensor_ultrasonic_t Ultrasonic){
-
+    cout << "beep boop" << endl;
     if(BP.get_sensor(PORT_4, Ultrasonic) == 0){
 		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
  	}
