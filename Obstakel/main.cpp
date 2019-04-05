@@ -262,6 +262,7 @@ void checkSensor(){
 
 int main(){
 //thread checkBattery (batteryLevel);
+  BP.detect();
   setSensors();
   range obstacle;
   bool loop = true;
