@@ -110,8 +110,8 @@ void lookForward(range obstakel){
 void obstakelDetectie(range obstacle){
   //main van obstakel
     stop();
-    BP.detect();
-    BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
+    // i BP.detect();
+    // i BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
     sensor_ultrasonic_t Ultrasonic;
 
     lookForward(obstacle);
