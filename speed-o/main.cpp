@@ -311,39 +311,78 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
+void searchPath(gridPoint & GP, vector<vector<bool>> & grid){
+	bool targetFound = false;
+	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
+	vector<int> queue = updateQueue(homeGridPointNumber, grid);
+	vector<vector<int>> prevCoordinatesVector(grid.size() * grid[0].size());
+	i = 1;
+
+	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
+		updateQueue(queue[i], grid, prevCoordinatesVector);
+
+		for(unsigned int i = 0; i < queue.size(); i++){
+			if(getGridPointCoordinates(queue[i], grid, prevCoordinatesVector) == GP.homeCoordinates){
+				targetFound == true;
+			}
+		}
+
+		i++;
+	}
+
+}
+
+void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
+	bool optionFound = false;
+	int gridPointNumber = getGridPointNumber(option, grid);
+
+	for(unsigned int i = 0; i < queue.size(); i++){
+		if(queue[i] == gridPointNumber){
+			optionFound = true;
+		}
+	}
+
+	if(!optionFound){
+		queue.push_back(gridPointNumber);
+		updatePrevCoordinates(option, gridPoint, prevCoordinatesVector, grid);
+	}
+}
+
 //Check bordering gridpoints and put them in a list if they are on grid.
-vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool> grid){
+vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinateVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
+	gridPoint = getGridPointCoordinates(number, grid);
+
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
 	optionA.y = gridPoint.y;
 	
-	if(checkInGrid(optionA, grid) == 1){queue.pushback(getGridPointNumber(optionA));}
+	if(checkInGrid(optionA, grid) == 1){addToQueue(optionA, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	coordinates optionB;
 	optionB.x = gridPoint.x;
 	optionB.y = gridPoint.y - 1;
 
-	if(checkInGrid(optionB, grid) == 1){queue.pushback(getGridPointNumber(optionB));}
+	if(checkInGrid(optionB, grid) == 1){addToQueue(optionB, gridPoint, prevCoordinatesVector, grid, queue);}
 	
 	coordinates optionC;
 	optionC.x = gridPoint.x + 1;
 	optionC.y = gridPoint.y;
 
-	if(checkInGrid(optionC, grid) == 1){queue.pushback(getGridPointNumber(optionC));}
+	if(checkInGrid(optionC, grid) == 1){addToQueue(optionC, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	coordinates optionD;
 	optionD.x = gridPoint.x;
 	optionD.y = gridPoint.y + 1;
 
-	if(checkInGrid(optionD, grid) == 1){queue.pushback(getGridPointNumber(optionD));}
+	if(checkInGrid(optionD, grid) == 1){addToQueue(optionD, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	return queue;
 }
 
 //Check if point is on the grid.
-bool checkInGrid(coordinates pathCheck, vector<vector<bool>> grid){
+bool checkInGrid(coordinates pathCheck, vector<vector<bool>> & grid){
 	if			(pathCheck.x < 0)									{return 0;}
 	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
 	else if	(pathCheck.y < 0)									{return 0;}
