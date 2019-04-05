@@ -81,12 +81,11 @@ void testValues()
 	{
 		cout << "Limiet: ";
 		cin >> limiet;
-		cout << "Kracht: ";
+		cout << "Draai: ";
 		cin >> kracht;
 
 		BP.set_motor_limits(PORT_A, limiet, 0);
 		encodeMotor(kracht);
-		sleep(3);
 	}
 }
 
