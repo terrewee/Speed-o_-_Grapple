@@ -339,6 +339,7 @@ vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool> grid){
 
 	if(checkInGrid(optionD, grid) == 1){queue.pushback(getGridPointNumber(optionD));}
 
+	return queue;
 }
 
 //Check if point is on the grid.
