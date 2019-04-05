@@ -219,26 +219,26 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
 void turn(char direction, gridPoints GP) {
 	if (GP.direction == 'n') {
 		if (direction == 'w') {
-			turnLeft();
+			turnLeft(GP);
 		}
 		else if (direction == 's') {
-			turnLeft();
-			turnLeft();
+			turnLeft(GP);
+			turnLeft(GP);
 		}
 		else if (direction == 'e') {
-			turnRight();
+			turnRight(GP);
 		}
 	}
 	else if (GP.direction == 'e') {
 		if (direction == 'w') {
-			turnLeft();
-			turnLeft();
+			turnLeft(GP);
+			turnLeft(GP);
 		}
 		else if (direction == 's') {
-			turnRight();
+			turnRight(GP);
 		}
 		else if (direction == 'n') {
-			turnLeft();
+			turnLeft(GP);
 		}
 	}
 	else if (GP.direction == 's') {
