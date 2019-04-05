@@ -49,7 +49,7 @@ void encodeMotor(int32_t pos)
 
 /*
 	Author		:	Joram van Leeuwen, Stef Ottenhof
-	Description	:
+                	Description	:
 		Twee functies voor het omhoog en omlaag halen van de klauw.
 */
 void klauwNaarBeneden()
@@ -75,7 +75,7 @@ void klauwNaarBeneden()
 	}
 }
 
-klauwNaarBenedenKantelpunt()
+void klauwNaarBenedenKantelpunt()
 {
 	int uChoice = 0;
 	int draai;
@@ -83,19 +83,21 @@ klauwNaarBenedenKantelpunt()
 	{
 		cout << "Draai: ";
 		cin >> draai;
-		BP.set_motor_limit(PORT_A, 25, 0);
+		BP.set_motor_limits(PORT_A, 80, 0);
 		encodeMotor(draai);
 		cout << "1. Verder \n-1. Stop";
 		cin >> uChoice;
 	}
 }
 
-void klauwDownTest()
+void klauwDownTest(int startPos)
 {
+	int32_t huidigePos = 0;
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	while(BP.get_motor_encoder(PORT_A) > -90)
+	while(huidigePos > startPos-90)
 	{
-
+		BP.set_motor_power(PORT_A, 3);
+		huidgePos = BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	}
 	encodeMotor(0);
 }
@@ -148,10 +150,12 @@ int main()
 	signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	setSensors();
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	int startPos = BP.get_motor_encoder(PORT_A);
 	while(true)
 	{
 		klauwNaarBenedenKantelpunt();
-		klauwDownTest();
+		klauwDownTest(startPos);
 	}
 //	klauwNaarBeneden();
 //	cout << "Klaar met naar beneden" << endl;
