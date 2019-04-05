@@ -138,7 +138,7 @@ void error(const char *msg)
   Author:       Duur
   Description:  Verstuur bericht naar opgegeven hostname en port.
 */
-void iClient(char *hostName, int portNr, char message[256]){
+void iClient(char *hostName, int portNr, string message){
   //zet de connectie op voor het verzenden van een message.
   char buffer[256];
   int socketFD, n;
@@ -182,7 +182,7 @@ int main(){
   thread checkBattery (batteryLevel);
   string hostName;
   int portNr;
-  char message[256];
+  string message;
   cout << "Geef hostname" << endl;
   cin >> hostName;
   cout << "Geef port" << endl;
