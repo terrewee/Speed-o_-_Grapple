@@ -19,7 +19,7 @@ void stop(){
     BP.set_motor_dps(PORT_B, 0);
 }
 
-int measure(sensor_ultrasonic_t Ultrasonic);
+int measure(sensor_ultrasonic_t Ultrasonic){
 
     if(BP.get_sensor(PORT_4, Ultrasonic) == 0){
 		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
