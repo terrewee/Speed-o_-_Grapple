@@ -253,7 +253,7 @@ void turn(char direction, gridPoints GP) {
 			turnLeft(GP);
 		}
 		else if (direction == 'n') {
-			turnRight(GP);
+			turnRight();
 		}
 	}
 }
@@ -262,7 +262,7 @@ void turn(char direction, gridPoints GP) {
 void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid){
 	unsigned int columnAmount = grid.size();
 	unsigned int rowAmount = grid[0].size();
-	vector<int> gridPointVector;
+	vector<int> gridPointVector[2];
 	
 	gridPointVector[0] = prevCoordinates.x;
 	gridPointVector[1] = prevCoordinates.y;
@@ -303,7 +303,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 }
 
 //Check bordering gridpoints and put them in a list if they are on grid.
-vector<int> checkOptions(coordinates gridPoint, vector<vector<bool>> grid){
+vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool>> grid){
 	vector<int> queue;
 	
 	coordinates optionA;
