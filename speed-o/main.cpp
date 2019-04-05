@@ -119,13 +119,16 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 int turnMotorPowerUp(int motorPower) {
-	while (motorPower < 60) {
-		BP.set_motor_power(PORT_A, motorPower+1);
-		BP.set_motor_power(PORT_B, motorPower);
-		motorPower += 1;
+	int snelheid;
+	cout << "Geef snelheid" << endl;
+	cin >> snelheid;
+	while (motorPower < snelheid) {
+		BP.set_motor_power(PORT_A, snelheid+1);
+		BP.set_motor_power(PORT_B, snelheid);
+		snelheid += 1;
 		usleep(0.1);
 	}
-	return motorPower;
+	return ;
 }
 
 void turnMotorPowerDown(int motorPower) {
@@ -421,14 +424,14 @@ int main(){
 	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
 	BP.set_motor_dps(PORT_C, EncoderA);
 	BP.set_motor_position(PORT_D, EncoderA);
-
+	/*
 	gridPoints GP;
 	vector<vector<bool>> grid = getGrid(GP);
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
-
+	*/
 	moveForward();
 
 	return 0;
