@@ -112,9 +112,9 @@ void obstakelDetectie(range obstacle){
     stop();
 
     lookForward(obstacle);
-
+    sleep(5);
     lookLeft(obstacle);
-
+    sleep(5);
     lookRight(obstacle);
     // lookForward(Ultrasonic, obstacle);
     // stop();
