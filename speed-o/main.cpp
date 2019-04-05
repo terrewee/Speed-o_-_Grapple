@@ -106,6 +106,18 @@ void klauwOmhoog()
 	encodeMotor(110);			// rotatie is ~110.
 }
 
+void klauwOpen()
+{
+	BP.set_motor_limits(PORT_A, 10, 0);
+	encodeMotor(-160);
+}
+
+void klauwDicht()
+{
+	BP.set_motor_limits(PORT_A, 10, 0);
+	encodeMotor(160);
+}
+
 void exit_signal_handler(int signo)
 {
 if(signo == SIGINT)
