@@ -21,7 +21,9 @@ void stop(){
 
 int measure(sensor_ultrasonic_t Ultrasonic){
     cout << "beep boop" << endl;
-    if(BP.get_sensor(PORT_4, Ultrasonic) == 0){
+    int ding = BP.get_sensor(PORT_4, Ultrasonic);
+    cout << ding << endl;
+    if( ding == 0){
 		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
  	}
     sleep(5);
@@ -94,6 +96,7 @@ int main(){
 
 
     range obstakel;
+    sleep(5);
     lookForward(obstakel, Ultrasonic);
     lookLeft(obstakel, Ultrasonic);
     lookRight(obstakel, Ultrasonic);
