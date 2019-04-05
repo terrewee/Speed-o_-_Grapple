@@ -347,7 +347,7 @@ void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>>
 	}
 }
 
-//Check bordering gridpoints and put them in a list if they are on grid.
+//Check bordering gridpoints and calls addToQueue if they are on grid.
 vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinateVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
