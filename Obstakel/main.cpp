@@ -29,6 +29,7 @@ void stop(){
 }
 void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
   //look left
+  cout << "left" << endl;
   BP.set_motor_dps(PORT_A, -5);
   sleep(1);
   stop();
@@ -56,6 +57,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasonic, range obstakel){
 
 void lookRight(sensor_ultrasonic_t Ultrasonic, range obstakel){
   //look right
+  cout << "right" << endl;
   BP.set_motor_dps(PORT_A, 5);
   sleep(1);
   stop();
