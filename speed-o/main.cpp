@@ -75,6 +75,31 @@ void klauwNaarBeneden()
 	}
 }
 
+klauwNaarBenedenKantelpunt()
+{
+	int uChoice = 0;
+	int draai;
+	while(uChoice != -1)
+	{
+		cout << "Draai: ";
+		cin >> draai;
+		BP.set_motor_limit(PORT_A, 25, 0);
+		encodeMotor(draai);
+		cout << "1. Verder \n-1. Stop";
+		cin >> uChoice;
+	}
+}
+
+void klauwDownTest()
+{
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	while(BP.get_motor_encoder(PORT_A) > -90)
+	{
+
+	}
+	encodeMotor(0);
+}
+
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 40, 0);	// speed 20 als limiet voor opwaartse beweging.
@@ -111,9 +136,14 @@ int main()
 	signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	setSensors();
-	klauwNaarBeneden();
-	cout << "Klaar met naar beneden" << endl;
-	sleep(5);
+	while(true)
+	{
+		klauwNaarBenedenKantelpunt();
+		klauwDownTest();
+	}
+//	klauwNaarBeneden();
+//	cout << "Klaar met naar beneden" << endl;
+//	sleep(5);
 //	klauwOmhoog();
-	//testValues();
+//	testValues();
 }
