@@ -24,8 +24,8 @@ int measure(sensor_ultrasonic_t Ultrasonic){
     if(BP.get_sensor(PORT_4, Ultrasonic) == 0){
 		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
  	}
-    return (int)Ultrasonic.cm;
     sleep(5);
+    return (int)Ultrasonic.cm;
 }
 
 void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
@@ -96,4 +96,5 @@ int main(){
     lookForward(obstakel, Ultrasonic);
     lookLeft(obstakel, Ultrasonic);
     lookRight(obstakel, Ultrasonic);
+    BP.reset_all();
 }
