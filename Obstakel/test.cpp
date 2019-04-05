@@ -16,7 +16,7 @@ struct range {
 
 void stop(){
     //reset de motor dps
-    BP.set_motor_dps(PORT_A, 0);
+    BP.set_motor_dps(PORT_B, 0);
 }
 
 int measure(sensor_ultrasonic_t Ultrasonic);
@@ -31,7 +31,7 @@ void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
     cout << "left" << endl;
 
     //spin left
-    BP.set_motor_dps(PORT_A, -60);
+    BP.set_motor_dps(PORT_B, -60);
     sleep(2);
     stop();
 
@@ -44,7 +44,7 @@ void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
     }
 
     //reset to middle
-    BP.set_motor_dps(PORT_A, 60);
+    BP.set_motor_dps(PORT_B, 60);
     sleep(2);
     stop();
 }
@@ -53,7 +53,7 @@ void lookRight(range obstakel, sensor_ultrasonic_t Ultrasonic){
     cout << "right" << endl;
 
     //spin right.
-    BP.set_motor_dps(PORT_A, 60);
+    BP.set_motor_dps(PORT_B, 60);
     sleep(2);
     stop();
 
@@ -66,7 +66,7 @@ void lookRight(range obstakel, sensor_ultrasonic_t Ultrasonic){
     }
 
     //reset to middle
-    BP.set_motor_dps(PORT_A, -60);
+    BP.set_motor_dps(PORT_B, -60);
     sleep(2);
     stop();
 }
