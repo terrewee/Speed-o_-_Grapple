@@ -108,6 +108,26 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
+//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
+int turnMotorPowerUp(int motorPower) {
+	while (motorPower < 60) {
+		BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_C, motorPower);
+		motorPower += 5;
+		usleep(0.1);
+	}
+	return motorPower;
+}
+
+void turnMotorPowerDown(int motorPower) {
+	while (motorPower > 10) {
+		BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_C, motorPower);
+		motorPower -= 5;
+		usleep(0.1);
+	}
+}
+
 void moveForward(){
 	int motorPower = 10;
 	turnMotorPowerUp(motorPower);
@@ -147,6 +167,28 @@ void turnRight(gridPoints & GP){
   }
 }
 
+//Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
+void resetCurrentLocation(gridPoints & GP){
+  GP.currentLocation.x = GP.homeCoordinates.x;
+  GP.currentLocation.y = GP.homeCoordinates.y;
+}
+
+//Updates GP.currentCoordinates according to distance moved and GP.direction.
+void updateLocation(gridPoints & GP, int distance){
+  if(GP.direction == 'n'){
+    GP.currentLocation.y -= distance;
+  }
+  else if(GP.direction == 's'){
+    GP.currentLocation.y += distance;
+  }
+  else if(GP.direction == 'w'){
+    GP.currentLocation.x -= distance;
+  }
+  else{
+    GP.currentLocation.y += distance;
+  }
+}
+
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints & GP, unsigned int distance){
   int count = 0;
@@ -172,48 +214,6 @@ void moveToHomepoint(gridPoints GP){
 
 
 };
-
-//Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
-void resetCurrentLocation(gridPoints & GP){
-  GP.currentLocation.x = GP.homeCoordinates.x;
-  GP.currentLocation.y = GP.homeCoordinates.y;
-}
-
-//Updates GP.currentCoordinates according to distance moved and GP.direction.
-void updateLocation(gridPoints & GP, int distance){
-  if(GP.direction == 'n'){
-    GP.currentLocation.y -= distance;
-  }
-  else if(GP.direction == 's'){
-    GP.currentLocation.y += distance;
-  }
-  else if(GP.direction == 'w'){
-    GP.currentLocation.x -= distance;
-  }
-  else{
-    GP.currentLocation.y += distance;
-  }
-}
-
-//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
-int turnMotorPowerUp(int motorPower) {
-	while (motorPower < 60) {
-		BP.set_motor_power(PORT_B, motorPower);
-		BP.set_motor_power(PORT_C, motorPower);
-		motorPower += 5;
-		usleep(0.1);
-	}
-	return motorPower;
-}
-
-void turnMotorPowerDown(int motorPower) {
-	while (motorPower > 10) {
-		BP.set_motor_power(PORT_B, motorPower);
-		BP.set_motor_power(PORT_C, motorPower);
-		motorPower -= 5;
-		usleep(0.1);
-	}
-}
 
 // Tells the robot which way to turn.
 void turn(char direction, gridPoints GP) {
@@ -346,7 +346,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinatesVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
-	gridPoint = getGridPointCoordinates(number, grid);
+	int gridPoint = getGridPointCoordinates(gridPointNumber, grid);
 	
 	coordinates optionA {gridPoint.x - 1, gridPoint.y};
 	if(checkInGrid(optionA, grid) == 1){addToQueue(optionA, gridPoint, prevCoordinatesVector, grid, queue);}
@@ -366,15 +366,15 @@ vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinates
 void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
-	vector<int> queue = updateQueue(homeGridPointNumber, grid);
 	vector<vector<int>> prevCoordinatesVector(grid.size() * grid[0].size());
-	i = 1;
+	vector<int> queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, grid);
+	unsigned int i = 1;
 
 	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
 		updateQueue(queue[i], grid, prevCoordinatesVector);
 
 		for(unsigned int i = 0; i < queue.size(); i++){
-			if(getGridPointCoordinates(queue[i], grid, prevCoordinatesVector) == GP.homeCoordinates){
+			if(getGridPointCoordinates(queue[i], grid) == GP.homeCoordinates){
 				targetFound == true;
 			}
 		}
@@ -408,7 +408,7 @@ int main(){
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
-	resetCurrentLocation();
+	resetCurrentLocation(GP);
 
 	moveForward();
 
