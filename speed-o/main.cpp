@@ -108,6 +108,57 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
+void moveForward(){
+	int motorPower = 10;
+	turnMotorPowerUp(motorPower);
+	sleep(1);
+	turnMotorPowerDown(motorPower);
+}
+
+//Turns the rorbot to the right, and updates the value of GP.direction.
+void turnLeft(gridPoints & GP){
+  if(GP.direction == 'n'){
+    GP.direction = 'e';
+  }
+  else if(GP.direction == 'w'){
+    GP.direction = 'n';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'w';
+  }
+  else{
+    GP.direction = 's';
+  }
+}
+
+//Turns the rorbot to the left, and updates the value of GP.direction.
+void turnRight(gridPoints & GP){
+  if(GP.direction == 'n'){
+    GP.direction = 'w';
+  }
+  else if(GP.direction == 'w'){
+    GP.direction = 's';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'e';
+  }
+  else{
+    GP.direction = 'n';
+  }
+}
+
+//Moves robot a set distance forward and calls updateLocation().
+void moveForwardDistance(gridPoints & GP, unsigned int distance){
+  int count = 0;
+
+  while(count < distance){
+    moveForward();
+    count++;
+  }
+
+  updateLocation(GP, distance);
+}
+
 void moveToHomepoint(gridPoints GP){
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
@@ -162,57 +213,6 @@ void turnMotorPowerDown(int motorPower) {
 		motorPower -= 5;
 		usleep(0.1);
 	}
-}
-
-void moveForward(){
-	int motorPower = 10;
-	turnMotorPowerUp(motorPower);
-	sleep(1);
-	turnMotorPowerDown(motorPower);
-}
-
-//Turns the rorbot to the right, and updates the value of GP.direction.
-void turnLeft(gridPoints & GP){
-  if(GP.direction == 'n'){
-    GP.direction = 'e';
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 'n';
-  }
-  else if(GP.direction == 's'){
-    GP.direction = 'w';
-  }
-  else{
-    GP.direction = 's';
-  }
-}
-
-//Turns the rorbot to the left, and updates the value of GP.direction.
-void turnRight(gridPoints & GP){
-  if(GP.direction == 'n'){
-    GP.direction = 'w';
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 's';
-  }
-  else if(GP.direction == 's'){
-    GP.direction = 'e';
-  }
-  else{
-    GP.direction = 'n';
-  }
-}
-
-//Moves robot a set distance forward and calls updateLocation().
-void moveForwardDistance(gridPoints & GP, unsigned int distance){
-  int count = 0;
-
-  while(count < distance){
-    moveForward();
-    count++;
-  }
-
-  updateLocation(GP, distance);
 }
 
 // Tells the robot which way to turn.
