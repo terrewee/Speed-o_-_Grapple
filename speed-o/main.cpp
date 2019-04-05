@@ -311,6 +311,51 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
+//Check bordering gridpoints and put them in a list if they are on grid.
+vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool> grid){
+	vector<int> queue;
+	
+	coordinates optionA;
+	optionA.x = gridPoint.x - 1;
+	optionA.y = gridPoint.y;
+	
+	if(checkInGrid(optionA, grid) == 1){queue.pushback(getGridPointNumber(optionA));}
+
+	coordinates optionB;
+	optionB.x = gridPoint.x;
+	optionB.y = gridPoint.y - 1;
+
+	if(checkInGrid(optionB, grid) == 1){queue.pushback(getGridPointNumber(optionB));}
+	
+	coordinates optionC;
+	optionC.x = gridPoint.x + 1;
+	optionC.y = gridPoint.y;
+
+	if(checkInGrid(optionC, grid) == 1){queue.pushback(getGridPointNumber(optionC));}
+
+	coordinates optionD;
+	optionD.x = gridPoint.x;
+	optionD.y = gridPoint.y + 1;
+
+	if(checkInGrid(optionD, grid) == 1){queue.pushback(getGridPointNumber(optionD));}
+
+}
+
+//Check if point is on the grid.
+bool checkInGrid(coordinates pathCheck, vector<vector<bool>> grid){
+	if			(pathCheck.x < 0)									{return 0;}
+	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
+	else if	(pathCheck.y < 0)									{return 0;}
+	else if	(pathCheck.y > grid.size()-1)			{return 0;}
+	else 																			{return 1;}
+}
+
+//Check if grid point is end point.
+bool checkIfTarget(coordinates targetCheck, gridPoints GP){
+	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
+	else {return 0;}
+}
+
 int main(){
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
@@ -349,21 +394,4 @@ void exit_signal_handler(int signo){
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
-}
-
-// <vector<vector<int>> (vandaan)
-// <vector<int> (grid nummering)
-
-
-bool checkInGrid(coordinates pathCheck, <vector<vector<bool> grid){
-	if			(pathCheck.x < 0)									{return 0;}
-	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
-	else if	(pathCheck.y < 0)									{return 0;}
-	else if	(pathCheck.y > grid.size()-1)			{return 0;}
-	else 																			{return 1;}
-}
-
-bool checkIfTarget(coordinates targetCheck, gridPoints GP){
-	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
-	else {return 0;}
 }
