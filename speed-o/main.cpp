@@ -382,7 +382,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 		updateQueue(queue[i], prevCoordinatesVector, grid);
 
 		for(unsigned int i = 0; i < queue.size(); i++){
-			coordinates gridPoint = getGridPointCoordinates(queue[i], grid)
+			coordinates gridPoint = getGridPointCoordinates(queue[i], grid);
 			if(gridPoint.x == GP.homeCoordinates.x && gridPoint.y == GP.homeCoordinates.y){
 				targetFound == true;
 			}
