@@ -346,7 +346,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinatesVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
-	int gridPoint = getGridPointCoordinates(gridPointNumber, grid);
+	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
 	
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
@@ -379,7 +379,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	unsigned int i = 1;
 
 	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
-		updateQueue(queue[i], grid, prevCoordinatesVector);
+		updateQueue(queue[i], prevCoordinatesVector, grid);
 
 		for(unsigned int i = 0; i < queue.size(); i++){
 			if(getGridPointCoordinates(queue[i], grid) == GP.homeCoordinates){
