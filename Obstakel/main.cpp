@@ -33,8 +33,8 @@ void lookLeft(range obstakel){
   BP.detect();
   BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
   sensor_ultrasonic_t Ultrasonic;
-  BP.set_motor_dps(PORT_A, -30);
-  sleep(1);
+  BP.set_motor_dps(PORT_A, -60);
+  sleep(5);
   stop();
   
   int som = 0;
@@ -53,8 +53,8 @@ void lookLeft(range obstakel){
     obstakel.obstakelInRangeLeft = false;
   }
   //reset to middle
-  BP.set_motor_dps(PORT_A, 30);
-  sleep(1);
+  BP.set_motor_dps(PORT_A, 60);
+  sleep(5);
   stop();
 }
 
@@ -64,7 +64,7 @@ void lookRight(range obstakel){
   BP.detect();
   BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
   sensor_ultrasonic_t Ultrasonic;
-  BP.set_motor_dps(PORT_A, 30);
+  BP.set_motor_dps(PORT_A, 60);
   sleep(5);
   stop();
   
@@ -84,8 +84,8 @@ void lookRight(range obstakel){
     obstakel.obstakelInRangeRight = false;
   }
   //reset to middle 
-  BP.set_motor_dps(PORT_A, -30);
-  sleep(1);
+  BP.set_motor_dps(PORT_A, -60);
+  sleep(5);
   stop();
 }
 
@@ -100,7 +100,7 @@ void lookForward(range obstakel){
     if(BP.get_sensor(PORT_2, Ultrasonic) != 0){
       cout << "Afstand" << (int) Ultrasonic.cm << endl;
       som += (int) Ultrasonic.cm;
-      sleep(5);
+      sleep(2);
     }
   }
   float gemiddelde = som/3;
