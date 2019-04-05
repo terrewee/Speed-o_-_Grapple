@@ -25,6 +25,7 @@ int measure(sensor_ultrasonic_t Ultrasonic){
 		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
  	}
     return (int)Ultrasonic.cm;
+    sleep(5);
 }
 
 void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
@@ -84,6 +85,7 @@ void lookForward(range obstakel,sensor_ultrasonic_t Ultrasonic){
 }
 
 int main(){
+    stop();
     //alles voor de sensor
     BP.detect();
     BP.set_sensor_type(PORT_4, SENSOR_TYPE_NXT_ULTRASONIC);
