@@ -192,6 +192,7 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
 
   updateLocation(GP, int distance);
 }
+
 // Tells the robot which way to turn
 void turn(char direction, gridPoints GP) {
 	if (GP.currentLocation == 'n') {
@@ -260,4 +261,21 @@ void exit_signal_handler(int signo){
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
+}
+
+// <vector<vector<int>> (vandaan)
+// <vector<int> (grid nummering)
+
+
+bool checkInGrid(coordinates pathCheck, <vector<vector<bool> grid){
+	if			(pathCheck.x < 0)									{return 0;}
+	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
+	else if	(pathCheck.y < 0)									{return 0;}
+	else if	(pathCheck.y > grid.size()-1)			{return 0;}
+	else 																			{return 1;}
+}
+
+bool checkIfTarget(coordinates targetCheck, gridPoints GP){
+	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
+	else {return 0;}
 }
