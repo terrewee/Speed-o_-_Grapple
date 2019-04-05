@@ -18,6 +18,19 @@ void setSensors(){
   BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
 }
 
+void readme(){
+  sensor_ultrasonic_t ultraS;
+  while(true){
+    if(BP.get_sensor(PORT_3, ultraS) == 0){
+      cout << (int)ultraS.cm << " CM" << endl;
+    } else {
+      cout << "Nope." << endl;
+    }
+    sleep(1);
+  }
+}
+
+
 /*
   Author:       Mathilde, Maaike
   Description:  Functie voor het detecteren van obstakels en de
@@ -31,21 +44,20 @@ void setSensors(){
 //   bool obstakelcurrent= false;
 // };
 
-float check(){
-  sensor_ultrasonic_t Ultrasonic;
-  int som = 0;
-  for(unsigned int i = 0; i < 3; i++){
-    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-      cout << "Afstand " << (int) Ultrasonic.cm << endl;
-      som += (int) Ultrasonic.cm;
-    }
-    else{
-      cout << "FUCK" << endl;
-    }
-    sleep(2);
-  }
-  return som/3;
-}
+// float check(){
+//   sensor_ultrasonic_t Ultrasonic;
+//   int som = 0;
+//   for(unsigned int i = 0; i < 3; i++){
+//     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
+//       cout << "Afstand " << (int) Ultrasonic.cm << endl;
+//       som += (int) Ultrasonic.cm;
+//     }else{
+//       cout << "FUCK" << endl;
+//     }
+//     sleep(2);
+//   }
+//   return som/3;
+// }
 
 // void stop(){
 //   //reset de motor dps
@@ -244,16 +256,16 @@ int main(){
 //thread checkBattery (batteryLevel);
   BP.detect();
   setSensors();
-  range obstacle;
+ // range obstacle;
 
-  cout << check();
+  readme();
 
   // bool loop = true;
   // while(loop){
   //   int keuze;
   //   cout << "Kies een funtie: "<< endl;
   //   cout << "1. Getsensor *werkt niet todat setSensors() werkt" << endl;
-  //   cout << "2. Obstakel detectie" << endl;
+  //     cout << "2. Obstakel detectie" << endl;
   //   cin >> keuze;
 
   //   switch(keuze){
