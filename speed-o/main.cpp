@@ -128,7 +128,7 @@ int turnMotorPowerUp(int motorPower) {
 		snelheid += 1;
 		usleep(0.1);
 	}
-	return ;
+	return snelheid;
 }
 
 void turnMotorPowerDown(int motorPower) {
