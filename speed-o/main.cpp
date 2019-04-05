@@ -311,7 +311,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
-void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
+void addToQueue(coordinates & option, coordinates & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
 	bool optionFound = false;
 	int gridPointNumber = getGridPointNumber(option, grid);
 
@@ -343,7 +343,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 }
 
 //Check bordering gridpoints and calls addToQueue if they are on grid.
-vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinateVector, vector<vector<bool>> grid){
+vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinatesVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
 	gridPoint = getGridPointCoordinates(number, grid);
