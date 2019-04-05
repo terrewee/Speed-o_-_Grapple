@@ -111,7 +111,7 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 int turnMotorPowerUp(int motorPower) {
 	while (motorPower < 60) {
-		BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_C, motorPower);
 		motorPower += 5;
 		usleep(0.1);
@@ -121,7 +121,7 @@ int turnMotorPowerUp(int motorPower) {
 
 void turnMotorPowerDown(int motorPower) {
 	while (motorPower > 10) {
-		BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_C, motorPower);
 		motorPower -= 5;
 		usleep(0.1);
