@@ -1,15 +1,6 @@
 #include "BrickPi3.h"	// for BrickPi3
 #include "Navigation.h"	// for Navigation
-#include <stdio.h>      // for printf
-#include <unistd.h>     // for usleep
-#include <signal.h>     // for catching exit signals
-#include <iostream>
-#include <vector>
 
-using std::vector;
-using std::cout;
-using std::cin;
-using std::endl;
 
 BrickPi3 BP;
 
@@ -111,7 +102,7 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 void moveToHomepoint(gridPoints GP){
 	if(GP.targetCoordinates.y == 0) && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
-  moveForwardDistance(GP);
+  moveForwardDistance(GP,1);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
