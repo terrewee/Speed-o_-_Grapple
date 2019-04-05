@@ -59,7 +59,7 @@ void klauwNaarBeneden()
 	// klauw openen hier
 	sleep(3);
 	BP.set_motor_limits(PORT_A, 10, 0);
-	encodeMotor(-30);
+	encodeMotor(-50);
 	// klauw sluiten hier
 }
 
@@ -102,6 +102,6 @@ int main()
 	klauwNaarBeneden();
 	cout << "Klaar met naar beneden" << endl;
 	sleep(5);
-	klauwOmhoog();
+//	klauwOmhoog();
 	//testValues();
 }
