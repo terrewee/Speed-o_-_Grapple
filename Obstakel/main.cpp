@@ -96,7 +96,8 @@ void lookForward(range obstakel){
   //BP.detect();
   sensor_ultrasonic_t Ultrasonic;
   int som = 0;
-  //for(unsigned int i = 0; i < 3; i++){
+  for(unsigned int i = 0; i < 3; i++){
+    cout << BP.get_sensor(PORT_3, Ultrasonic) << endl;
     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
     cout << "Afstand " << (int)Ultrasonic.cm << endl;
     som += (int) Ultrasonic.cm;
@@ -105,7 +106,7 @@ void lookForward(range obstakel){
       cout << "FUCK" << endl;
     }
     sleep(2);
-  //}
+  }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
     obstakel.obstakelInRangeForward = true;
