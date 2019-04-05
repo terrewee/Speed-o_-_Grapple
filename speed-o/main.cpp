@@ -36,19 +36,6 @@ void setSensors(){
 	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
 	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
-}
-
-/*
-	Author		:	Joram van Leeuwen
-	Description	:
-		Code om een motor encoder te lezen -- alweer.
-*/
-void readEncoder()				// port is gezet op A
-{
-	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	int32_t encoderA = BP.get_motor_encoder(PORT_A);
-	cout << "Motor A: " << endl << encoderA << endl;
-}
 
 /*
 	Author:		:	Joram van Leeuwen, Duur Alblas
