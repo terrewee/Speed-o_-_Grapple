@@ -101,7 +101,6 @@ void lookForward(range obstakel){
     cout << "Afstand " << (int) Ultrasonic.cm << endl;
     som += (int) Ultrasonic.cm;
     sleep(2);
-    }
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
