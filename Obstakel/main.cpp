@@ -44,20 +44,21 @@ void readme(){
 //   bool obstakelcurrent= false;
 // };
 
-// float check(){
-//   sensor_ultrasonic_t Ultrasonic;
-//   int som = 0;
-//   for(unsigned int i = 0; i < 3; i++){
-//     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-//       cout << "Afstand " << (int) Ultrasonic.cm << endl;
-//       som += (int) Ultrasonic.cm;
-//     }else{
-//       cout << "FUCK" << endl;
-//     }
-//     sleep(2);
-//   }
-//   return som/3;
-// }
+float check(){
+  sensor_ultrasonic_t Ultrasonic;
+  int som = 0;
+  int amount = 20;
+  for(unsigned int i = 0; i < amount; i++){
+    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
+      cout << "Afstand " << (int)Ultrasonic.cm << endl;
+      som += (int)Ultrasonic.cm;
+    }else{
+      cout << "FUCK" << endl;
+    }
+    usleep(50000);
+  }
+  return som/amount;
+}
 
 // void stop(){
 //   //reset de motor dps
@@ -258,7 +259,7 @@ int main(){
   setSensors();
  // range obstacle;
 
-  readme();
+  cout << check();
 
   // bool loop = true;
   // while(loop){
