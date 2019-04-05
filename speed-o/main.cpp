@@ -70,7 +70,7 @@ void klauwNaarBeneden()
 	BP.set_motor_limits(PORT_A, kracht, 0);
 	encodeMotor(draai);
 	usleep(10000);
-	encodeMotora(20);
+	encodeMotor(20);
 	// klauw sluiten hier
 	}
 }
