@@ -55,6 +55,7 @@ void encodeMotor(int32_t pos)
 void klauwNaarBeneden()
 {
 	int draai;
+	int kracht;
 	while(true)
 	{
 	BP.set_motor_limits(PORT_A, 25, 0); 	// speed 5 als limiet voor het naar beneden gaan.
@@ -64,7 +65,9 @@ void klauwNaarBeneden()
 	// klauw openen hier
 	cout << "Draai keer 2: ";
 	cin >> draai;
-	BP.set_motor_limits(PORT_A, 10, 0);
+	cout << "Kracht keer 2: ";
+	cin >> kracht;
+	BP.set_motor_limits(PORT_A, kracht, 0);
 	encodeMotor(draai);
 	// klauw sluiten hier
 	}
