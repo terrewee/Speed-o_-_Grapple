@@ -133,7 +133,6 @@ void batteryLevel(void){
   Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
 */
 
-
 int ComPortNr = 6969; //Port number for communication
 string ComHostName = "dex2"; //Hostname for communication
 
@@ -154,6 +153,7 @@ void error(const char *msg)
   Author:       Duur
   Description:  Verstuur bericht naar opgegeven hostname en port, neemt input van een string en verzend die via STREAM naar server-host.
 */
+
 void iClient(string message){
   //zet de connectie op voor het verzenden van een message.
   char buffer[256];
@@ -201,17 +201,43 @@ void exit_signal_handler(int signo){
   }
 }
 
-int main(){
+int main()
+{
+  signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+  BP.detect(); // Make sure that the BrickPi3 is communicating and that the firmware is compatible with the drivers.
+  BP.set_motor_limits(PORT_B, 60, 0);
+  BP.set_motor_limits(PORT_C, 60, 0);
+
+  setSensors();
   thread checkBattery (batteryLevel);
+  int uChoice;
 
-  SetComm()
+  while (true){
+    cout << "Kies functie: " << endl;
+    cout << "1: Send message" << endl;
+    cout << "2: Set communication details" << endl;
 
-  string message;
-  cout << "Message: " << endl;
-  cin >> message;
-  iClient(message);
-  while(true){
-    sleep(5);
+    cin >> uChoice;
+
+    switch(uChoice) {
+      case 1:
+        string message;
+        cout << "Message: " << endl;
+        cin >> message;
+        iClient(message);
+        break;
+      case 2:
+        SetComm();
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 5:
+        break;
+      case 6:
+        break;
+    }
   }
   return 0;
 }

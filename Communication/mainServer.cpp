@@ -195,14 +195,40 @@ void exit_signal_handler(int signo){
   }
 }
 
-
-int main(){
+int main()
+{
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+  BP.detect(); // Make sure that the BrickPi3 is communicating and that the firmware is compatible with the drivers.
+  BP.set_motor_limits(PORT_B, 60, 0);
+  BP.set_motor_limits(PORT_C, 60, 0);
+
+  setSensors();
   thread checkBattery (batteryLevel);
-  SetComm();
-  iServer();
-  while(true){
-    sleep(5);
+  int uChoice;
+
+  while (true){
+    cout << "Kies functie: " << endl;
+    cout << "1: Recieve message" << endl;
+    cout << "2: Set communication details" << endl;
+
+    cin >> uChoice;
+
+    switch(uChoice) {
+      case 1:
+        iServer();
+        break;
+      case 2:
+        SetComm();
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      case 5:
+        break;
+      case 6:
+        break;
+    }
   }
   return 0;
 }

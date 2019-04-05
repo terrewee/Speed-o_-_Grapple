@@ -20,20 +20,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Communication/mainClient.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2329">
-              <caret line="137" column="57" selection-start-line="137" selection-start-column="57" selection-end-line="137" selection-end-column="57" />
+            <state relative-caret-position="110">
+              <caret line="203" selection-start-line="203" selection-end-line="242" selection-end-column="1" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Communication/mainServer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="143" selection-start-line="143" selection-end-line="143" />
+            <state relative-caret-position="144">
+              <caret line="196" lean-forward="true" selection-start-line="196" selection-end-line="196" />
             </state>
           </provider>
         </entry>
@@ -52,8 +52,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Communication/server.c" />
-        <option value="$PROJECT_DIR$/Communication/mainServer.cpp" />
         <option value="$PROJECT_DIR$/Communication/mainClient.cpp" />
+        <option value="$PROJECT_DIR$/Communication/mainServer.cpp" />
       </list>
     </option>
   </component>
@@ -87,6 +87,9 @@
       <pane id="ProjectPane" />
     </panes>
   </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../GroupProject/BrickPiProject/functional" />
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -114,7 +117,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2771000" />
+    <option name="totallyTimeSpent" value="4135000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -151,17 +154,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Communication/mainServer.cpp">
+    <entry file="file://$PROJECT_DIR$/Communication/mainClient.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="143" selection-start-line="143" selection-end-line="143" />
+        <state relative-caret-position="110">
+          <caret line="203" selection-start-line="203" selection-end-line="242" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Communication/mainClient.cpp">
+    <entry file="file://$PROJECT_DIR$/Communication/mainServer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2329">
-          <caret line="137" column="57" selection-start-line="137" selection-start-column="57" selection-end-line="137" selection-end-column="57" />
+        <state relative-caret-position="144">
+          <caret line="196" lean-forward="true" selection-start-line="196" selection-end-line="196" />
         </state>
       </provider>
     </entry>
