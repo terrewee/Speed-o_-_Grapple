@@ -4,6 +4,9 @@
 #include <signal.h>     // for catching exit signals
 #include <iostream>     //voor cout enz.
 
+BrickPi3 BP;
+using namespace std;
+
 struct range {
   bool obstakelInRangeLeft = false;
   bool obstakelInRangeRight = false;
