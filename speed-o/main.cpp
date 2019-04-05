@@ -303,30 +303,19 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 }
 
 //Check bordering gridpoints and put them in a list if they are on grid.
-vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool>> grid){
+vector<int> checkOptions(coordinates gridPoint, vector<vector<bool> grid){
 	vector<int> queue;
 	
-	coordinates optionA;
-	optionA.x = gridPoint.x - 1;
-	optionA.y = gridPoint.y;
-	
+	coordinates optionA {gridPoint.x - 1, gridPoint.y};
 	if(checkInGrid(optionA, grid) == 1){queue.pushback(getGridPointNumber(optionA));}
 
-	coordinates optionB;
-	optionB.x = gridPoint.x;
-	optionB.y = gridPoint.y - 1;
-
+	coordinates optionB {gridPoint.x, gridPoint.y - 1};
 	if(checkInGrid(optionB, grid) == 1){queue.pushback(getGridPointNumber(optionB));}
 	
-	coordinates optionC;
-	optionC.x = gridPoint.x + 1;
-	optionC.y = gridPoint.y;
-
+	coordinates optionC {gridPoint.x + 1, gridPoint.y};
 	if(checkInGrid(optionC, grid) == 1){queue.pushback(getGridPointNumber(optionC));}
 
-	coordinates optionD;
-	optionD.x = gridPoint.x;
-	optionD.y = gridPoint.y + 1;
+	coordinates optionD {gridPoint.x, gridPoint.y + 1};
 
 	if(checkInGrid(optionD, grid) == 1){queue.pushback(getGridPointNumber(optionD));}
 
