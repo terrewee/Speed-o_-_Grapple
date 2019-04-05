@@ -214,7 +214,7 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
 
   updateLocation(GP, int distance);
 }
-// Tells the robot which way to turn
+// Tells the robot which way to turn.
 void turn(char direction, gridPoints GP) {
 	if (GP.currentLocation == 'n') {
 		if (direction == 'w') {
@@ -264,6 +264,50 @@ void turn(char direction, gridPoints GP) {
 			turnRight();
 		}
 	}
+}
+
+//updates the current coordinate in prevCoordinatesVector with previous coordinates.
+void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid){
+	unsigned int columnAmount = grid.size();
+	unsigned int rowAmount = grid[0].size();
+	vector<int> gridPointVector[2];
+	
+	gridPointVector[0] = prevCoordinates.x;
+	gridPointVector[1] = prevCoordinates.y;
+
+	prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
+}
+
+//Gets the coordinates of a gridPoint from its number.
+coordinates getGridPointCoordinates(int number, vector<vector<bool>> & grid){
+	unsigned int columnAmount = grid.size();
+	unsigned int rowAmount = grid[0].size();
+	unsigned int gridsize = rowAmount * columnAmount;
+	coordinates gridPointCoordinates;
+
+	if(number < rowAmount){
+		gridPointCoordinates.x = number;
+		gridPointCoordinates.y = 0;
+	}
+	else{
+		gridPointCoordinates.x = number % rowAmount;
+		gridPointCoordinates.y = number / columnAmount;
+	}
+
+	return gridPoint;
+	
+}
+
+//Gets the number of a gridPoint from coordinates.
+int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
+	unsigned int columnAmount = grid.size();
+	unsigned int rowAmount = grid[0].size();
+	unsigned int gridsize = rowAmount * columnAmount;
+	int gridPointNumber;
+
+	gridPointNumber = gridPoint.x + (gridPoint.y *rowAmount);
+
+	return gridPointNumber;
 }
 
 int main(){
