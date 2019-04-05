@@ -134,7 +134,7 @@ void batteryLevel(void){
 */
 
 int ComPortNr = 6969; //Port number for communication
-string ComHostName = "dex2"; //Hostname for communication
+char ComHostName[] = "dex2"; //Hostname for communication
 
 void SetComm(){
   cout << endl << "Geef het poort-nummer op: ";
@@ -154,7 +154,7 @@ void error(const char *msg)
   Description:  Verstuur bericht naar opgegeven hostname en port, neemt input van een string en verzend die via STREAM naar server-host.
 */
 
-void iClient(string message){
+void iClient(char message[256]){
   //zet de connectie op voor het verzenden van een message.
   char buffer[256];
   int socketFD, n;
@@ -221,21 +221,13 @@ int main()
 
     switch(uChoice) {
       case 1:
-        string message;
+        char message[256];
         cout << "Message: " << endl;
         cin >> message;
         iClient(message);
         break;
       case 2:
         SetComm();
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-      case 5:
-        break;
-      case 6:
         break;
     }
   }
