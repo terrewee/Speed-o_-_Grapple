@@ -9,6 +9,14 @@ using namespace std;
 
 void exit_signal_handler(int signo);
 bool battery = true;    //battery level function
+/*
+  Author:       Duur
+  Description:  setSensors set all the sensors for a specific robot
+                and immediatly sets them.
+*/
+void setSensors(){
+  BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
+}
 
 /*
   Author:       Mathilde, Maaike
@@ -39,8 +47,9 @@ void lookLeft(range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-    cout << "Afstand " << (int)Ultrasonic.cm << endl;
-    som += (int) Ultrasonic.cm;
+      cout << "Afstand " << (int)Ultrasonic.cm << endl;
+      som += (int) Ultrasonic.cm;
+      sleep(2);
     }
     else{
       cout << "FUCK" << endl;
@@ -71,8 +80,9 @@ void lookRight(range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-    cout << "Afstand " << (int)Ultrasonic.cm << endl;
-    som += (int) Ultrasonic.cm;
+      cout << "Afstand " << (int)Ultrasonic.cm << endl;
+      som += (int) Ultrasonic.cm;
+      sleep(2);
     }
     else{
       cout << "FUCK" << endl;
@@ -99,13 +109,13 @@ void lookForward(range obstakel){
   for(unsigned int i = 0; i < 3; i++){
     cout << BP.get_sensor(PORT_3, Ultrasonic) << endl;
     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-    cout << "Afstand " << (int)Ultrasonic.cm << endl;
-    som += (int) Ultrasonic.cm;
+      cout << "Afstand " << (int)Ultrasonic.cm << endl;
+      som += (int) Ultrasonic.cm;
+      sleep(2);
     }
     else{
       cout << "FUCK" << endl;
     }
-    sleep(2);
   }
   float gemiddelde = som/3;
   if (gemiddelde <= 10.0){
@@ -152,14 +162,6 @@ void obstakelDetectie(range obstacle){
     // }
 }
 
-/*
-  Author:       Duur
-  Description:  setSensors set all the sensors for a specific robot
-                and immediatly sets them.
-*/
-void setSensors(){
-  BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
-}
 
 /*
   Author:       Maaike & Duur
