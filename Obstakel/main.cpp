@@ -23,17 +23,16 @@ struct range {
 };
 
 float check(){
-  BP.set_sensor_type(PORT_4, SENSOR_TYPE_NXT_ULTRASONIC);
+  //BP.set_sensor_type(PORT_4, SENSOR_TYPE_NXT_ULTRASONIC);
   sensor_ultrasonic_t Ultrasonic;
   int som = 0;
   int countedValues = 0;
   for(unsigned int i = 0; i < 6; i++){
-    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-      cout << "Afstand " << (int) Ultrasonic.cm << endl;
-      som += (int) Ultrasonic.cm;
-      countedValues ++ ;
-    }
-    else{
+    if(BP.get_sensor(PORT_4, Ultrasonic) == 0){
+      cout << "Afstand " << Ultrasonic.cm << endl;
+      som +=  Ultrasonic.cm;
+      countedValues++ ;
+    } else {
       cout << "FUCK" << endl;
     }
     sleep(1);
@@ -237,10 +236,9 @@ void checkSensor(){
 int main(){
 //thread checkBattery (batteryLevel);
   BP.detect();
-  setSensors();
+  //setSensors();
   range obstacle;
-
-
+  BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_ULTRASONIC);
 
   bool loop = true;
   while(loop){
