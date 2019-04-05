@@ -100,7 +100,7 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 }
 
 void moveToHomepoint(gridPoints GP){
-	if(GP.targetCoordinates.y == 0) && GP.targetCoordinates.x == 0){/*communicate();*/}
+	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
   moveForwardDistance(GP,1);
 	if(GP.targetCoordinates.y == 0){
@@ -127,11 +127,11 @@ void updateLocation(gridPoints & GP, int distance){
   else if(GP.direction == 's'){
     GP.currentLocation.y += distance;
   }
-  else if if(GP.direction == 'w'){
-    GP.currentLocation.x += distance;
+  else if(GP.direction == 'w'){
+    GP.currentLocation.x -= distance;
   }
-  else{
-    GP.currentLocation.y -= distance;
+  else if(GP.direction == 'e'){
+    GP.currentLocation.y += distance;
   }
 }
 
@@ -203,54 +203,54 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
     count++;
   }
 
-  updateLocation(GP, int distance);
+  updateLocation(GP, distance);
 }
 
 // Tells the robot which way to turn.
 void turn(char direction, gridPoints GP) {
-	if (GP.currentLocation == 'n') {
+	if (GP.direction == 'n') {
 		if (direction == 'w') {
-			turnLeft();
+			turnLeft(GP);
 		}
 		else if (direction == 's') {
-			turnLeft();
-			turnLeft();
+			turnLeft(GP);
+			turnLeft(GP);
 		}
 		else if (direction == 'e') {
-			turnRight();
+			turnRight(GP);
 		}
 	}
-	else if (GP.currentLocation == 'e') {
+	else if (GP.direction == 'e') {
 		if (direction == 'w') {
-			turnLeft();
-			turnLeft();
+			turnLeft(GP);
+			turnLeft(GP);
 		}
 		else if (direction == 's') {
-			turnRight();
+			turnRight(GP);
 		}
 		else if (direction == 'n') {
-			turnLeft();
+			turnLeft(GP);
 		}
 	}
-	else if (GP.currentLocation == 's') {
+	else if (GP.direction == 's') {
 		if (direction == 'e') {
-			turnLeft();
+			turnLeft(GP);
 		}
 		else if (direction == 'n') {
-			turnLeft();
-			turnLeft();
+			turnLeft(GP);
+			turnLeft(GP);
 		}
 		else if (direction == 'w') {
-			turnRight();
+			turnRight(GP);
 		}
 	}
-	else if (GP.currentLocation == 'w') {
+	else if (GP.direction == 'w') {
 		if (direction == 's') {
-			turnLeft();
+			turnLeft(GP);
 		}
 		else if (direction == 'e') {
-			turnLeft();
-			turnLeft();
+			turnLeft(GP);
+			turnLeft(GP);
 		}
 		else if (direction == 'n') {
 			turnRight();
@@ -286,7 +286,7 @@ coordinates getGridPointCoordinates(int number, vector<vector<bool>> & grid){
 		gridPointCoordinates.y = number / columnAmount;
 	}
 
-	return gridPoint;
+	return gridPointCoordinates;
 	
 }
 
@@ -303,7 +303,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 }
 
 //Check bordering gridpoints and put them in a list if they are on grid.
-vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool> grid){
+vector<int> checkOptions(coordinates gridPoint, <vector<vector<bool>> grid){
 	vector<int> queue;
 	
 	coordinates optionA;
@@ -373,7 +373,7 @@ int main(){
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
-	resetCurrentLocation();
+	resetCurrentLocation(GP);
 
 	moveForward();
 
