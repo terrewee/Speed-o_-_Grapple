@@ -65,7 +65,7 @@ void lookRight(range obstakel){
   BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
   sensor_ultrasonic_t Ultrasonic;
   BP.set_motor_dps(PORT_A, 30);
-  sleep(1);
+  sleep(5);
   stop();
   
   int som = 0;
@@ -100,7 +100,7 @@ void lookForward(range obstakel){
     if(BP.get_sensor(PORT_2, Ultrasonic) != 0){
       cout << "Afstand" << (int) Ultrasonic.cm << endl;
       som += (int) Ultrasonic.cm;
-      sleep(2);
+      sleep(5);
     }
   }
   float gemiddelde = som/3;
