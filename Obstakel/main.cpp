@@ -37,7 +37,11 @@ float check(){
     }
     sleep(1);
   }
-  return som/countedValues;
+  if (countedValues > 0) {
+    return som/countedValues;
+  } else {
+    return -99;
+  }
 }
 
 void stop(){
