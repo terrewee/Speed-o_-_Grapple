@@ -164,23 +164,5 @@ int main()
 	setSensors();
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int startPos = BP.get_motor_encoder(PORT_A);
-	while(true)
-	{
-	klauwOpen();
-	sleep(1);
-	klauwDicht();
-	}
-//	gelijdelijkDownLoop();
-/*
-	while(true)
-	{
-		klauwNaarBenedenKantelpunt();
-		klauwDownTest(startPos);
-	}
-	klauwNaarBeneden();
-	cout << "Klaar met naar beneden" << endl;
-	sleep(5);
-	klauwOmhoog();
-	testValues();
-*/
+	
 }
