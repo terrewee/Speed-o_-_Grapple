@@ -29,6 +29,15 @@ struct gridPoints{
 
 void exit_signal_handler(int signo);
 
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
 vector<vector<bool>> makeGrid(gridPoints GP) {
 	vector<vector<bool>> grid;
@@ -393,6 +402,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 }
 
 int main(){
+	signal(SIGINT, exit_signal_handler);
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
 	//Reset the encoders
@@ -422,12 +432,4 @@ int main(){
 	moveForward();
 
 	return 0;
-}
-
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
 }
