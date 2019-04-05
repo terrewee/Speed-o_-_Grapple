@@ -1,6 +1,15 @@
 #include "BrickPi3.h"	// for BrickPi3
 #include "Navigation.h"	// for Navigation
+#include <stdio.h>      // for printf
+#include <unistd.h>     // for usleep
+#include <signal.h>     // for catching exit signals
+#include <iostream>
+#include <vector>
 
+using std::vector;
+using std::cout;
+using std::cin;
+using std::endl;
 
 BrickPi3 BP;
 
@@ -100,9 +109,9 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 }
 
 void moveToHomepoint(gridPoints GP){
-	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
+	if(GP.targetCoordinates.y == 0) && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
-  moveForwardDistance(GP,1);
+  moveForwardDistance(GP);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
@@ -127,11 +136,11 @@ void updateLocation(gridPoints & GP, int distance){
   else if(GP.direction == 's'){
     GP.currentLocation.y += distance;
   }
-  else if(GP.direction == 'w'){
-    GP.currentLocation.x -= distance;
+  else if if(GP.direction == 'w'){
+    GP.currentLocation.x += distance;
   }
-  else if(GP.direction == 'e'){
-    GP.currentLocation.y += distance;
+  else{
+    GP.currentLocation.y -= distance;
   }
 }
 
@@ -203,54 +212,54 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
     count++;
   }
 
-  updateLocation(GP, distance);
+  updateLocation(GP, int distance);
 }
 
 // Tells the robot which way to turn.
 void turn(char direction, gridPoints GP) {
-	if (GP.direction == 'n') {
+	if (GP.currentLocation == 'n') {
 		if (direction == 'w') {
-			turnLeft(GP);
+			turnLeft();
 		}
 		else if (direction == 's') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 'e') {
-			turnRight(GP);
+			turnRight();
 		}
 	}
-	else if (GP.direction == 'e') {
+	else if (GP.currentLocation == 'e') {
 		if (direction == 'w') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 's') {
-			turnRight(GP);
+			turnRight();
 		}
 		else if (direction == 'n') {
-			turnLeft(GP);
+			turnLeft();
 		}
 	}
-	else if (GP.direction == 's') {
+	else if (GP.currentLocation == 's') {
 		if (direction == 'e') {
-			turnLeft(GP);
+			turnLeft();
 		}
 		else if (direction == 'n') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 'w') {
-			turnRight(GP);
+			turnRight();
 		}
 	}
-	else if (GP.direction == 'w') {
+	else if (GP.currentLocation == 'w') {
 		if (direction == 's') {
-			turnLeft(GP);
+			turnLeft();
 		}
 		else if (direction == 'e') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 'n') {
 			turnRight();
@@ -262,12 +271,12 @@ void turn(char direction, gridPoints GP) {
 void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid){
 	unsigned int columnAmount = grid.size();
 	unsigned int rowAmount = grid[0].size();
-	vector<int> gridPointVector;
+	vector<int> gridPointVector[2];
 	
 	gridPointVector[0] = prevCoordinates.x;
 	gridPointVector[1] = prevCoordinates.y;
 
-	//prevCoordinatesVector = gridPointVector;
+	prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -286,7 +295,7 @@ coordinates getGridPointCoordinates(int number, vector<vector<bool>> & grid){
 		gridPointCoordinates.y = number / columnAmount;
 	}
 
-	return gridPointCoordinates;
+	return gridPoint;
 	
 }
 
@@ -301,7 +310,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 
 	return gridPointNumber;
 }
-/*
+
 void searchPath(gridPoint & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
@@ -386,7 +395,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
 	else {return 0;}
 }
-*/
+
 int main(){
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
@@ -412,7 +421,7 @@ int main(){
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
-	resetCurrentLocation(GP);
+	resetCurrentLocation();
 
 	moveForward();
 
