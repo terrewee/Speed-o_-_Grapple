@@ -123,13 +123,13 @@ void klauwOmhoog()
 void klauwOpen()
 {
 	BP.set_motor_limits(PORT_D, 60, 0);
-	BP.set_motor_position_relative(PORT_D, -160);
+	BP.set_motor_position_relative(PORT_D, -180);
 }
 
 void klauwDicht()
 {
 	BP.set_motor_limits(PORT_D, 60, 0);
-	BP.set_motor_position_relative(PORT_D, 160);
+	BP.set_motor_position_relative(PORT_D, 180);
 }
 
 void exit_signal_handler(int signo)
