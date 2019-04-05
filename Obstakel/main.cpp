@@ -97,10 +97,10 @@ void lookForward(range obstakel){
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     cout << "test3" << endl;
-    if(BP.get_sensor(PORT_2, Ultrasonic) != 0){
-      cout << "Afstand " << (int) Ultrasonic.cm << endl;
-      som += (int) Ultrasonic.cm;
-      sleep(2);
+    BP.get_sensor(PORT_2, Ultrasonic);
+    cout << "Afstand " << (int) Ultrasonic.cm << endl;
+    som += (int) Ultrasonic.cm;
+    sleep(2);
     }
   }
   float gemiddelde = som/3;
