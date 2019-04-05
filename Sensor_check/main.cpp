@@ -16,7 +16,7 @@ void exit_signal_handler(int signo);
                 and immediatly sets them.
 */
 void setSensors(){
-  BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_ULTRASONIC);
 }
 
 /*
