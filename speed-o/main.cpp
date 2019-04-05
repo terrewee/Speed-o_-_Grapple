@@ -126,7 +126,6 @@ int turnMotorPowerUp(int motorPower) {
 		BP.set_motor_power(PORT_A, snelheid+1);
 		BP.set_motor_power(PORT_B, snelheid);
 		snelheid += 1;
-		usleep(0.1);
 	}
 	return snelheid;
 }
@@ -136,7 +135,6 @@ void turnMotorPowerDown(int motorPower) {
 		BP.set_motor_power(PORT_A, motorPower+1);
 		BP.set_motor_power(PORT_B, motorPower);
 		motorPower -= 10;
-		usleep(0.1);
 	}
 }
 
