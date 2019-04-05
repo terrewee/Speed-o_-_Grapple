@@ -77,10 +77,12 @@ void klauwNaarBeneden()
 
 void gelijdelijkDownLoop()
 {
-	BP.set_motor_limits(PORT_A, 80, 0);
+	//BP.set_motor_limits(PORT_A, 80, 0);
+	encodeMotor(-60);
 	while(true)
 	{
-		usleep(20000);
+		cout <<"Ik doe iets"<<endl;
+		sleep(1);
 		encodeMotor(-3);
 	}
 }
@@ -107,7 +109,7 @@ void klauwDownTest(int startPos)
 	while(huidigePos > startPos-90)
 	{
 		BP.set_motor_power(PORT_A, 3);
-		huidgePos = BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+		huidigePos = BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	}
 	encodeMotor(0);
 }
@@ -120,14 +122,14 @@ void klauwOmhoog()
 
 void klauwOpen()
 {
-	BP.set_motor_limits(PORT_A, 10, 0);
-	encodeMotor(-160);
+	BP.set_motor_limits(PORT_D, 60, 0);
+	BP.set_motor_position_relative(PORT_D, -160);
 }
 
 void klauwDicht()
 {
-	BP.set_motor_limits(PORT_A, 10, 0);
-	encodeMotor(160);
+	BP.set_motor_limits(PORT_D, 60, 0);
+	BP.set_motor_position_relative(PORT_D, 160);
 }
 
 void exit_signal_handler(int signo)
@@ -162,7 +164,13 @@ int main()
 	setSensors();
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int startPos = BP.get_motor_encoder(PORT_A);
-	gelijdelijkDownLoop();
+	while(true)
+	{
+	klauwOpen();
+	sleep(1);
+	klauwDicht();
+	}
+//	gelijdelijkDownLoop();
 /*
 	while(true)
 	{
