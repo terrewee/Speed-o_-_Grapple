@@ -73,12 +73,30 @@ if(signo == SIGINT)
     }
 }
 
+void testValues()
+{
+	int limiet;
+	int kracht;
+	while(true)
+	{
+		cout << "Limiet: ";
+		cin >> limiet;
+		cout << "Kracht: ";
+		cin >> kracht;
+
+		BP.set_motor_limits(PORT_A, limiet, 0);
+		encodeMotor(kracht);
+		sleep(3);
+	}
+}
+
 int main()
 {
 	signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	setSensors();
-	klauwNaarBeneden();
-	sleep(10);				// sleep nu op 10 - pas aan zoals noodzakelijk is.
-	klauwOmhoog();
+//	klauwNaarBeneden();
+//	sleep(10);				// sleep nu op 10 - pas aan zoals noodzakelijk is.
+//	klauwOmhoog();
+	testValues();
 }
