@@ -149,7 +149,7 @@ void obstakelDetectie(range obstacle){
                 and immediatly sets them.
 */
 void setSensors(){
-  //BP.set_sensor_type();
+  BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
 }
 
 /*
@@ -253,7 +253,7 @@ void checkSensor(){
 
 int main(){
 //thread checkBattery (batteryLevel);
-  //setSensors();
+  setSensors();
   range obstacle;
   bool loop = true;
   while(loop){
