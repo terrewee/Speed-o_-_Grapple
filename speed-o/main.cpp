@@ -58,7 +58,7 @@ void klauwNaarBeneden()
 	encodeMotor(-80);			// rotatie is ~110. Negatief voor neerwaarts.
 	// klauw openen hier
 	sleep(3);
-	BP.set_motor_limits(PORT_A, 5, 0);
+	BP.set_motor_limits(PORT_A, 10, 0);
 	encodeMotor(-30);
 	// klauw sluiten hier
 }
