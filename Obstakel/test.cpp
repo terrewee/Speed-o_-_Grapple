@@ -35,7 +35,7 @@ void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
     sleep(2);
     stop();
 
-    int waarde = check(Ultrasonic);
+    int waarde = measure(Ultrasonic);
     if (waarde <= 10.0){
         obstakel.obstakelInRangeLeft = true;
     }
@@ -57,7 +57,7 @@ void lookRight(range obstakel, sensor_ultrasonic_t Ultrasonic){
     sleep(2);
     stop();
 
-    int waarde = check(Ultrasonic);
+    int waarde = measure(Ultrasonic);
     if (waarde <= 10.0){
         obstakel.obstakelInRangeLeft = true;
     }
@@ -74,7 +74,7 @@ void lookRight(range obstakel, sensor_ultrasonic_t Ultrasonic){
 void lookForward(range obstakel,sensor_ultrasonic_t Ultrasonic){
     cout << "forward" << endl;
 
-    float gemiddelde = check(Ultrasonic);
+    float gemiddelde = measure(Ultrasonic);
     if (gemiddelde <= 10.0){
         obstakel.obstakelInRangeForward = true;
     }
@@ -90,7 +90,7 @@ int main(){
     sensor_ultrasonic_t Ultrasonic;
 
 
-    range obstakel
+    range obstakel;
     lookForward(obstakel, Ultrasonic);
     lookLeft(obstakel, Ultrasonic);
     lookRight(obstakel, Ultrasonic);
