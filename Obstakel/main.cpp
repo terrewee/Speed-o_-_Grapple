@@ -117,7 +117,7 @@ void obstakelDetectie(range obstacle){
     BP.detect();
     BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
     sensor_ultrasonic_t Ultrasonic;
-    BP.set_motor_power(PORT_A, 5);
+    //BP.set_motor_power(PORT_A, 5);
 
     cout << "Forward" << endl;
     lookForward(obstacle);
