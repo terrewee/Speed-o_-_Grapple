@@ -311,7 +311,6 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
-//Explores grid for optimal path, by adding the gridPoints to queue and prevCoordinatesVector.
 void searchPath(gridPoint & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
@@ -332,7 +331,6 @@ void searchPath(gridPoint & GP, vector<vector<bool>> & grid){
 
 }
 
-//Checks whether a gridPointNumber already exists within the queue before adding it to the queue and adding the previous coordinates to prevCoordinateVector.
 void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
 	bool optionFound = false;
 	int gridPointNumber = getGridPointNumber(option, grid);
@@ -349,7 +347,7 @@ void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>>
 	}
 }
 
-//Check bordering gridpoints and calls addToQueue if they are on grid.
+//Check bordering gridpoints and put them in a list if they are on grid.
 vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinateVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
