@@ -354,7 +354,7 @@ vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinates
 	if(checkInGrid(optionA, grid) == 1){addToQueue(optionA, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	coordinates optionB;
-	optionB.x = gridPoint.x
+	optionB.x = gridPoint.x;
 	optionB.y = gridPoint.y - 1;
 	if(checkInGrid(optionB, grid) == 1){addToQueue(optionB, gridPoint, prevCoordinatesVector, grid, queue);}
 	
@@ -382,7 +382,8 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 		updateQueue(queue[i], prevCoordinatesVector, grid);
 
 		for(unsigned int i = 0; i < queue.size(); i++){
-			if(getGridPointCoordinates(queue[i], grid) == GP.homeCoordinates){
+			coordinates gridPoint = getGridPointCoordinates(queue[i], grid)
+			if(gridPoint.x == GP.homeCoordinates.x && gridPoint.y == GP.homeCoordinates.y){
 				targetFound == true;
 			}
 		}
