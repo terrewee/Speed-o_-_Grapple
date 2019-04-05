@@ -75,6 +75,16 @@ void klauwNaarBeneden()
 	}
 }
 
+void gelijdelijkDownLoop()
+{
+	BP.set_motor_limits(PORT_A, 80, 0);
+	while(true)
+	{
+		usleep(20000);
+		encodeMotor(-3);
+	}
+}
+
 void klauwNaarBenedenKantelpunt()
 {
 	int uChoice = 0;
@@ -152,14 +162,17 @@ int main()
 	setSensors();
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int startPos = BP.get_motor_encoder(PORT_A);
+	gelijdelijkDownLoop();
+/*
 	while(true)
 	{
 		klauwNaarBenedenKantelpunt();
 		klauwDownTest(startPos);
 	}
-//	klauwNaarBeneden();
-//	cout << "Klaar met naar beneden" << endl;
-//	sleep(5);
-//	klauwOmhoog();
-//	testValues();
+	klauwNaarBeneden();
+	cout << "Klaar met naar beneden" << endl;
+	sleep(5);
+	klauwOmhoog();
+	testValues();
+*/
 }
