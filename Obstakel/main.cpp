@@ -39,7 +39,7 @@ void lookLeft(range obstakel){
   
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
-      BP.get_sensor(PORT_2, Ultrasonic)
+      BP.get_sensor(PORT_2, Ultrasonic);
       cout << "Afstand" << (int) Ultrasonic.cm << endl;
       som += (int) Ultrasonic.cm;
       sleep(2);
