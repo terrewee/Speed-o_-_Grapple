@@ -31,23 +31,12 @@ struct range {
   bool obstakelcurrent= false;
 };;
 
-void stop(){
-  //reset de motor dps
-  BP.set_motor_dps(PORT_A, 0);
-}
-void lookLeft(range obstakel){
-  //look left
-  cout << "left" << endl;
-  //BP.detect();
+float check(){
   sensor_ultrasonic_t Ultrasonic;
-  BP.set_motor_dps(PORT_A, -60);
-  sleep(2);
-  stop();
-  
   int som = 0;
   for(unsigned int i = 0; i < 3; i++){
     if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-      cout << "Afstand " << (int)Ultrasonic.cm << endl;
+      cout << "Afstand " << (int) Ultrasonic.cm << endl;
       som += (int) Ultrasonic.cm;
     }
     else{
@@ -55,13 +44,29 @@ void lookLeft(range obstakel){
     }
     sleep(2);
   }
-  float gemiddelde = som/3;
+  return som/3;
+}
+
+void stop(){
+  //reset de motor dps
+  BP.set_motor_dps(PORT_A, 0);
+}
+void lookLeft(range obstakel){
+  cout << "left" << endl;
+
+  //spin left
+  BP.set_motor_dps(PORT_A, -60);
+  sleep(2);
+  stop();
+  
+  float gemiddelde = check();
   if (gemiddelde <= 10.0){
     obstakel.obstakelInRangeLeft = true;
   }
   else{
     obstakel.obstakelInRangeLeft = false;
   }
+
   //reset to middle
   BP.set_motor_dps(PORT_A, 60);
   sleep(2);
@@ -69,32 +74,21 @@ void lookLeft(range obstakel){
 }
 
 void lookRight(range obstakel){
-  //look right
   cout << "right" << endl;
-  //BP.detect();
-  sensor_ultrasonic_t Ultrasonic;
+  
+  //spin right.
   BP.set_motor_dps(PORT_A, 60);
   sleep(2);
   stop();
   
-  int som = 0;
-  for(unsigned int i = 0; i < 3; i++){
-    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-      cout << "Afstand " << (int)Ultrasonic.cm << endl;
-      som += (int) Ultrasonic.cm;
-    }
-    else{
-      cout << "FUCK" << endl;
-    }
-    sleep(2);
-  }
-  float gemiddelde = som/3;
+  float gemiddelde = check();
   if (gemiddelde <= 10.0){
     obstakel.obstakelInRangeLeft = true;
   }
   else{
     obstakel.obstakelInRangeLeft = false;
   }
+  
   //reset to middle
   BP.set_motor_dps(PORT_A, -60);
   sleep(2);
@@ -102,22 +96,9 @@ void lookRight(range obstakel){
 }
 
 void lookForward(range obstakel){
-  cout << "test2" << endl;
-  //BP.detect();
-  sensor_ultrasonic_t Ultrasonic;
-  int som = 0;
-  for(unsigned int i = 0; i < 3; i++){
-    cout << BP.get_sensor(PORT_3, Ultrasonic) << endl;
-    if(BP.get_sensor(PORT_3, Ultrasonic) == 0){
-      cout << "Afstand " << (int)Ultrasonic.cm << endl;
-      som += (int) Ultrasonic.cm;
-    }
-    else{
-      cout << "FUCK" << endl;
-    }
-    sleep(2);
-  }
-  float gemiddelde = som/3;
+  cout << "forward" << endl;
+ 
+  float gemiddelde = check();
   if (gemiddelde <= 10.0){
     obstakel.obstakelInRangeForward = true;
   }
@@ -129,9 +110,6 @@ void lookForward(range obstakel){
 void obstakelDetectie(range obstacle){
   //main van obstakel
     stop();
-    // i BP.detect();
-    // i BP.set_sensor_type(PORT_3, SENSOR_TYPE_NXT_ULTRASONIC);
-    sensor_ultrasonic_t Ultrasonic;
 
     lookForward(obstacle);
 
@@ -267,6 +245,9 @@ int main(){
   BP.detect();
   setSensors();
   range obstacle;
+
+
+
   bool loop = true;
   while(loop){
     int keuze;
