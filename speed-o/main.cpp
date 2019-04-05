@@ -54,13 +54,18 @@ void encodeMotor(int32_t pos)
 */
 void klauwNaarBeneden()
 {
-	BP.set_motor_limits(PORT_A, 5, 0); 	// speed 5 als limiet voor het naar beneden gaan.
-	encodeMotor(-110);			// rotatie is ~110. Negatief voor neerwaarts.
+	BP.set_motor_limits(PORT_A, 25, 0); 	// speed 5 als limiet voor het naar beneden gaan.
+	encodeMotor(-80);			// rotatie is ~110. Negatief voor neerwaarts.
+	// klauw openen hier
+	sleep(3);
+	BP.set_motor_limits(PORT_A, 5, 0);
+	encodeMotor(-30);
+	// klauw sluiten hier
 }
 
 void klauwOmhoog()
 {
-	BP.set_motor_limits(PORT_A, 20, 0);	// speed 20 als limiet voor opwaartse beweging.
+	BP.set_motor_limits(PORT_A, 40, 0);	// speed 20 als limiet voor opwaartse beweging.
 	encodeMotor(110);			// rotatie is ~110.
 }
 
@@ -94,8 +99,7 @@ int main()
 	signal(SIGINT, exit_signal_handler);
   	BP.detect();
 	setSensors();
-//	klauwNaarBeneden();
-//	sleep(10);				// sleep nu op 10 - pas aan zoals noodzakelijk is.
-//	klauwOmhoog();
-	testValues();
+	klauwNaarBeneden();
+	klauwOmhoog();
+	//testValues();
 }
