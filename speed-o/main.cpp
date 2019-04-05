@@ -29,6 +29,15 @@ struct gridPoints{
 
 void exit_signal_handler(int signo);
 
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
 vector<vector<bool>> makeGrid(gridPoints GP) {
 	vector<vector<bool>> grid;
@@ -111,9 +120,9 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 int turnMotorPowerUp(int motorPower) {
 	while (motorPower < 60) {
-		BP.set_motor_power(PORT_A, motorPower);
-		BP.set_motor_power(PORT_C, motorPower);
-		motorPower += 5;
+		BP.set_motor_power(PORT_A, motorPower+1);
+		BP.set_motor_power(PORT_B, motorPower);
+		motorPower += 1;
 		usleep(0.1);
 	}
 	return motorPower;
@@ -121,9 +130,9 @@ int turnMotorPowerUp(int motorPower) {
 
 void turnMotorPowerDown(int motorPower) {
 	while (motorPower > 10) {
-		BP.set_motor_power(PORT_A, motorPower);
-		BP.set_motor_power(PORT_C, motorPower);
-		motorPower -= 5;
+		BP.set_motor_power(PORT_A, motorPower+1);
+		BP.set_motor_power(PORT_B, motorPower);
+		motorPower -= 10;
 		usleep(0.1);
 	}
 }
@@ -393,6 +402,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 }
 
 int main(){
+	signal(SIGINT, exit_signal_handler);
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
 	//Reset the encoders
@@ -422,12 +432,4 @@ int main(){
 	moveForward();
 
 	return 0;
-}
-
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
 }
