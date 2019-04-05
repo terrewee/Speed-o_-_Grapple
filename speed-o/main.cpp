@@ -348,16 +348,24 @@ vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinates
 	
 	int gridPoint = getGridPointCoordinates(gridPointNumber, grid);
 	
-	coordinates optionA {gridPoint.x - 1, gridPoint.y};
+	coordinates optionA;
+	optionA.x = gridPoint.x - 1;
+	optionA.y = gridPoint.y;
 	if(checkInGrid(optionA, grid) == 1){addToQueue(optionA, gridPoint, prevCoordinatesVector, grid, queue);}
 
-	coordinates optionB {gridPoint.x, gridPoint.y - 1};
+	coordinates optionB;
+	optionB.x = gridPoint.x
+	optionB.y = gridPoint.y - 1;
 	if(checkInGrid(optionB, grid) == 1){addToQueue(optionB, gridPoint, prevCoordinatesVector, grid, queue);}
 	
-	coordinates optionC {gridPoint.x + 1, gridPoint.y};
+	coordinates optionC;
+	optionC.x = gridPoint.x + 1;
+	optionC.y = gridPoint.y;
 	if(checkInGrid(optionC, grid) == 1){addToQueue(optionC, gridPoint, prevCoordinatesVector, grid, queue);}
 
-	coordinates optionD {gridPoint.x, gridPoint.y + 1};
+	coordinates optionD;
+	optionD.x = gridPoint.x;
+	optionD.y = gridPoint.y + 1;
 	if(checkInGrid(optionD, grid) == 1){addToQueue(optionD, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	return queue;
