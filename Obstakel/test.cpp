@@ -27,7 +27,7 @@ int measure(sensor_ultrasonic_t Ultrasonic){
 		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
  	}
     sleep(5);
-    return (int)Ultrasonic.cm;
+    return Ultrasonic.cm;
 }
 
 void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
