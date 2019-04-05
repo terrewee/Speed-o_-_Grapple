@@ -1,17 +1,6 @@
 #ifndef NAVIGATION_HPP
 #define NAVIGATION_HPP
 
-#include <stdio.h>      // for printf
-#include <unistd.h>     // for usleep
-#include <signal.h>     // for catching exit signals
-#include <iostream>
-#include <vector>
-
-using std::vector;
-using std::cout;
-using std::cin;
-using std::endl;
-
 struct coordinates;
 struct gridPoints;
 

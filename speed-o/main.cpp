@@ -1,6 +1,15 @@
 #include "BrickPi3.h"	// for BrickPi3
 #include "Navigation.h"	// for Navigation
+#include <stdio.h>      // for printf
+#include <unistd.h>     // for usleep
+#include <signal.h>     // for catching exit signals
+#include <iostream>
+#include <vector>
 
+using std::vector;
+using std::cout;
+using std::cin;
+using std::endl;
 
 BrickPi3 BP;
 
@@ -100,9 +109,9 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 }
 
 void moveToHomepoint(gridPoints GP){
-	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
+	if(GP.targetCoordinates.y == 0) && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
-  moveForwardDistance(GP,1);
+  moveForwardDistance(GP);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
@@ -127,11 +136,11 @@ void updateLocation(gridPoints & GP, int distance){
   else if(GP.direction == 's'){
     GP.currentLocation.y += distance;
   }
-  else if(GP.direction == 'w'){
-    GP.currentLocation.x -= distance;
+  else if if(GP.direction == 'w'){
+    GP.currentLocation.x += distance;
   }
-  else if(GP.direction == 'e'){
-    GP.currentLocation.y += distance;
+  else{
+    GP.currentLocation.y -= distance;
   }
 }
 
@@ -203,54 +212,54 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
     count++;
   }
 
-  updateLocation(GP, distance);
+  updateLocation(GP, int distance);
 }
 
 // Tells the robot which way to turn.
 void turn(char direction, gridPoints GP) {
-	if (GP.direction == 'n') {
+	if (GP.currentLocation == 'n') {
 		if (direction == 'w') {
-			turnLeft(GP);
+			turnLeft();
 		}
 		else if (direction == 's') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 'e') {
-			turnRight(GP);
+			turnRight();
 		}
 	}
-	else if (GP.direction == 'e') {
+	else if (GP.currentLocation == 'e') {
 		if (direction == 'w') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 's') {
-			turnRight(GP);
+			turnRight();
 		}
 		else if (direction == 'n') {
-			turnLeft(GP);
+			turnLeft();
 		}
 	}
-	else if (GP.direction == 's') {
+	else if (GP.currentLocation == 's') {
 		if (direction == 'e') {
-			turnLeft(GP);
+			turnLeft();
 		}
 		else if (direction == 'n') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 'w') {
-			turnRight(GP);
+			turnRight();
 		}
 	}
-	else if (GP.direction == 'w') {
+	else if (GP.currentLocation == 'w') {
 		if (direction == 's') {
-			turnLeft(GP);
+			turnLeft();
 		}
 		else if (direction == 'e') {
-			turnLeft(GP);
-			turnLeft(GP);
+			turnLeft();
+			turnLeft();
 		}
 		else if (direction == 'n') {
 			turnRight();
@@ -286,7 +295,7 @@ coordinates getGridPointCoordinates(int number, vector<vector<bool>> & grid){
 		gridPointCoordinates.y = number / columnAmount;
 	}
 
-	return gridPointCoordinates;
+	return gridPoint;
 	
 }
 
@@ -302,28 +311,67 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
-//Check bordering gridpoints and put them in a list if they are on grid.
-vector<int> checkOptions(coordinates gridPoint, vector<vector<bool> grid){
+//Explores grid for optimal path, by adding the gridPoints to queue and prevCoordinatesVector.
+void searchPath(gridPoint & GP, vector<vector<bool>> & grid){
+	bool targetFound = false;
+	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
+	vector<int> queue = updateQueue(homeGridPointNumber, grid);
+	vector<vector<int>> prevCoordinatesVector(grid.size() * grid[0].size());
+	i = 1;
+
+	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
+		updateQueue(queue[i], grid, prevCoordinatesVector);
+
+		for(unsigned int i = 0; i < queue.size(); i++){
+			if(getGridPointCoordinates(queue[i], grid, prevCoordinatesVector) == GP.homeCoordinates){
+				targetFound == true;
+			}
+		}
+		i++;
+	}
+
+}
+
+//Checks whether a gridPointNumber already exists within the queue before adding it to the queue and adding the previous coordinates to prevCoordinateVector.
+void addToQueue(coordinate & option, coordinate & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
+	bool optionFound = false;
+	int gridPointNumber = getGridPointNumber(option, grid);
+
+	for(unsigned int i = 0; i < queue.size(); i++){
+		if(queue[i] == gridPointNumber){
+			optionFound = true;
+		}
+	}
+
+	if(!optionFound){
+		queue.push_back(gridPointNumber);
+		updatePrevCoordinates(option, gridPoint, prevCoordinatesVector, grid);
+	}
+}
+
+//Check bordering gridpoints and calls addToQueue if they are on grid.
+vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinateVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
+	gridPoint = getGridPointCoordinates(number, grid);
+	
 	coordinates optionA {gridPoint.x - 1, gridPoint.y};
-	if(checkInGrid(optionA, grid) == 1){queue.pushback(getGridPointNumber(optionA));}
+	if(checkInGrid(optionA, grid) == 1){addToQueue(optionA, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	coordinates optionB {gridPoint.x, gridPoint.y - 1};
-	if(checkInGrid(optionB, grid) == 1){queue.pushback(getGridPointNumber(optionB));}
+	if(checkInGrid(optionB, grid) == 1){addToQueue(optionB, gridPoint, prevCoordinatesVector, grid, queue);}
 	
 	coordinates optionC {gridPoint.x + 1, gridPoint.y};
-	if(checkInGrid(optionC, grid) == 1){queue.pushback(getGridPointNumber(optionC));}
+	if(checkInGrid(optionC, grid) == 1){addToQueue(optionC, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	coordinates optionD {gridPoint.x, gridPoint.y + 1};
-
-	if(checkInGrid(optionD, grid) == 1){queue.pushback(getGridPointNumber(optionD));}
+	if(checkInGrid(optionD, grid) == 1){addToQueue(optionD, gridPoint, prevCoordinatesVector, grid, queue);}
 
 	return queue;
 }
 
 //Check if point is on the grid.
-bool checkInGrid(coordinates pathCheck, vector<vector<bool>> grid){
+bool checkInGrid(coordinates pathCheck, vector<vector<bool>> & grid){
 	if			(pathCheck.x < 0)									{return 0;}
 	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
 	else if	(pathCheck.y < 0)									{return 0;}
@@ -362,7 +410,7 @@ int main(){
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
-	resetCurrentLocation(GP);
+	resetCurrentLocation();
 
 	moveForward();
 
