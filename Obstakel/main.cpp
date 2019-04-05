@@ -29,7 +29,7 @@ struct range {
   bool obstakelInRangeRight = false;
   bool obstakelInRangeForward = false;
   bool obstakelcurrent= false;
-};;
+};
 
 float check(){
   sensor_ultrasonic_t Ultrasonic;
