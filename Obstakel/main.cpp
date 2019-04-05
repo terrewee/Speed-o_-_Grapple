@@ -109,29 +109,37 @@ void obstakelDetectie(range obstacle){
     BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_ULTRASONIC);
     sensor_ultrasonic_t Ultrasonic;
     BP.set_motor_power(PORT_A, 5);
-    cout << "test" << endl;
-    lookForward(Ultrasonic, obstacle);
-    stop();
-    while (obstacle.obstakelInRangeForward== true){
-        stop();
-        lookLeft(Ultrasonic, obstacle);
-        if (obstacle.obstakelInRangeLeft == true){
-            cout << "cant go left" << endl;
-        }
-        else{
-            cout << "can go left" << endl;
-        }
-        sleep (1);
-        lookRight(Ultrasonic, obstacle);
-        if (obstacle.obstakelInRangeRight == true){
-            cout << "cant go right" << endl;
-        }
-        else{
-            cout << "can go right" << endl;
-        }
-        sleep (1);
 
-    }
+    cout << "Forward" << endl;
+    lookForward(Ultrasonic, obstacle);
+
+    cout << "left" << endl;
+    lookLeft(Ultrasonic, obstacle);
+
+    cout << "right" << endl;
+    lookRight(Ultrasonic, obstacle);
+    // lookForward(Ultrasonic, obstacle);
+    // stop();
+    // while (obstacle.obstakelInRangeForward== true){
+    //     stop();
+    //     lookLeft(Ultrasonic, obstacle);
+    //     if (obstacle.obstakelInRangeLeft == true){
+    //         cout << "cant go left" << endl;
+    //     }
+    //     else{
+    //         cout << "can go left" << endl;
+    //     }
+    //     sleep (1);
+    //     lookRight(Ultrasonic, obstacle);
+    //     if (obstacle.obstakelInRangeRight == true){
+    //         cout << "cant go right" << endl;
+    //     }
+    //     else{
+    //         cout << "can go right" << endl;
+    //     }
+    //     sleep (1);
+
+    // }
 }
 
 /*
