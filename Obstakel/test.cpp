@@ -88,6 +88,7 @@ int main(){
     stop();
     //alles voor de sensor
     BP.detect();
+    BP.reset_all();
     BP.set_sensor_type(PORT_4, SENSOR_TYPE_NXT_ULTRASONIC);
     sensor_ultrasonic_t Ultrasonic;
 
