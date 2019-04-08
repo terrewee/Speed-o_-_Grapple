@@ -39,12 +39,17 @@ void beweegKlauw()
 	{
 		encodeMotor(-3);
 		sleep(1);	// wellicht kleiner maken
+		encoder = BP.get_motor_encoder(PORT_A);
+		cout << "Positie: " << encoder << endl;
 	}
 	// sluit klauw
+	cout << "\n\n\n";
 	while(encoder < 0)
 	{
 		encodeMotor(5);
 		sleep(1);	// kleiner maken
+		encoder = BP.get_motor_encoder(PORT_A);
+		cout << "Positie: " << encoder << endl;
 	}
 }
 
