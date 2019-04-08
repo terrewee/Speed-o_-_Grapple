@@ -49,6 +49,7 @@ void encodeMotor(int32_t pos)
 */
 void gelijdelijkDownLoop()
 {
+	BP.set_motor_limits(PORT_A, 30, 0);
 	int counter = 0;
 	encodeMotor(-60);
 	while(counter < 10)
@@ -68,7 +69,11 @@ void gelijdelijkDownLoop()
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 45, 0);	// speed 20 als limiet voor opwaartse beweging.
+<<<<<<< HEAD
 	encodeMotor(100);			// rotatie is ~110.
+=======
+	encodeMotor(110);			// rotatie is ~110.
+>>>>>>> ea00600bd9a489eec0c9cd4c17b84f97241de52a
 }
 
 /*
