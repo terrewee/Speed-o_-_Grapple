@@ -95,6 +95,17 @@ vector<char> iServer(){
 }
 
 /*
+	Author		:	Duur Alblas
+	Description :
+		Short code to set motor encoders.
+*/
+void encodeMotors(int32_t lpos , int32_t rpos){
+    BP.set_motor_position_relative(PORT_B, lpos);
+    BP.set_motor_position_relative(PORT_C, rpos);
+}
+
+
+/*
   Author:       Stefan & Gerjan
   Description:  Functions for driving the motors
 */
@@ -129,6 +140,15 @@ void moveForward(){
     turnMotorPowerDown(motorPower);
 }
 
+void turnLeft(){
+    encodeMotors(-400,400);
+    sleep(1);
+}
+void turnRight(){
+    encodeMotors(400,-400);
+    sleep(1);
+}
+
 
 
 /*
@@ -139,19 +159,20 @@ void moveForward(){
 void Drive(char & direction){
     if (route[i] = 'f'){
         //ga 1 unit vooruit
-        moveForward()
+        moveForward();
     }
     if (route[i] = 'r'){
         //ga 90 graden links
-
+        turnRight();
     }
     if (route[i] = 'l'){
         //ga 90 graden links
-
+        turnLeft();
     }
     if (route[i] = 'b'){
         //ga 180 graden draaien
-
+        turnRight();
+        turnRight();
     }
     else{
         cout << "Invalid operator: " << route[i] << endl << "Next time use: f, r, l or b" , endl;
