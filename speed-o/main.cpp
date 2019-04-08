@@ -123,7 +123,7 @@ void turnMotorPowerUp(int &motorPower) {
 	cout << "Geef snelheid" << endl;
 	cin >> snelheid;
 	while (motorPower <= snelheid) {
-		BP.set_motor_power(PORT_A, motorPower+1);
+		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.1);
 		cout << motorPower <<endl;
@@ -133,13 +133,8 @@ void turnMotorPowerUp(int &motorPower) {
 }
 
 void turnMotorPowerDown(int &motorPower) {
-	int maxLoops =0;
-	int changingSpeed = motorPower;
-	while (maxLoops<3){
-		motorPower = motorPower*0.8
-		BP.set_motor_power(PORT_A, motorPower+1);
-		BP.set_motor_power(PORT_B, motorPower);
-	}
+	BP.set_motor_power(PORT_A, 0);
+	BP.set_motor_power(PORT_B, 0);
 }
 
 void moveForward(){
