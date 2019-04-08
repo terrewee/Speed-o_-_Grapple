@@ -280,6 +280,8 @@ int main(){
     cout << "2: Set communication details" << endl;
     cout << "3: Check sensor" << endl;
     cout << "4: Wait for message (route) , then return the object" << endl;
+    cout << "5: Drive the giving route" << endl;
+
 
 
       cin >> uChoice;
@@ -296,6 +298,10 @@ int main(){
         break;
       case 4:
         Navigation(iServer());
+        break;
+      case 5:
+        vector<char> vec = {'n','n','w','w','s','o','w','s'}
+        Navigation(vec);
         break;
     }
   }
