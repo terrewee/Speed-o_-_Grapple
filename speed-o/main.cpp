@@ -131,16 +131,11 @@ void turnMotorPowerUp(int &motorPower) {
 	}
 }
 
-void turnMotorPowerDown(int &motorPower) {
-	BP.set_motor_power(PORT_A, 0);
-	BP.set_motor_power(PORT_B, 0);
-}
-
 void moveForward(){
 	int motorPower = 10;
 	turnMotorPowerUp(motorPower);
 	sleep(1);
-	turnMotorPowerDown(motorPower);
+	resetMotorsAB();
 }
 
 //Turns the robot to the right, and updates the value of GP.direction.
@@ -149,28 +144,28 @@ void turnLeft(gridPoints & GP){
     GP.direction = 'e';
 		BP.set_motor_power(PORT_A, -50);
 		BP.set_motor_power(PORT_B, 50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 'w'){
     GP.direction = 'n';
 		BP.set_motor_power(PORT_A, -50);
 		BP.set_motor_power(PORT_B, 50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 's'){
     GP.direction = 'w';
 		BP.set_motor_power(PORT_A, -50);
 		BP.set_motor_power(PORT_B, 50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
   else{
     GP.direction = 's';
 		BP.set_motor_power(PORT_A, -50);
 		BP.set_motor_power(PORT_B, 50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
 }
@@ -181,28 +176,28 @@ void turnRight(gridPoints & GP){
     GP.direction = 'w';
 		BP.set_motor_power(PORT_A, 50);
 		BP.set_motor_power(PORT_B, -50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 'w'){
     GP.direction = 's';
 		BP.set_motor_power(PORT_A, 50);
 		BP.set_motor_power(PORT_B, -50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 's'){
     GP.direction = 'e';
 		BP.set_motor_power(PORT_A, 50);
 		BP.set_motor_power(PORT_B, -50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
   else{
     GP.direction = 'n';
 		BP.set_motor_power(PORT_A, 50);
 		BP.set_motor_power(PORT_B, -50);
-		usleep(0.5);
+		sleep(1);
 		resetMotorsAB();
   }
 }
