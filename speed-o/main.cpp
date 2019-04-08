@@ -49,17 +49,17 @@ void encodeMotor(int32_t pos)
 */
 void gelijdelijkDownLoop()
 {
-	int32_t encoderD = 0;
-//	int counter = 0;
+//	int32_t encoderD = 0;
+	int counter = 0;
 	encodeMotor(-60);
-//	while(counter < 20)
-	while(encoderD > -150)
+	while(counter < 10)
+//	while(encoderD > -110)
 	{
-		cout << "Nu op " << encoderD << " graden." << endl;
+//		cout << "Nu op " << encoderD << " graden." << endl;
 		sleep(1);
 		encodeMotor(-3);
-//		counter++;
-		encoderD = BP.get_motor_encoder(PORT_D);
+		counter++;
+//		encoderD = BP.get_motor_encoder(PORT_D);
 	}
 }
 
