@@ -49,7 +49,7 @@ void encodeMotor(int32_t pos)
 */
 void gelijdelijkDownLoop()
 {
-	BP.set_motor_limits(PORT_A, 50, 0);
+	BP.set_motor_limits(PORT_A, 30, 0);
 	int counter = 0;
 	encodeMotor(-60);
 	while(counter < 10)
