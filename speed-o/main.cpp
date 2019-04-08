@@ -116,7 +116,10 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 		cout << endl;
 	}
 }
-
+void resetMotorsAB(){
+	BP.set_motor_power(PORT_A, 0);
+	BP.set_motor_power(PORT_B, 0);
+}
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
 	int snelheid =30;
@@ -145,26 +148,30 @@ void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
 		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_A, 50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, 50);
+		usleep(0.5);
+		resetMotorsAB();
   }
   else if(GP.direction == 'w'){
     GP.direction = 'n';
 		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_A, 50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, 50);
+		usleep(0.5);
+		resetMotorsAB();
   }
   else if(GP.direction == 's'){
     GP.direction = 'w';
 		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_A, 50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, 50);
+		usleep(0.5);
+		resetMotorsAB();
   }
   else{
     GP.direction = 's';
 		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_A, 50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, 50);
+		usleep(0.5);
+		resetMotorsAB();
   }
 }
 
@@ -173,26 +180,30 @@ void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
 		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_A, -50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, -50);
+		usleep(0.5);
+		resetMotorsAB();
   }
   else if(GP.direction == 'w'){
     GP.direction = 's';
 		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_A, -50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, -50);
+		usleep(0.5);
+		resetMotorsAB();
   }
   else if(GP.direction == 's'){
     GP.direction = 'e';
 		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_A, -50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, -50);
+		usleep(0.5);
+		resetMotorsAB();
   }
   else{
     GP.direction = 'n';
 		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_A, -50);
-		sleep(1);
+		BP.set_motor_power(PORT_B, -50);
+		usleep(0.5);
+		resetMotorsAB();
   }
 }
 
@@ -441,14 +452,14 @@ int main(){
 	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
 	BP.set_motor_dps(PORT_C, EncoderA);
 	BP.set_motor_position(PORT_D, EncoderA);
-	/*
+	
 	gridPoints GP;
 	vector<vector<bool>> grid = getGrid(GP);
 	getCoordinates(GP, grid);
-	testFunctie(GP, grid);
-	moveToHomepoint(GP);
-	resetCurrentLocation(GP);
-	*/
+	// testFunctie(GP, grid);
+	// moveToHomepoint(GP);
+	// resetCurrentLocation(GP);
+
 	moveForward();
 	turnLeft(GP);
 	turnRight(GP);
