@@ -6,9 +6,14 @@
 
 using namespace std;
 BrickPi3 BP;
-BP.set_motor_limits(PORT_A, 100, 0);
 
 void exit_signal_handler(int signo);
+
+void fwd(int lspd , int rspd)
+{
+	BP.set_motor_power(PORT_B, lspd);
+	BP.set_motor_power(PORT_C, rspd);
+}
 
 void encodeMotor(int32_t pos)
 {
@@ -17,6 +22,7 @@ void encodeMotor(int32_t pos)
 
 void meetBeweging()
 {
+	BP.set_motor_limits(PORT_A, 100, 0);
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int32_t encoder = 0;
 	while(true)
@@ -33,6 +39,7 @@ void meetBeweging()
 
 void beweegKlauw()
 {
+	BP.set_motor_limits(PORT_A, 100, 0);
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int32_t encoder = 0;
 	encodeMotor(-50);
@@ -65,5 +72,6 @@ void exit_signal_handler(int signo)
 
 int main()
 {
-	beweegKlauw();
+	fwd(100, 100);
+	//beweegKlauw();
 }
