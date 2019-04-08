@@ -6,6 +6,7 @@
 
 using namespace std;
 BrickPi3 BP;
+BP.set_motor_limits(PORT_A, 100, 0);
 
 void exit_signal_handler(int signo);
 
@@ -32,13 +33,12 @@ void meetBeweging()
 
 void beweegKlauw()
 {
-	BP.set_motor_limits(PORT_A, 100, 0);
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int32_t encoder = 0;
 	encodeMotor(-50);
 	while(encoder > -110)
 	{
-		encodeMotor(-3);
+		encodeMotor(-5);
 		usleep(250000);	// wellicht kleiner maken
 		encoder = BP.get_motor_encoder(PORT_A);
 		cout << "Positie: " << encoder << endl;
