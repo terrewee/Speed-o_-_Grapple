@@ -3,7 +3,11 @@
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
 
+using namespace std;
+
 BrickPi3 BP;
+
+bool battery = true;    //battery level function
 
 void exit_signal_handler(int signo);
 
@@ -13,28 +17,8 @@ void exit_signal_handler(int signo);
                 and immediatly sets them.
 */
 void setSensors(){
-  //BP.set_sensor_type();
+  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
 }
-
-/*
-  Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the
-                global bool battery to false if battery is low
-*/
-void batteryLevel(void){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
-  }
-}
-
 /*
   Author:       Maaike & Duur
   Description:  Asks the user to supply a port and a sensor type to check the output
@@ -114,14 +98,11 @@ void checkSensor(){
   }
 
 }
-
-bool battery = true;    //battery level function
-/* 
+/*
   Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the 
+  Description:  Bateryscheck which changes the
                 global bool battery to false if battery is low
 */
-
 void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
@@ -136,15 +117,28 @@ void batteryLevel(void){
   }
 }
 
-
 int main(){
-  //thread checkBattery (batteryLevel);
+  signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+  BP.detect();
+  BP.reset_all();
+  for (int i = 0; i < 5; ++i){
+    cout << ".";
+    if (i == 3){
+      setSensors();
+    }
+    sleep(1);
+  }
+  cout << endl << "Initialized" << endl;
+
+  thread checkBattery (batteryLevel);
+
   while(true){
     sleep(5);
   }
+
+  BP.reset_all();
   return 0;
 }
-
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
