@@ -313,11 +313,8 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 //updates the current coordinate in prevCoordinatesVector with previous coordinates.
 void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid){
 	coordinates gridPointVector;
-	
-	gridPointVector.x = prevCoordinates.x;
-	gridPointVector.y = prevCoordinates.y;
 
-	prevCoordinatesVector[getGridPointNumber(currentCoordinates, grid)] = gridPointVector;
+	prevCoordinatesVector[getGridPointNumber(currentCoordinates, grid)] = prevCoordinates;
 }
 
 void addToQueue(coordinates & option, coordinates & gridPoint, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
@@ -387,7 +384,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
 
-	while(!targetFound && i != (grid.size() * grid[0].size()) -1 ){
+	while(!targetFound && i < (grid.size() * grid[0].size()) -1 ){
 		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
 		unsigned int queueSize = queue.size();
 		for(unsigned int j = 0; j < queueSize; j++){
