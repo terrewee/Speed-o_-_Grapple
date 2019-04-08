@@ -82,7 +82,15 @@ vector<char> iServer(){
   close(socketFD);
 
   //zet char256 om naar vector met chars
+  vector<char> route;
+  stringstream ssTemp;
+  string target;
+  ssTemp << buffer;
+  ssTemp >> target;
 
+  for(unsigned int i=0; i < target.size(); i++){
+    route.push_back(target[i]);
+  }
     return route
 }
 
