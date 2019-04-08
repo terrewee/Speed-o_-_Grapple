@@ -134,7 +134,7 @@ void turnMotorPowerUp(int &motorPower) {
 	int speed;
 	cout << "Geef snelheid" << endl;
 	cin >> speed;
-	while (speed >= 0) {
+	while (speed >= motorPower) {
 		BP.set_motor_power(PORT_A, motorPower+1);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.1);
