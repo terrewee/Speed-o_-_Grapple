@@ -386,22 +386,23 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
 	vector<int> queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, grid);
 	unsigned int i = 1;
-	
-	cout << endl;
-	for(size_t i = 0; i < queue.size(); i++){cout << queue[i] << " ";}	
-	cout << endl;
 
-	while(!targetFound && queue[queue.size() -1] != (grid.size() * grid[0].size() -1)){
+	while(!targetFound && i != (grid.size()-1 * grid[0].size() -1)){
 		updateQueue(queue[i], prevCoordinatesVector, grid);
-
-		for(unsigned int i = 0; i < queue.size(); i++){
+		cout << "test1 " << i << " ";
+		for(unsigned int j = 0; j < queue.size(); j++){
 			coordinates gridPoint = getGridPointCoordinates(queue[i], grid);
-			if(gridPoint.x == GP.homeCoordinates.x && gridPoint.y == GP.homeCoordinates.y){
+			cout << "test2 " << j << " ";
+			if(gridPoint.x == GP.targetCoordinates.x && gridPoint.y == GP.targetCoordinates.y){
 				targetFound = true;
 			}
 		}
 		i++;
 	}
+
+	cout << endl;
+	for(size_t i = 0; i < queue.size(); i++){cout << queue[i] << " ";}	
+	cout << endl;
 
 }
 
