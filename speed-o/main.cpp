@@ -119,7 +119,7 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp() {
-	int snelheid;
+	int speed;
 	cout << "Geef snelheid" << endl;
 	cin >> speed;
 	while (snelheid >= 0) {
