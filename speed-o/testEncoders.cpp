@@ -42,10 +42,5 @@ void exit_signal_handler(int signo)
 
 int main()
 {
-	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	BP.set_motor_limits(PORT_A, 30, 0);
-//	while(true)
-//	{
-		beweegKlauw();
-//	}
+	beweegKlauw();
 }
