@@ -125,15 +125,15 @@ void turnMotorPowerUp(int &motorPower) {
 	while (motorPower < snelheid) {
 		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_B, motorPower);
-		sleep(2);
+		sleep(1);
 		cout << motorPower <<endl;
-		motorPower += 1;
+		motorPower += 5;
 	}
 }
 
 void turnMotorPowerDown(int &motorPower) {
-		BP.set_motor_power(PORT_A, 10);
-		BP.set_motor_power(PORT_B, 10);
+	BP.set_motor_power(PORT_A, 0);
+	BP.set_motor_power(PORT_B, 0);
 }
 
 void moveForward(){
