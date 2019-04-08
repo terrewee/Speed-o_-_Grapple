@@ -86,6 +86,11 @@ vector<char> iServer(){
     return route
 }
 
+/*
+  Author:       Gerjan
+  Description:  Takes in an command for the motors and executes it.
+*/
+
 void Drive(char & direction){
     if (route[i] = 'f'){
         //ga 1 unit vooruit
@@ -104,6 +109,11 @@ void Drive(char & direction){
     }
 }
 
+/*
+  Author:       Gerjan
+  Description:  Takes a Vector with chars n,o,s and w,
+  and uses those to drive to the destination, pick up an object and drive back.
+*/
 
 void Navigation(vector<char> & route){
     for (int i = 0; i < route.size; ++i) {
