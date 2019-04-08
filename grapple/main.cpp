@@ -82,29 +82,30 @@ void iServer(){
   close(socketFD);
 }
 
-
-
-
-void Drive(vector<char> & route){
-    for (int i = 0; i < route.size; ++i) {
-        if (route[i] = 'n'){
-
-        }
-        if (route[i] = 's'){
-
-        }
-        if (route[i] = 'o'){
-
-        }
-        if (route[i] = 'w'){
-
-        }
-        else{
-            cout << "Invalid operator: " << route[i] << endl;
-        }
-
+void Drive(char & direction){
+    if (route[i] = 'n'){
 
     }
+    if (route[i] = 's'){
+
+    }
+    if (route[i] = 'o'){
+
+    }
+    if (route[i] = 'w'){
+
+    }
+    else{
+        cout << "Invalid operator: " << route[i] << endl;
+    }
+}
+
+
+void Navigation(vector<char> & route){
+    for (int i = 0; i < route.size; ++i) {
+        Drive(route[i])
+    }
+    cout << "Arrived at destination" << endl;
 }
 
 
