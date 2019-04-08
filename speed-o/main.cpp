@@ -450,7 +450,7 @@ int main(){
 	resetCurrentLocation(GP);
 	*/
 	moveForward();
-	moveLeft();
+	turnLeft();
 
 	return 0;
 }
