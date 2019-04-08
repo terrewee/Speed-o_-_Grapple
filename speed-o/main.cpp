@@ -278,16 +278,6 @@ void turn(char direction, gridPoints GP) {
 	}
 }
 
-//updates the current coordinate in prevCoordinatesVector with previous coordinates.
-void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<coordinates> & prevCoordinatesVector){
-	vector<int> gridPointVector;
-	
-	gridPointVector[0] = prevCoordinates.x;
-	gridPointVector[1] = prevCoordinates.y;
-
-	prevCoordinatesVector[getGridPointNumber(currentCoordinates)] = gridPointVector;
-}
-
 //Gets the coordinates of a gridPoint from its number.
 coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & grid){
 	unsigned int columnAmount = grid.size();
@@ -318,6 +308,16 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	gridPointNumber = gridPoint.x + (gridPoint.y *rowAmount);
 
 	return gridPointNumber;
+}
+
+//updates the current coordinate in prevCoordinatesVector with previous coordinates.
+void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid){
+	coordinates gridPointVector;
+	
+	gridPointVector.x = prevCoordinates.x;
+	gridPointVector.y = prevCoordinates.y;
+
+	prevCoordinatesVector[getGridPointNumber(currentCoordinates, grid)] = gridPointVector;
 }
 
 void addToQueue(coordinates & option, coordinates & gridPoint, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
