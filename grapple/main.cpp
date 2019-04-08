@@ -81,7 +81,7 @@ vector<char> iServer(){
   close(newSocketFD);
   close(socketFD);
 
-  //zet char256 om naar vector met chars
+  //zet char256 om naar vector met chars, gedaan door Stef
   vector<char> route;
   stringstream ssTemp;
   string target;
@@ -95,6 +95,43 @@ vector<char> iServer(){
 }
 
 /*
+  Author:       Stefan & Gerjan
+  Description:  Functions for driving the motors
+*/
+
+//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
+void turnMotorPowerUp(int motorPower) {
+    while (motorPower < 60) {
+        BP.set_motor_power(PORT_B, motorPower);
+        BP.set_motor_power(PORT_C, motorPower);
+        motorPower += 5;
+        usleep(0.1);
+    }
+    BP.set_motor_power(PORT_B, 60);
+    BP.set_motor_power(PORT_C, 60);
+}
+
+void turnMotorPowerDown(int motorPower) {
+    while (motorPower > 0) {
+        BP.set_motor_power(PORT_B, motorPower);
+        BP.set_motor_power(PORT_C, motorPower);
+        motorPower -= 5;
+        usleep(0.1);
+    }
+    BP.set_motor_power(PORT_B, 0);
+    BP.set_motor_power(PORT_C, 0);
+}
+
+void moveForward(){
+    int motorPower = 10;
+    turnMotorPowerUp(motorPower);
+    sleep(3.5); //dit moet afgesteld worden met de speed-o
+    turnMotorPowerDown(motorPower);
+}
+
+
+
+/*
   Author:       Gerjan
   Description:  Takes in an command for the motors and executes it.
 */
@@ -102,15 +139,19 @@ vector<char> iServer(){
 void Drive(char & direction){
     if (route[i] = 'f'){
         //ga 1 unit vooruit
+        moveForward()
     }
     if (route[i] = 'r'){
         //ga 90 graden links
+
     }
     if (route[i] = 'l'){
         //ga 90 graden links
+
     }
     if (route[i] = 'b'){
         //ga 180 graden draaien
+
     }
     else{
         cout << "Invalid operator: " << route[i] << endl << "Next time use: f, r, l or b" , endl;
@@ -124,7 +165,7 @@ void Drive(char & direction){
 */
 
 void Navigation(vector<char> & route){
-    for (int i = 0; i < route.size; ++i) {
+    for (int i = 0; i < route.size; ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f')
         }
@@ -162,7 +203,7 @@ void Navigation(vector<char> & route){
 
 
     Drive('b');
-    for (int i = route.size; i >= 0; --i) {
+    for (int i = route.size; i >= 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f')
         }
