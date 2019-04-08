@@ -126,8 +126,8 @@ void turnMotorPowerUp(int &motorPower) {
 		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.5);
+		cout << motorPower <<endl;
 		motorPower += 1;
-
 	}
 }
 
@@ -146,9 +146,9 @@ void moveForward(){
 	turnMotorPowerDown(motorPower);
 }
 
-//Turns the rorbot to the right, and updates the value of GP.direction.
+//Turns the robot to the right, and updates the value of GP.direction.
 void turnLeft(gridPoints & GP){
-  if(GP.direction == 'n'){
+  if(GP.direction == 'n'){2
     GP.direction = 'e';
   }
   else if(GP.direction == 'w'){
