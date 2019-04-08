@@ -10,12 +10,15 @@
 #include <iostream>
 #include <thread>
 
-
-BrickPi3 BP;
 using namespace std;
 
-void exit_signal_handler(int signo);
+BrickPi3 BP;
 
+
+int ComPortNr = 6969;         //Port number for communication
+char ComHostName[] = "dex2";  //Hostname for communication
+
+void exit_signal_handler(int signo);
 
 /*
   Author:       Duur
@@ -133,8 +136,6 @@ void batteryLevel(void){
   Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
 */
 
-int ComPortNr = 6969; //Port number for communication
-char ComHostName[] = "dex2"; //Hostname for communication
 
 void SetComm(){
   cout << endl << "Geef het poort-nummer op: ";
@@ -166,9 +167,7 @@ void iClient(char message[256]){
   bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
 
-  bcopy((char *)server->h_addr,
-      (char *)&serv_addr.sin_addr.s_addr,
-      server->h_length);
+  bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr, server->h_length);
   serv_addr.sin_port = htons(::ComPortNr);
 
   if (connect(socketFD,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
@@ -179,15 +178,17 @@ void iClient(char message[256]){
   bcopy(message,buffer,strlen(message));
   n = write(socketFD,buffer,strlen(buffer));
 
-  if (n < 0)
+  if (n < 0){
     error("ERROR writing to socket");
+  }
 
   bzero(buffer,256);
   n = read(socketFD,buffer,255);
 
-  if (n < 0)
+  if (n < 0){
     error("ERROR reading from socket");
-
+  }
+  //Receive message "1" if sent message was received.
   printf("%s\n",buffer);
   close(socketFD);
 }

@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -17,8 +18,7 @@ void error(const char *msg)
     exit(0);
 }
 
-int main()
-{
+int main(){
     char hostName[256];
     char message[256];
     int portNr;

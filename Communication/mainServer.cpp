@@ -10,11 +10,13 @@
 #include <iostream>
 #include <thread>
 
-
-BrickPi3 BP;
 using namespace std;
 
-int ComPortNr = 6969; //Port number for communication
+BrickPi3 BP;
+
+int ComPortNr = 6969;         //Port number for communication
+bool battery = true;          //battery level function
+
 void exit_signal_handler(int signo);
 
 
@@ -108,14 +110,11 @@ void checkSensor(){
 
 }
 
-bool battery = true;    //battery level function
 /*
   Author:       Maaike & Duur
   Description:  Bateryscheck which changes the
                 global bool battery to false if battery is low
 */
-
-
 void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
@@ -135,21 +134,19 @@ void error(const char *msg)
   perror(msg);
   exit(1);
 }
-
-
 /*
   Author:       Gerjan
   Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
 */
-
 void SetComm(){
   cout << endl << "Geef het poort-nummer op: ";
   cin >> ::ComPortNr; cout << endl;
 }
-
-
+/*
+  Author:       Gerjan & Duur
+  Description:  Opens a socket and listens for a message, return a message based on result.
+*/
 void iServer(){
-  //zet alles op voor connectie en wacht op connectie.
   int socketFD, newSocketFD, n;
   socklen_t clilen;
   char buffer[256];
@@ -168,23 +165,27 @@ void iServer(){
   clilen = sizeof(cli_addr);
   newSocketFD = accept(socketFD, (struct sockaddr *) &cli_addr, &clilen);
 
-  if (newSocketFD < 0)
+  if (newSocketFD < 0){
     error("ERROR on accept");
+  }
 
   bzero(buffer,256);
   n = read(newSocketFD,buffer,255);
 
-  if (n < 0) error("ERROR reading from socket");
-
-
+  if (n < 0){
+    error("ERROR reading from socket");
+  }
+  // Received message in the buffer.
   printf("Here is the message: %s\n",buffer);
-  n = write(newSocketFD,"I got your message",18);
+  // Try to send "1" back so client knows communication succeeded.
+  n = write(newSocketFD,"1",1);
 
-  if (n < 0) error("ERROR writing to socket");
+  if (n < 0) {
+    error("ERROR writing to socket");
+  }
+
   close(newSocketFD);
   close(socketFD);
-
-  //ontvang coordinaten en roep functie voor het omzetten van chars
 }
 
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
