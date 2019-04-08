@@ -431,3 +431,16 @@ int main(){
 	cout << "end of file";
 	return 0;
 }
+ 
+vector<char> findPath(vector<coordinates> previousCoordinatesVector, vector<vector<bool>> &grid){
+	vector<char> path;
+	vector<int> getPath;	
+	for(size_t i = 0; i < previousCoordinatesVector.size(); i++){
+		getPath.push_back(getGridPointNumber(previousCoordinatesVector[i], grid));
+		
+	}
+	
+	
+
+	return path;
+}
