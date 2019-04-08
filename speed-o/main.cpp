@@ -352,8 +352,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 }
 
 //Check bordering gridpoints and calls addToQueue if they are on grid.
-vector<int> updateQueue(int gridPointNumber, vector<coordinates> prevCoordinatesVector, vector<vector<bool>> grid){
-	vector<int> queue;
+vector<int> updateQueue(int gridPointNumber, vector<coordinates> prevCoordinatesVector, vector<int> queue, vector<vector<bool>> grid){
 	
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
 	
@@ -384,11 +383,12 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
-	vector<int> queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, grid);
+	vector<int> queue;
+	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
 
 	while(!targetFound && i != (grid.size() * grid[0].size()) -1 ){
-		updateQueue(queue[i], prevCoordinatesVector, grid);
+		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
 		unsigned int queueSize = queue.size();
 		cout << "test1 " << i << " ";
 		for(unsigned int j = 0; j < queueSize; j++){
@@ -400,6 +400,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 		}
 		i++;
 	}
+
 
 	cout << endl;
 	for(size_t i = 0; i < queue.size(); i++){cout << queue[i] << " ";}	
