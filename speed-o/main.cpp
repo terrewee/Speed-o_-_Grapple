@@ -121,7 +121,7 @@ void turnMotorPowerDown(int &motorPower) {
 	int maxLoops =0;
 	int changingSpeed = motorPower;
 	while (maxLoops<3){
-		motorPower = motorPower*0.8
+		motorPower = motorPower*0.8;
 		BP.set_motor_power(PORT_A, motorPower+1);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.25);
@@ -130,7 +130,7 @@ void turnMotorPowerDown(int &motorPower) {
 }
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
-void turnMotorPowerUp(int *motorPower) {
+void turnMotorPowerUp(int &motorPower) {
 	int speed;
 	cout << "Geef snelheid" << endl;
 	cin >> speed;
