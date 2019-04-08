@@ -111,25 +111,72 @@ void Navigation(vector<char> & route){
             Drive('f')
         }
         else {
-            if (route[i] == 'n' && route[i-1] == )
+            if ((route[i] == 'n' && route[i-1] == 'w') ||
+                (route[i] == 'o' && route[i-1] == 'n') ||
+                (route[i] == 's' && route[i-1] == 'o') ||
+                (route[i] == 'w' && route[i-1] == 's') ||){
+                Drive('r');
+                Drive('f');
+            }
+            if ((route[i] == 'n' && route[i-1] == 'o') ||
+                (route[i] == 'o' && route[i-1] == 's') ||
+                (route[i] == 's' && route[i-1] == 'w') ||
+                (route[i] == 'w' && route[i-1] == 'n') ||){
+                Drive('l');
+                Drive('f');
+            }
+            if ((route[i] == 'n' && route[i-1] == 's') ||
+                (route[i] == 'o' && route[i-1] == 'w') ||
+                (route[i] == 's' && route[i-1] == 'n') ||
+                (route[i] == 'w' && route[i-1] == 'o') ||){
+                Drive('b');
+                Drive('f');
+            } else{
+                cout << "help, er gebeurt iets geks: " << route[i] << route[i-1] << endl;
+            }
         }
-
-
-
-        Drive(route[i])
     }
 
+
     cout << "Arrived at destination" << endl;
-    //functie voor object zien en pakken
+                                                                                    //functie voor object zien en pakken
     cout << "Picked up ze object, time to head back" << endl;
+
 
     Drive('b');
     for (int i = route.size; i >= 0; --i) {
-        Drive(route[i])
+        if (route[i] == route[i+1]){
+            Drive('f')
+        }
+        else {
+            if ((route[i] == 'n' && route[i+1] == 'w') ||
+                (route[i] == 'o' && route[i+1] == 'n') ||
+                (route[i] == 's' && route[i+1] == 'o') ||
+                (route[i] == 'w' && route[i+1] == 's') ||){
+                Drive('l');
+                Drive('f');
+            }
+            if ((route[i] == 'n' && route[i+1] == 'o') ||
+                (route[i] == 'o' && route[i+1] == 's') ||
+                (route[i] == 's' && route[i+1] == 'w') ||
+                (route[i] == 'w' && route[i+1] == 'n') ||){
+                Drive('r');
+                Drive('f');
+            }
+            if ((route[i] == 'n' && route[i+1] == 's') ||
+                (route[i] == 'o' && route[i+1] == 'w') ||
+                (route[i] == 's' && route[i+1] == 'n') ||
+                (route[i] == 'w' && route[i+1] == 'o') ||){
+                Drive('b');
+                Drive('f');
+            } else{
+                cout << "help, er gebeurt iets geks: " << route[i] << route[i+1] << endl;
+            }
+        }
     }
 
     cout << "Arrived home, dropping the object like its hot" << endl;
-    //Drop object
+                                                                                             //Drop object
     Drive('b');
 }
 
