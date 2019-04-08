@@ -125,18 +125,15 @@ void turnMotorPowerUp(int &motorPower) {
 	while (motorPower < snelheid) {
 		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_B, motorPower);
-		usleep(0.5);
+		sleep(2);
 		cout << motorPower <<endl;
 		motorPower += 1;
 	}
 }
 
 void turnMotorPowerDown(int &motorPower) {
-	while (motorPower > 10) {
-		BP.set_motor_power(PORT_A, motorPower+1);
-		BP.set_motor_power(PORT_B, motorPower);
-		motorPower -= 10;
-	}
+		BP.set_motor_power(PORT_A, 10);
+		BP.set_motor_power(PORT_B, 10);
 }
 
 void moveForward(){
@@ -148,7 +145,7 @@ void moveForward(){
 
 //Turns the robot to the right, and updates the value of GP.direction.
 void turnLeft(gridPoints & GP){
-  if(GP.direction == 'n'){2
+  if(GP.direction == 'n'){
     GP.direction = 'e';
   }
   else if(GP.direction == 'w'){
