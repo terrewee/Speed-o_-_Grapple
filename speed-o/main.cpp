@@ -117,11 +117,11 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 	}
 }
 
-void turnMotorPowerDown() {
+void turnMotorPowerDown(int &motorPower) {
 	int maxLoops =0;
-	int motorPower=15;
+	int changingSpeed = motorPower;
 	while (maxLoops<3){
-		motorPower -= 5;
+		motorPower = motorPower*0.8;
 		BP.set_motor_power(PORT_A, motorPower+1);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.25);
@@ -141,12 +141,12 @@ void turnMotorPowerUp(int &motorPower) {
 		cout << motorPower <<endl;
 		motorPower += 5;
 	}
+	turnMotorPowerDown(speed);
 }
 
 void moveForward(){
 	int motorPower = 10;
 	turnMotorPowerUp(motorPower);
-	turnMotorPowerDown();
 }
 
 //Turns the robot to the right, and updates the value of GP.direction.
