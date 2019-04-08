@@ -121,7 +121,7 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 void turnMotorPowerUp(int &motorPower) {
 	int snelheid =30;
 	while (motorPower <= snelheid) {
-		BP.set_motor_power(PORT_A, motorPower);
+		BP.set_motor_power(PORT_A, motorPower+6);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.1);
 		cout << motorPower <<endl;
