@@ -49,17 +49,14 @@ void encodeMotor(int32_t pos)
 */
 void gelijdelijkDownLoop()
 {
-//	int32_t encoderD = 0;
 	int counter = 0;
 	encodeMotor(-60);
 	while(counter < 10)
-//	while(encoderD > -110)
 	{
-//		cout << "Nu op " << encoderD << " graden." << endl;
 		sleep(1);
 		encodeMotor(-3);
 		counter++;
-//		encoderD = BP.get_motor_encoder(PORT_D);
+
 	}
 }
 
@@ -71,7 +68,7 @@ void gelijdelijkDownLoop()
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 70, 0);	// speed 20 als limiet voor opwaartse beweging.
-	encodeMotor(70);			// rotatie is ~110.
+	encodeMotor(110);			// rotatie is ~110.
 }
 
 /*
