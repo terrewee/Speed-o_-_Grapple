@@ -16,13 +16,19 @@ void encodeMotor(int32_t pos)
 
 void beweegKlauw()
 {
-	int rotatie;
-	cout << "Geef rotatie: ";
-	cin >> rotatie;
-	encodeMotor(rotatie);
-	sleep(2);
-	int32_t encoder = BP.get_motor_encoder(PORT_A);
-	cout << "Positie: " << encoder << endl;
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	BP.set_motor_limits(PORT_A, 50, 0);
+	int32_t encoder = 0;
+	while(true)
+	{
+		int rotatie = 0;
+		cout << "Geef rotatie: ";
+		cin >> rotatie;
+		encodeMotor(rotatie);
+		sleep(2);
+		encoder = BP.get_motor_encoder(PORT_A);
+		cout << "Positie: " << encoder << endl;
+	}
 }
 
 void exit_signal_handler(int signo)
