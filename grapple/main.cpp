@@ -40,7 +40,7 @@ void error(const char *msg) {
   Author:       Gerjan & Duur
   Description:  Opens a socket and listens for a message, return a message based on result.
 */
-void iServer(){
+vector<char> iServer(){
   int socketFD, newSocketFD, n;
   socklen_t clilen;
   char buffer[256];
@@ -80,37 +80,58 @@ void iServer(){
 
   close(newSocketFD);
   close(socketFD);
+
+  //zet char256 om naar vector met chars
+
+    return route
 }
 
 void Drive(char & direction){
-    if (route[i] = 'n'){
-
+    if (route[i] = 'f'){
+        //ga 1 unit vooruit
     }
-    if (route[i] = 's'){
-
+    if (route[i] = 'r'){
+        //ga 90 graden links
     }
-    if (route[i] = 'o'){
-
+    if (route[i] = 'l'){
+        //ga 90 graden links
     }
-    if (route[i] = 'w'){
-
+    if (route[i] = 'b'){
+        //ga 180 graden draaien
     }
     else{
-        cout << "Invalid operator: " << route[i] << endl;
+        cout << "Invalid operator: " << route[i] << endl << "Next time use: f, r, l or b" , endl;
     }
 }
 
 
 void Navigation(vector<char> & route){
     for (int i = 0; i < route.size; ++i) {
+        if (route[i] == route[i-1]){
+            Drive('f')
+        }
+        else {
+            if (route[i] == 'n' && route[i-1] == )
+        }
+
+
+
         Drive(route[i])
     }
+
     cout << "Arrived at destination" << endl;
+    //functie voor object zien en pakken
+    cout << "Picked up ze object, time to head back" << endl;
+
+    Drive('b');
+    for (int i = route.size; i >= 0; --i) {
+        Drive(route[i])
+    }
+
+    cout << "Arrived home, dropping the object like its hot" << endl;
+    //Drop object
+    Drive('b');
 }
-
-
-
-
 
 
 
@@ -131,8 +152,10 @@ int main(){
     cout << "1: Receive message" << endl;
     cout << "2: Set communication details" << endl;
     cout << "3: Check sensor" << endl;
+    cout << "4: Wait for message (route) , then return the object" << endl;
 
-    cin >> uChoice;
+
+      cin >> uChoice;
 
     switch(uChoice) {
       case 1:
@@ -143,6 +166,9 @@ int main(){
         break;
       case 3:
         checkSensor();
+        break;
+      case 4:
+        Navigation(iServer());
         break;
     }
   }
