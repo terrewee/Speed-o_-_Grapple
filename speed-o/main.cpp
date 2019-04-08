@@ -279,15 +279,13 @@ void turn(char direction, gridPoints GP) {
 }
 
 //updates the current coordinate in prevCoordinatesVector with previous coordinates.
-void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid){
-	//unsigned int columnAmount = grid.size();
-	//unsigned int rowAmount = grid[0].size();
+void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<coordinates> & prevCoordinatesVector){
 	vector<int> gridPointVector;
 	
 	gridPointVector[0] = prevCoordinates.x;
 	gridPointVector[1] = prevCoordinates.y;
 
-	//prevCoordinatesVector[currentCoordinates.x][currentCoordinates.y] = gridPointVector;
+	prevCoordinatesVector[getGridPointNumber(currentCoordinates)] = gridPointVector;
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -322,7 +320,7 @@ int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	return gridPointNumber;
 }
 
-void addToQueue(coordinates & option, coordinates & gridPoint, vector<vector<int>> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
+void addToQueue(coordinates & option, coordinates & gridPoint, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
 	bool optionFound = false;
 	int gridPointNumber = getGridPointNumber(option, grid);
 
@@ -354,7 +352,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 }
 
 //Check bordering gridpoints and calls addToQueue if they are on grid.
-vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinatesVector, vector<vector<bool>> grid){
+vector<int> updateQueue(int gridPointNumber, vector<coordinates> prevCoordinatesVector, vector<vector<bool>> grid){
 	vector<int> queue;
 	
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
@@ -385,7 +383,7 @@ vector<int> updateQueue(int gridPointNumber, vector<vector<int>> prevCoordinates
 void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
-	vector<vector<int>> prevCoordinatesVector(grid.size() * grid[0].size());
+	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
 	vector<int> queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, grid);
 	unsigned int i = 1;
 	
