@@ -40,10 +40,10 @@ signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
 
 void beweegKlauw()
 {
-	BP.set_motor_limits(PORT_A, 100, 0);
+	encodeMotor(-50);
+	//BP.set_motor_limits(PORT_A, 100, 0);
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int32_t encoder = 0;
-	encodeMotor(-50);
 	while(encoder > -110)
 	{
 		encodeMotor(-5);
@@ -75,6 +75,5 @@ int main()
 {
 	signal(SIGINT, exit_signal_handler);
 	BP.detect();
-	fwd(100, 100);
-	//beweegKlauw();
+	beweegKlauw();
 }
