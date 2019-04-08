@@ -25,6 +25,7 @@ void meetBeweging()
 	BP.set_motor_limits(PORT_A, 100, 0);
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int32_t encoder = 0;
+signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
 	while(true)
 	{
 		int rotatie = 0;
@@ -72,6 +73,8 @@ void exit_signal_handler(int signo)
 
 int main()
 {
+	signal(SIGINT, exit_signal_handler);
+	BP.detect();
 	fwd(100, 100);
 	//beweegKlauw();
 }
