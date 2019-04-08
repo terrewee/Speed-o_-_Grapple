@@ -387,10 +387,11 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	vector<int> queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, grid);
 	unsigned int i = 1;
 
-	while(!targetFound && i != (grid.size()-1 * grid[0].size() -1)){
+	while(!targetFound && i != (grid.size() * grid[0].size()) -1 ){
 		updateQueue(queue[i], prevCoordinatesVector, grid);
+		unsigned int queueSize = queue.size();
 		cout << "test1 " << i << " ";
-		for(unsigned int j = 0; j < queue.size(); j++){
+		for(unsigned int j = 0; j < queueSize; j++){
 			coordinates gridPoint = getGridPointCoordinates(queue[i], grid);
 			cout << "test2 " << j << " ";
 			if(gridPoint.x == GP.targetCoordinates.x && gridPoint.y == GP.targetCoordinates.y){
