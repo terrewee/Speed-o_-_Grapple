@@ -11,8 +11,8 @@ void exit_signal_handler(int signo);
 
 void fwd(int lspd , int rspd)
 {
-	BP.set_motor_power(PORT_B, lspd);
-	BP.set_motor_power(PORT_C, rspd);
+	BP.set_motor_power(PORT_B, -lspd);
+	BP.set_motor_power(PORT_C, -rspd);
 }
 
 void encodeMotor(int32_t pos)
