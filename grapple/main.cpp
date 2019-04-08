@@ -82,20 +82,46 @@ void iServer(){
   close(socketFD);
 }
 
+
+
+
+void Drive(vector<char> & route){
+    for (int i = 0; i < route.size; ++i) {
+        if (route[i] = 'n'){
+
+        }
+        if (route[i] = 's'){
+
+        }
+        if (route[i] = 'o'){
+
+        }
+        if (route[i] = 'w'){
+
+        }
+        else{
+            cout << "Invalid operator: " << route[i] << endl;
+        }
+
+
+    }
+}
+
+
+
+
+
+
+
+
 int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   BP.detect();
   BP.reset_all();
-  for (int i = 0; i < 5; ++i){
-    cout << ".";
-    if (i == 3){
-      setSensors();
-    }
-    sleep(1);
-  }
-  cout << endl << "Initialized" << endl;
 
-  thread checkBattery (batteryLevel);
+  cout << endl << "Initialized" << endl;
+    sleep(4);
+  cout << endl << "Initialized" << endl;
 
   int uChoice;
 

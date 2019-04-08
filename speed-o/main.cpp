@@ -97,7 +97,7 @@ void Drive(vector<char> & route){
     else{
       cout << "Invalid operator: " << route[i] << endl;
     }
-    
+
 
   }
 }
