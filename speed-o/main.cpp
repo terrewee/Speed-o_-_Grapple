@@ -2,14 +2,9 @@
 #include <iostream>     // for printf
 #include <unistd.h>     // for usleep and sleep
 #include <signal.h>     // for catching exit signals
-#include <iomanip>		// for setw and setprecision
+#include <iomanip>	// for setw and setprecision
 
 using namespace std;
-
-sensor_color_t Color1;                                                                      //check de ports voor cohesie in sensornamen
-sensor_ultrasonic_t Ultrasonic2;
-sensor_touch_t Touch3;
-sensor_light_t Light4;
 
 BrickPi3 BP;
 
@@ -49,84 +44,46 @@ void encodeMotor(int32_t pos)
 
 /*
 	Author		:	Joram van Leeuwen, Stef Ottenhof
-                	Description	:
-		Twee functies voor het omhoog en omlaag halen van de klauw.
+	Description	:
+		Functie om klauw gelijdelijk omlaag te latern gaan
 */
-void klauwNaarBeneden()
-{
-	int draai;
-	int kracht;
-	while(true)
-	{
-	BP.set_motor_limits(PORT_A, 25, 0); 	// speed 5 als limiet voor het naar beneden gaan.
-	cout << "Draai keer 1: ";
-	cin >> draai;
-	encodeMotor(draai);			// rotatie is ~110. Negatief voor neerwaarts.
-	// klauw openen hier
-	cout << "Draai keer 2: ";
-	cin >> draai;
-	cout << "Kracht keer 2: ";
-	cin >> kracht;
-	BP.set_motor_limits(PORT_A, kracht, 0);
-	encodeMotor(draai);
-	sleep(1);
-	encodeMotor(20);
-	// klauw sluiten hier
-	}
-}
-
 void gelijdelijkDownLoop()
 {
-	int counter = 0;
+	int32_t encoderD = 0;
+//	int counter = 0;
 	encodeMotor(-60);
-	while(counter < 20)
+//	while(counter < 20)
+	while(encoderD > -150)
 	{
-		cout <<"Ik doe iets"<<endl;
+		cout << "Nu op " << encoderD << " graden." << endl;
 		sleep(1);
 		encodeMotor(-3);
-		counter++;
+//		counter++;
+		encoderD = BP.get_motor_encoder(PORT_D);
 	}
 }
 
-void klauwNaarBenedenKantelpunt()
-{
-	int uChoice = 0;
-	int draai;
-	while(uChoice != -1)
-	{
-		cout << "Draai: ";
-		cin >> draai;
-		BP.set_motor_limits(PORT_A, 80, 0);
-		encodeMotor(draai);
-		cout << "1. Verder \n-1. Stop";
-		cin >> uChoice;
-	}
-}
-
-void klauwDownTest(int startPos)
-{
-	int32_t huidigePos = 0;
-	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	while(huidigePos > startPos-90)
-	{
-		BP.set_motor_power(PORT_A, 3);
-		huidigePos = BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	}
-	encodeMotor(0);
-}
-
+/*
+	Author		:	Joram van Leeuwen, Stef Ottenhof
+	Description	:
+		Functie om klauw terug omhoog te laten gaan
+*/
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 70, 0);	// speed 20 als limiet voor opwaartse beweging.
 	encodeMotor(70);			// rotatie is ~110.
 }
 
+/*
+	Author		:	Joram van Leeuwen, Stef Ottenhof
+	Description	:
+		Functies om klauw te openenen en te sluiten
+*/
 void klauwOpen()
 {
 	BP.set_motor_limits(PORT_D, 60, 0);
 	BP.set_motor_position_relative(PORT_D, -180);
 }
-
 void klauwDicht()
 {
 	BP.set_motor_limits(PORT_D, 60, 0);
@@ -140,22 +97,6 @@ if(signo == SIGINT)
         BP.reset_all();
         exit(-2);
     }
-}
-
-void testValues()
-{
-	int limiet;
-	int kracht;
-	while(true)
-	{
-		cout << "Limiet: ";
-		cin >> limiet;
-		cout << "Draai: ";
-		cin >> kracht;
-
-		BP.set_motor_limits(PORT_A, limiet, 0);
-		encodeMotor(kracht);
-	}
 }
 
 int main()
