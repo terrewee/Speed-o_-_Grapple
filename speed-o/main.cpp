@@ -432,6 +432,7 @@ int main(){
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
+	searchPath(GP, grid);
 	
 	//moveForward();
 	cout << "end of file";
