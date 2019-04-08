@@ -300,20 +300,13 @@ coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & 
 
 //Gets the number of a gridPoint from coordinates.
 int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
-	unsigned int columnAmount = grid.size();
 	unsigned int rowAmount = grid[0].size();
 	//unsigned int gridsize = rowAmount * columnAmount;
-	int gridPointNumber;
-
-	gridPointNumber = gridPoint.x + (gridPoint.y *rowAmount);
-
-	return gridPointNumber;
+	return gridPoint.x + (gridPoint.y *rowAmount);
 }
 
 //updates the current coordinate in prevCoordinatesVector with previous coordinates.
 void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid){
-	coordinates gridPointVector;
-
 	prevCoordinatesVector[getGridPointNumber(currentCoordinates, grid)] = prevCoordinates;
 }
 
@@ -380,6 +373,8 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
+	cout << endl;
+	cout << endl;
 	vector<int> queue;
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
