@@ -14,7 +14,7 @@ void encodeMotor(int32_t pos)
 	BP.set_motor_position_relative(PORT_A, pos);
 }
 
-void beweegKlauw()
+void meetBeweging()
 {
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	int32_t encoder = 0;
@@ -27,6 +27,24 @@ void beweegKlauw()
 		sleep(2);
 		encoder = BP.get_motor_encoder(PORT_A);
 		cout << "Positie: " << encoder << endl;
+	}
+}
+
+void beweegKlauw()
+{
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	int32_t encoder = 0;
+	encodeMotor(-50);
+	while(encoder > -110)
+	{
+		encodeMotor(-3);
+		sleep(1);	// wellicht kleiner maken
+	}
+	// sluit klauw
+	while(encoder < 0)
+	{
+		encodeMotor(5);
+		sleep(1);	// kleiner maken
 	}
 }
 
