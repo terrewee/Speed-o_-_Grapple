@@ -124,10 +124,8 @@ void turnMotorPowerUp(int &motorPower) {
 		BP.set_motor_power(PORT_A, motorPower+6);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.1);
-		cout << motorPower <<endl;
 		motorPower += 5;
 	}
-	turnMotorPowerDown(snelheid);
 }
 
 void turnMotorPowerDown(int &motorPower) {
@@ -146,15 +144,27 @@ void moveForward(){
 void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
+		BP.set_motor_power(PORT_A, -50);
+		BP.set_motor_power(PORT_A, 50);
+		sleep(1);
   }
   else if(GP.direction == 'w'){
     GP.direction = 'n';
+		BP.set_motor_power(PORT_A, -50);
+		BP.set_motor_power(PORT_A, 50);
+		sleep(1);
   }
   else if(GP.direction == 's'){
     GP.direction = 'w';
+		BP.set_motor_power(PORT_A, -50);
+		BP.set_motor_power(PORT_A, 50);
+		sleep(1);
   }
   else{
     GP.direction = 's';
+		BP.set_motor_power(PORT_A, -50);
+		BP.set_motor_power(PORT_A, 50);
+		sleep(1);
   }
 }
 
@@ -162,15 +172,27 @@ void turnLeft(gridPoints & GP){
 void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
+		BP.set_motor_power(PORT_A, 50);
+		BP.set_motor_power(PORT_A, -50);
+		sleep(1);
   }
   else if(GP.direction == 'w'){
     GP.direction = 's';
+		BP.set_motor_power(PORT_A, 50);
+		BP.set_motor_power(PORT_A, -50);
+		sleep(1);
   }
   else if(GP.direction == 's'){
     GP.direction = 'e';
+		BP.set_motor_power(PORT_A, 50);
+		BP.set_motor_power(PORT_A, -50);
+		sleep(1);
   }
   else{
     GP.direction = 'n';
+		BP.set_motor_power(PORT_A, 50);
+		BP.set_motor_power(PORT_A, -50);
+		sleep(1);
   }
 }
 
@@ -428,6 +450,7 @@ int main(){
 	resetCurrentLocation(GP);
 	*/
 	moveForward();
+	moveLeft();
 
 	return 0;
 }
