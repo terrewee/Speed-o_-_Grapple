@@ -245,7 +245,7 @@ void Navigation(vector<char> route){
 
 
     cout << "Arrived at destination" << endl;
-                                                                                    //functie voor object zien en pakken
+     sleep(10);                                                                               //functie voor object zien en pakken
     cout << "Picked up ze object, time to head back" << endl;
 
 
@@ -281,7 +281,8 @@ void Navigation(vector<char> route){
             }
         }
     }
-
+    resetMotor();
+    sleep(10);
     cout << "Arrived home, dropping the object like its hot" << endl;
                                                                                              //Drop object
     Drive('b');
@@ -334,7 +335,7 @@ int main(){
         Navigation(iServer());
         break;
       case 5: {
-          vector<char> vec = {'n', 'n', 'w', 'w', 's', 'o', 'w', 's'};
+          vector<char> vec = {'n', 'w', 'w', 'o', 's', 's'};
           Navigation(vec);
           break;
       }
