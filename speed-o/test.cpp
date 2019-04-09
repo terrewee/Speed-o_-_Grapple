@@ -27,6 +27,12 @@ void readEncodedMotor()
 	cout << "Motor B: " << endl << "Encoded: " << encodedB << endl << "--------------------------------" << endl;
 }
 
+void encodeMotors(int32_t pos)
+{
+	BP.set_motor_position_relative(PORT_A, pos);
+	BP.set_motor_position_relative(PORT_B, pos);
+}
+
 void setSensors()
 {
 	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
