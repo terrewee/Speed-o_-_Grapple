@@ -110,8 +110,6 @@ vector<char> iServer(){
 void encodeMotors(int32_t lpos , int32_t rpos){
     BP.set_motor_position_relative(PORT_B, lpos);
     BP.set_motor_position_relative(PORT_C, rpos);
-    BP.set_motor_dps(PORT_B, 0);
-    BP.set_motor_dps(PORT_C, 0);
 }
 
 /*
@@ -124,6 +122,10 @@ void encodeMotors(int32_t lpos , int32_t rpos){
 void resetMotor(){
     BP.set_motor_power(PORT_B, 0);
     BP.set_motor_power(PORT_C, 0);
+    BP.set_motor_dps(PORT_B, 0);
+    BP.set_motor_dps(PORT_C, 0);
+    BP.set_motor_position_relative(PORT_B, 0);
+    BP.set_motor_position_relative(PORT_C, 0);
 }
 
 void turnMotorPowerUp(int motorPower) {
@@ -144,8 +146,7 @@ void turnMotorPowerDown(int motorPower) {
         motorPower -= 2;
         sleep(0.1);
     }
-    BP.set_motor_power(PORT_B, 0);
-    BP.set_motor_power(PORT_C, 0);
+    resetMotor();
 }
 
 void moveForward(){
@@ -156,17 +157,15 @@ void moveForward(){
 }
 
 void turnLeft(){
-    BP.set_motor_dps(PORT_B, 100);
-    BP.set_motor_dps(PORT_C, -100);
+    encodeMotors(100, -100)
     sleep(0.5);
+    resetMotor();
 }
 void turnRight(){
-    BP.set_motor_dps(PORT_B, -100);
-    BP.set_motor_dps(PORT_C, 100);
+    encodeMotors(-100, 100)
     sleep(0.5);
+    resetMotor();
 }
-
-
 
 /*
   Author:       Gerjan
