@@ -11,8 +11,22 @@ BrickPi3 BP;
 
 void fwd(int lspd , int rspd)
 {
-	BP.set_motor_power(PORT_A, lspd+6);
+	lspd = lspd - 3;
+	BP.set_motor_power(PORT_A, lspd);
 	BP.set_motor_power(PORT_B, rspd);
+}
+
+void readEncodedMotor()
+{
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
+	usleep(2500000);
+	int32_t encodedA = BP.get_motor_encoder(PORT_A);
+	int32_t encodedB = BP.get_motor_encoder(PORT_B);
+    	cout << "Motor A: " << endl << "Encoded: " << encodedA << endl << "--------------------------------" << endl;
+	cout << "Motor B: " << endl << "Encoded: " << encodedB << endl << "--------------------------------" << endl;
+	}
+
 }
 
 void setSensors()
@@ -27,7 +41,7 @@ void exit_signal_handler(int signo);
 
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
+    BP.reset_all();
     exit(-2);
   }
 }
@@ -45,7 +59,13 @@ int main()
 		cout << "Motor B power: ";
 		cin >> motorB;
 		fwd(motorA, motorB);
+<<<<<<< HEAD
 		sleep(3);
 //		fwd(-6,0);
+=======
+		//sleep(3);
+		//fwd(-6,0);
+		readEncodedMotor();
+>>>>>>> de4d89d15ccefdc77c8765ac5146ddce9fb4d828
 	}
 }
