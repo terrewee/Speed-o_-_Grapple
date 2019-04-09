@@ -157,12 +157,12 @@ void moveForward(){
 }
 
 void turnLeft(){
-    encodeMotors(100, -100)
+    encodeMotors(100, -100);
     sleep(0.5);
     resetMotor();
 }
 void turnRight(){
-    encodeMotors(-100, 100)
+    encodeMotors(-100, 100);
     sleep(0.5);
     resetMotor();
 }
