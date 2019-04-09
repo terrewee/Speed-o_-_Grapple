@@ -126,6 +126,7 @@ void resetMotor(){
     BP.set_motor_dps(PORT_C, 0);
     BP.set_motor_position_relative(PORT_B, 0);
     BP.set_motor_position_relative(PORT_C, 0);
+    sleep(1);
 }
 
 void turnMotorPowerUp(int motorPower) {
@@ -177,26 +178,24 @@ void turnRight(){
 void Drive(char direction){
     if (direction == 'f'){
         //ga 1 unit vooruit
-        moveForward();
         cout << "Forward" << endl;
+        moveForward();
     }
     else if (direction == 'r'){
         //ga 90 graden links
-        turnRight();
         cout << "Right" << endl;
-
+        turnRight();
     }
     else if (direction == 'l'){
         //ga 90 graden links
-        turnLeft();
         cout << "Left" << endl;
-
+        turnLeft();
     }
     else if (direction == 'b'){
         //ga 180 graden draaien
-        turnRight();
-        turnRight();
         cout << "Reverse" << endl;
+        turnRight();
+        turnRight();
 
     }
     else{
@@ -251,6 +250,7 @@ void Navigation(vector<char> route){
 
     Drive('b');
     route.push_back('n');
+    sleep(4);
     for (int i = (route.size() - 2); i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f');
