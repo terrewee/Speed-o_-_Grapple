@@ -44,6 +44,7 @@ void error(const char *msg) {
   Description:  Opens a socket and listens for a message, return a message based on result.
 */
 vector<char> iServer(){
+
   int socketFD, newSocketFD, n;
   socklen_t clilen;
   char buffer[256];
@@ -58,7 +59,9 @@ vector<char> iServer(){
     error("ERROR on binding");
   }
 
-  listen(socketFD,5);
+    cout << "Open for communication, awaiting message" << endl;
+
+    listen(socketFD,5);
   clilen = sizeof(cli_addr);
   newSocketFD = accept(socketFD, (struct sockaddr *) &cli_addr, &clilen);
 
@@ -94,6 +97,8 @@ vector<char> iServer(){
   for(unsigned int i=0; i < target.size(); i++){
     route.push_back(target[i]);
   }
+
+  cout << "route received and decoded, time to roll" << endl;
     return route;
 }
 
@@ -297,18 +302,16 @@ int main(){
   int uChoice;
 
   while (running){
-    cout << "Kies functie: " << endl;
+    cout << "Kies een van deze functies: " << endl;
     cout << "1: Receive message" << endl;
     cout << "2: Set communication details" << endl;
     cout << "3: Check sensor" << endl;
     cout << "4: Wait for message (route) , then return the object" << endl;
     cout << "5: Drive the giving route" << endl;
-    cout << "6: Stop it and die" << endl;
+    cout << "6: Stop it and die" << endl << endl;
+    cout << "Uw keuze is: ";
 
-
-
-
-      cin >> uChoice;
+      cin >> uChoice; cout << endl << endl;
 
     switch(uChoice) {
       case 1:
