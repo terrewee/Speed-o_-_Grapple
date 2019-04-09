@@ -123,10 +123,11 @@ void resetMotorsAB(){
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
 	int snelheid =30;
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
 	while (motorPower <= snelheid) {
 		BP.set_motor_power(PORT_A, motorPower+6);
 		BP.set_motor_power(PORT_B, motorPower);
-		usleep(0.1);
 		int32_t EncoderA = BP.get_motor_encoder(PORT_A);
 		int32_t EncoderB = BP.get_motor_encoder(PORT_B);
 		int32_t EncoderC = BP.get_motor_encoder(PORT_C);
