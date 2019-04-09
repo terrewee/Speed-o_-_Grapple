@@ -139,19 +139,19 @@ void turnMotorPowerDown(int motorPower) {
 void moveForward(){
     int motorPower = 0;
     turnMotorPowerUp(motorPower);
-    sleep(2); //dit moet afgesteld worden met de speed-o
+    sleep(5); //dit moet afgesteld worden met de speed-o
     turnMotorPowerDown(motorPower);
 }
 
 void turnLeft(){
     BP.set_motor_power(PORT_B, 50);
     BP.set_motor_power(PORT_C, -50);
-    sleep(7);
+    sleep(5.2);
 }
 void turnRight(){
     BP.set_motor_power(PORT_B, -50);
     BP.set_motor_power(PORT_C, 50);
-    sleep(7);
+    sleep(5.2);
 }
 
 
@@ -165,19 +165,26 @@ void Drive(char direction){
     if (direction == 'f'){
         //ga 1 unit vooruit
         moveForward();
+        cout << "Forward" << endl;
     }
     else if (direction == 'r'){
         //ga 90 graden links
         turnRight();
+        cout << "Right" << endl;
+
     }
     else if (direction == 'l'){
         //ga 90 graden links
         turnLeft();
+        cout << "Left" << endl;
+
     }
     else if (direction == 'b'){
         //ga 180 graden draaien
         turnRight();
         turnRight();
+        cout << "Reverse" << endl;
+
     }
     else{
         cout << "Invalid operator: " << direction << endl << "Next time use: f, r, l or b" << endl;
