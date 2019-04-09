@@ -272,8 +272,13 @@ int main(){
   BP.detect();
   BP.reset_all();
 
-  cout << endl << "Initialized" << endl;
-    sleep(4);
+  cout << endl << "Initializing" << endl;
+  int o = 30;
+  while (o != 0){
+      --o;
+      cout << '.' ;
+      sleep(0.1);
+  }
   cout << endl << "Initialized" << endl;
 
   int uChoice;
