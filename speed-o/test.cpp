@@ -60,13 +60,12 @@ int main()
 	{
 		cout << "Motor A power: ";
 		cin >> motorA;
-		cout << "Motor B power: ";
-		cin >> motorB;
-		fwd(motorA, motorB);
-		sleep(3);
-		//fwd(-6,0);
-//		encodeMotors(motorA);
-		fwd(motorA, motorB);
+//		cout << "Motor B power: ";
+//		cin >> motorB;
+//		fwd(-6,0);
+		encodeMotors(motorA);
+//		fwd(motorA, motorB);
+//		sleep(3);
 		readEncodedMotor();
 	}
 }
