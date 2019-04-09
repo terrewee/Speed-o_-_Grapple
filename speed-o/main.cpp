@@ -73,7 +73,12 @@ void gelijdelijkDownLoop()
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 45, 0);	// speed 45 als limiet voor opwaartse beweging.
-	encodeMotor(110);			// rotatie is ~110.
+	int32_t encoder = -110;
+	while(encoder < 0)
+	{
+		encodeMotor(5);
+		encoder = encoder + 5;
+	}
 }
 
 /*
