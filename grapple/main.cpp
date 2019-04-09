@@ -144,14 +144,14 @@ void moveForward(){
 }
 
 void turnLeft(){
-    BP.set_motor_power(PORT_B, 50);
-    BP.set_motor_power(PORT_C, -50);
-    sleep(5.2);
+    BP.set_motor_dps(PORT_B, 600);
+    BP.set_motor_dps(PORT_C, -600);
+    sleep(0.5);
 }
 void turnRight(){
-    BP.set_motor_power(PORT_B, -50);
-    BP.set_motor_power(PORT_C, 50);
-    sleep(5.2);
+    BP.set_motor_dps(PORT_B, -600);
+    BP.set_motor_dps(PORT_C, 600);
+    sleep(0.5);
 }
 
 
@@ -281,6 +281,9 @@ int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   BP.detect();
   BP.reset_all();
+
+    BP.set_motor_limits(PORT_B, 50, 0);
+    BP.set_motor_limits(PORT_C, 50, 0);
 
   cout << endl << "Initializing" << endl;
   int o = 30;
