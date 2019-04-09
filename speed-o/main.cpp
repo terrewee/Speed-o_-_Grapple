@@ -41,8 +41,8 @@ void exit_signal_handler(int signo){
 
 
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
-vector<vector<string>> makeGrid(gridPoints GP) {
-	vector<vector<string>> grid;
+vector<vector<bool>> makeGrid(gridPoints GP) {
+	vector<vector<bool>> grid;
 	int targetX = GP.targetRelCoordinates.x;
 	int targetY = GP.targetRelCoordinates.y;
 	if (targetX < 0) {
@@ -62,8 +62,8 @@ vector<vector<string>> makeGrid(gridPoints GP) {
 }
 
 //Asks user for GP.targetRelCoordinates for grid generation.
-vector<vector<string>> getGrid(gridPoints & GP) {
-	vector<vector<string>> grid = { {} };
+vector<vector<bool>> getGrid(gridPoints & GP) {
+	vector<vector<bool>> grid = { {} };
 
 	cout << "Please give the relative x coordinate of the object to be found." << endl;
 	cin >> GP.targetRelCoordinates.x;
@@ -76,7 +76,7 @@ vector<vector<string>> getGrid(gridPoints & GP) {
 }
 
 //Sets all the coordinates for GP.homeCoordinates and GP.targetCoordinates based on GP.targetRelCoordinates.
-void getCoordinates(gridPoints &GP, vector<vector<string>> &grid) {
+void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
 	//Set home coordinates
@@ -262,7 +262,7 @@ void turn(char direction, gridPoints GP) {
 	}
 }
 
-vector<char> manualControl(gridPoints &GP){
+string manualControl(gridPoints &GP){
 	vector<char> orientationList;
 	string answer;
 	while(true){
@@ -275,7 +275,9 @@ vector<char> manualControl(gridPoints &GP){
 		orientationList.push_back(GP.direction);
 		cout << GP.direction << endl << endl;
 	}
-	return orientationList;
+	string message(orientationList.begin(), orientationList.end()); 
+	return message;
+
 }
 
 int main(){
@@ -301,14 +303,14 @@ int main(){
 	BP.set_motor_position(PORT_D, EncoderA);
 	*/
 	gridPoints GP;
-	vector<vector<string>> grid = getGrid(GP);
+	vector<vector<bool>> grid = getGrid(GP);
 	getCoordinates(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
 
-	vector<char> NOSWList = manualControl(GP);
+	string NOSWList = manualControl(GP);
 
-	for(size_t i = 0; i < NOSWList.size(); i++){cout << NOSWList[i] << " ";}
+	cout << NOSWList << " ";
 		 
 	//moveForward();
 	cout << "end of file";
