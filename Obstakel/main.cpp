@@ -216,6 +216,13 @@ void setSensors(){
   BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_ULTRASONIC);
 }
 
+// Signal handler that will be called when Ctrl+C is pressed to stopHead the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
 
 int main(){
 //thread checkBattery (batteryLevel);
@@ -225,6 +232,8 @@ int main(){
   setSensors();
   sleep(2);
   stopHead();
+
+  signal(SIGINT, exit_signal_handler);
 
   sensor_ultrasonic_t Ultrasonic;
   thread vooruit (lookForward, Ultrasonic);
@@ -253,10 +262,3 @@ int main(){
   return 0;
 }
 
-// Signal handler that will be called when Ctrl+C is pressed to stopHead the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
-}
