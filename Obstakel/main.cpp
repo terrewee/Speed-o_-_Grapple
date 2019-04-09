@@ -226,6 +226,9 @@ int main(){
   thread vooruit (lookForward, Ultrasonic);
   thread obstakelcheck (obstakelDetectie, Ultrasonic);
 
+  while(true){
+    sleep(1);
+  }
   // bool loop = true;
   // while(loop){
   //   int keuze;
