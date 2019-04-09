@@ -158,15 +158,15 @@ void moveForward(){
 }
 
 void turnLeft(){
-    BP.set_motor_power(PORT_B, -50);
-    BP.set_motor_power(PORT_C, 50);
-    sleep(8);
+    BP.set_motor_power(PORT_B, 50);
+    BP.set_motor_power(PORT_C, -50);
+    sleep(7);
     resetMotor();
 }
 void turnRight(){
-    BP.set_motor_power(PORT_B, 50);
-    BP.set_motor_power(PORT_C, -50);
-    sleep(8);
+    BP.set_motor_power(PORT_B, -50);
+    BP.set_motor_power(PORT_C, 50);
+    sleep(7);
     resetMotor();
 }
 
