@@ -59,13 +59,10 @@ int main()
 		cout << "Motor B power: ";
 		cin >> motorB;
 		fwd(motorA, motorB);
-<<<<<<< HEAD
 		sleep(3);
 //		fwd(-6,0);
-=======
 		//sleep(3);
 		//fwd(-6,0);
 		readEncodedMotor();
->>>>>>> de4d89d15ccefdc77c8765ac5146ddce9fb4d828
 	}
 }
