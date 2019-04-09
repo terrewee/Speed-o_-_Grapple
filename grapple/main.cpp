@@ -311,7 +311,7 @@ int main(){
   int uChoice;
 
   while (running){
-    cout << "Kies een van deze functies: " << endl;
+    cout << endl << "Kies een van deze functies: " << endl;
     cout << "1: Receive message" << endl;
     cout << "2: Set communication details" << endl;
     cout << "3: Check sensor" << endl;
@@ -335,7 +335,7 @@ int main(){
         Navigation(iServer());
         break;
       case 5: {
-          vector<char> vec = {'n', 'w', 'w', 'o', 's', 's'};
+          vector<char> vec = {'n', 'n', 'w', 'w', 's'};
           Navigation(vec);
           break;
       }
