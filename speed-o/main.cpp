@@ -109,5 +109,6 @@ int main()
 	klauwDicht();
 	sleep(1);
 	klauwOmhoog();
+	sleep(3);
 	BP.set_motor_power(PORT_A, 0);
 }
