@@ -191,7 +191,7 @@ void Drive(char direction){
 */
 
 void Navigation(vector<char> route){
-    route[0].push_back(n);
+    route.insert(route.begin(), 1, 'n');
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f');
@@ -230,7 +230,7 @@ void Navigation(vector<char> route){
 
 
     Drive('b');
-    route.push_back(n);
+    route.push_back('n');
     for (int i = route.size() - 1; i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f');
@@ -317,7 +317,7 @@ int main(){
         Navigation(vec);
         break;
       case 6:
-        running = false;
+        ::running = false;
         break;
     }
   }
