@@ -8,7 +8,7 @@ BrickPi3 BP;
 using namespace std;
 
 void encodeHead(int32_t pos){
-    BP.set_motor_position_relative(PORT_A,pos);
+    BP.set_motor_position_relative(PORT_D,pos);
 }
 
 void exit_signal_handler(int signo);
@@ -80,7 +80,7 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
 
     //reset to middle
     encodeHead(-90);
-}
+} 
 
 void lookForward(sensor_ultrasonic_t Ultrasonic){
     float waarde = measure(Ultrasonic);
