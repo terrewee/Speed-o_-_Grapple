@@ -2,6 +2,7 @@
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
+#include <linux/spi/spidev.h>
 
 using namespace std;
 
