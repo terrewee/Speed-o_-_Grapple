@@ -18,6 +18,7 @@ BrickPi3 BP;
 
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
+bool running = true;
 
 void exit_signal_handler(int signo);
 
@@ -185,12 +186,13 @@ void Drive(char direction){
 
 /*
   Author:       Gerjan
-  Description:  Takes a Vector with chars n,o,s and w,
+  Description:  Takes a Vector with chars n,e,s and w,
   and uses those to drive to the destination, pick up an object and drive back.
 */
 
 void Navigation(vector<char> route){
-    for (int i = 0; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
+    route.insert (0, 'n');
+    for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f');
         }
@@ -228,7 +230,8 @@ void Navigation(vector<char> route){
 
 
     Drive('b');
-    for (int i = route.size(); i >= 0; --i) { // rij terug naar het startpunt aan de hand van de route
+    route.pushback('n');
+    for (int i = route.size() - 1; i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f');
         }
@@ -237,14 +240,14 @@ void Navigation(vector<char> route){
                 (route[i] == 'o' && route[i+1] == 'n') ||
                 (route[i] == 's' && route[i+1] == 'o') ||
                 (route[i] == 'w' && route[i+1] == 's')){
-                Drive('l');
+                Drive('r');
                 Drive('f');
             }
             else if ((route[i] == 'n' && route[i+1] == 'o') ||
                 (route[i] == 'o' && route[i+1] == 's') ||
                 (route[i] == 's' && route[i+1] == 'w') ||
                 (route[i] == 'w' && route[i+1] == 'n')){
-                Drive('r');
+                Drive('l');
                 Drive('f');
             }
             else if ((route[i] == 'n' && route[i+1] == 's') ||
@@ -276,20 +279,22 @@ int main(){
   int o = 30;
   while (o != 0){
       --o;
-      cout << '.' ;
+      cout << '.';
       sleep(0.1);
   }
   cout << endl << "Initialized" << endl;
 
   int uChoice;
 
-  while (true){
+  while (running){
     cout << "Kies functie: " << endl;
     cout << "1: Receive message" << endl;
     cout << "2: Set communication details" << endl;
     cout << "3: Check sensor" << endl;
     cout << "4: Wait for message (route) , then return the object" << endl;
     cout << "5: Drive the giving route" << endl;
+    cout << "9: Stop it and die" << endl;
+
 
 
 
@@ -310,6 +315,9 @@ int main(){
       case 5:
         vector<char> vec = {'n','n','w','w','s','o','w','s'};
         Navigation(vec);
+        break;
+      case 9:
+          running = false
         break;
     }
   }
