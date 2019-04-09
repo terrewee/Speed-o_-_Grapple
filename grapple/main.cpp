@@ -238,7 +238,7 @@ void Navigation(vector<char> route){
 
     Drive('b');
     route.push_back('n');
-    for (int i = route.size() - 1; i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
+    for (int i = (route.size() - 2); i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f');
         }
