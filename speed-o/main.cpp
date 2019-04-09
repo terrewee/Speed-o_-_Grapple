@@ -291,7 +291,8 @@ coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & 
 	}
 	else{
 		gridPointCoordinates.x = number % rowAmount;
-		gridPointCoordinates.y = number / columnAmount;
+		gridPointCoordinates.y = number / rowAmount;
+
 	}
 
 	return gridPointCoordinates;
@@ -302,7 +303,7 @@ coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & 
 int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	unsigned int rowAmount = grid[0].size();
 	//unsigned int gridsize = rowAmount * columnAmount;
-	return gridPoint.x + (gridPoint.y *rowAmount);
+	return gridPoint.x + (gridPoint.y * rowAmount);
 }
 
 //updates the current coordinate in prevCoordinatesVector with previous coordinates.
@@ -379,12 +380,26 @@ vector<char> findPath(vector<coordinates> previousCoordinatesVector, vector<vect
 	return path;
 }
 
+void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinatesVector, gridPoints & GP, vector<vector<bool>> & grid){
+	unsigned int i = 1;
+	route.push_back(GP.targetCoordinates);
+	
+	while(true){
+		unsigned int nextPointNumber = getGridPointNumber(route[i - 1], grid);
+		coordinates nextPointCoordinates = prevCoordinatesVector[nextPointNumber];
+		route.push_back(nextPointCoordinates);
+		i++;
+		if((nextPointCoordinates.x == GP.currentLocation.x && nextPointCoordinates.y == GP.currentLocation.y) || i >= grid.size() * grid[0].size()){
+			break;
+		}
+	}
+}
+
 void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
-	cout << endl;
-	cout << endl;
+	vector<coordinates> route;
 	vector<int> queue;
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
@@ -401,7 +416,15 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 		i++;
 	}
 
-	cout << endl;
+	getRoute(route, prevCoordinatesVector, GP, grid);
+
+	cout << "route:" << endl;
+
+	for(unsigned int i = 0; i < route.size(); i++){
+		cout << route[i].x << "," << route[i].y << " ";
+	}
+	cout << endl << "prevCoordinates:" << endl;
+
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
 	cout << endl << endl;
 
