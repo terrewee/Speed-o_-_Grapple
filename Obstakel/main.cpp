@@ -101,21 +101,27 @@ void lookForward(sensor_ultrasonic_t Ultrasonic){
 void obstakelDetectie(sensor_ultrasonic_t Ultrasonic){
   while(true){
   //main van obstakel
-    stopHead();
-    while (obstakel.obstakelInRangeForward == true){
-      stopHead();
+    cout << "Forward " << endl;
+    lookForward();
+    cout << "Left " << endl;
+    lookLeft();
+    cout << "Right " << endl;
+    lookRight();
+    // stopHead();
+    // while (obstakel.obstakelInRangeForward == true){
+    //   stopHead();
       
-      lookLeft(Ultrasonic);
-      if (obstakel.obstakelInRangeLeft == true){cout << "cant go left" << endl;}
-      else{cout << "can go left" << endl;}
-      sleep (1);
+    //   lookLeft(Ultrasonic);
+    //   if (obstakel.obstakelInRangeLeft == true){cout << "cant go left" << endl;}
+    //   else{cout << "can go left" << endl;}
+    //   sleep (1);
       
-      lookRight(Ultrasonic);
-      if (obstakel.obstakelInRangeRight == true){cout << "cant go right" << endl;}
-      else{cout << "can go right" << endl;}
-      sleep (1);
-      if(obstakel.obstakelInRangeForward == true && obstakel.obstakelInRangeLeft == true && obstakel.obstakelInRangeRight == true){cout <<"Go back" << endl;} 
-    }
+    //   lookRight(Ultrasonic);
+    //   if (obstakel.obstakelInRangeRight == true){cout << "cant go right" << endl;}
+    //   else{cout << "can go right" << endl;}
+    //   sleep (1);
+    //   if(obstakel.obstakelInRangeForward == true && obstakel.obstakelInRangeLeft == true && obstakel.obstakelInRangeRight == true){cout <<"Go back" << endl;} 
+    // }
   }
 }
 
