@@ -50,6 +50,7 @@ void brengNaarKantelPunt()
 */
 void gelijdelijkDownLoop()
 {
+	int32_t encoder = -60;
 	while(encoder > -120)
 	{
 		encodeMotor(-5);
@@ -100,9 +101,9 @@ int main()
   	BP.detect();
 	setSensors();
 	klauwOpen();
-	usleep(500000);
+	sleep(1);
 	brengNaarKantelPunt();
-	usleep(250000);
+	sleep(1);
 	gelijdelijkDownLoop();
 	sleep(1);
 	klauwDicht();
