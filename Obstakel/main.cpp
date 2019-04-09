@@ -12,7 +12,7 @@ void setSensors(){
 }
 
 void encodeHead(int32_t pos){
-    BP.set_motor_position_relative(PORT_A,pos);
+    BP.set_motor_position_relative(PORT_D,pos);
 }
 
 void exit_signal_handler(int signo);
@@ -48,7 +48,7 @@ int measure(sensor_ultrasonic_t Ultrasonic){
 
 void stopHead(){
   //reset de motor dps
-  BP.set_motor_dps(PORT_A, 0);
+  BP.set_motor_dps(PORT_D, 0);
 }
 void lookLeft(sensor_ultrasonic_t Ultrasonic){
     // BP.set_motor_dps(PORT_B, -60);
