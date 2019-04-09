@@ -30,9 +30,9 @@ range obstakel;
 
 int measure(sensor_ultrasonic_t Ultrasonic){
   cout << "beep boop" << endl;
-  int ding = BP.get_sensor(PORT_4, Ultrasonic);
+  int ding = BP.get_sensor(PORT_1, Ultrasonic);
   cout << ding << endl;
-  if( ding == 0){
+  if(ding == 0){
     cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
   }
   sleep(5);
