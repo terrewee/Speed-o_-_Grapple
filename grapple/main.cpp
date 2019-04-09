@@ -120,13 +120,13 @@ void encodeMotors(int32_t lpos , int32_t rpos){
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDis1tance() is made for that.
 
 void resetMotor(){
-    BP.set_motor_power(PORT_B, 0);
-    BP.set_motor_power(PORT_C, 0);
     BP.set_motor_dps(PORT_B, 0);
     BP.set_motor_dps(PORT_C, 0);
     BP.set_motor_position_relative(PORT_B, 0);
     BP.set_motor_position_relative(PORT_C, 0);
-    sleep(1);
+    BP.set_motor_power(PORT_B, 0);
+    BP.set_motor_power(PORT_C, 0);
+    sleep(5);
 }
 
 void turnMotorPowerUp(int motorPower) {
