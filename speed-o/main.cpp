@@ -32,6 +32,11 @@ void encodeMotor(int32_t pos)
 	BP.set_motor_position_relative(PORT_A, pos);
 }
 
+/*
+	Author		:	Joram van Leeuwen
+	Description	:
+		Functie om arm over kantelpunt te krijgen
+*/
 void brengNaarKantelPunt()
 {
 	BP.set_motor_limits(PORT_A, 50, 0);
@@ -45,7 +50,6 @@ void brengNaarKantelPunt()
 */
 void gelijdelijkDownLoop()
 {
-	int32_t encoder = -50;
 	while(encoder > -120)
 	{
 		encodeMotor(-5);
@@ -62,15 +66,6 @@ void gelijdelijkDownLoop()
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 45, 0);
-	/*
-	int32_t encoder = -120;
-	while(encoder < 0)
-	{
-		encodeMotor(10);
-		usleep(250000);
-		encoder = encoder + 10;
-	}
-	*/
 	encodeMotor(100);	// pas nog aan
 }
 
