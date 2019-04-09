@@ -127,6 +127,7 @@ void turnMotorPowerUp(int &motorPower) {
 		BP.set_motor_power(PORT_A, motorPower+6);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.1);
+		printf("Encoder A: %6d  B: %6d  C: %6d  D: %6d\n", EncoderA, EncoderB, EncoderC, EncoderD);
 		motorPower += 5;
 	}
 }
@@ -142,29 +143,29 @@ void moveForward(){
 void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
-		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_B, 50);
+		BP.set_motor_power(PORT_A, -33);
+		BP.set_motor_power(PORT_B, 33);
 		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 'w'){
     GP.direction = 'n';
-		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_B, 50);
+		BP.set_motor_power(PORT_A, -33);
+		BP.set_motor_power(PORT_B, 33);
 		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 's'){
     GP.direction = 'w';
-		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_B, 50);
+		BP.set_motor_power(PORT_A, -33);
+		BP.set_motor_power(PORT_B, 33);
 		sleep(1);
 		resetMotorsAB();
   }
   else{
     GP.direction = 's';
-		BP.set_motor_power(PORT_A, -50);
-		BP.set_motor_power(PORT_B, 50);
+		BP.set_motor_power(PORT_A, -33);
+		BP.set_motor_power(PORT_B, 33);
 		sleep(1);
 		resetMotorsAB();
   }
@@ -174,29 +175,29 @@ void turnLeft(gridPoints & GP){
 void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
-		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_B, -50);
+		BP.set_motor_power(PORT_A, 33);
+		BP.set_motor_power(PORT_B, -33);
 		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 'w'){
     GP.direction = 's';
-		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_B, -50);
+		BP.set_motor_power(PORT_A, 33);
+		BP.set_motor_power(PORT_B, -33);
 		sleep(1);
 		resetMotorsAB();
   }
   else if(GP.direction == 's'){
     GP.direction = 'e';
-		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_B, -50);
+		BP.set_motor_power(PORT_A, 33);
+		BP.set_motor_power(PORT_B, -33);
 		sleep(1);
 		resetMotorsAB();
   }
   else{
     GP.direction = 'n';
-		BP.set_motor_power(PORT_A, 50);
-		BP.set_motor_power(PORT_B, -50);
+		BP.set_motor_power(PORT_A, 33);
+		BP.set_motor_power(PORT_B, -33);
 		sleep(1);
 		resetMotorsAB();
   }
@@ -456,8 +457,9 @@ int main(){
 	// resetCurrentLocation(GP);
 
 	moveForward();
-	turnLeft(GP);
-	turnRight(GP);
+	// turnLeft(GP);
+	// turnRight(GP);
+	printf("Encoder A: %6d  B: %6d  C: %6d  D: %6d\n", EncoderA, EncoderB, EncoderC, EncoderD);
 
 	return 0;
 }
