@@ -191,7 +191,7 @@ void Drive(char direction){
 */
 
 void Navigation(vector<char> route){
-    route.insert (0, 'n');
+    route[0].push_back(n);
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f');
@@ -230,7 +230,7 @@ void Navigation(vector<char> route){
 
 
     Drive('b');
-    route.pushback('n');
+    route.push_back(n);
     for (int i = route.size() - 1; i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f');
@@ -293,7 +293,7 @@ int main(){
     cout << "3: Check sensor" << endl;
     cout << "4: Wait for message (route) , then return the object" << endl;
     cout << "5: Drive the giving route" << endl;
-    cout << "9: Stop it and die" << endl;
+    cout << "6: Stop it and die" << endl;
 
 
 
@@ -316,8 +316,8 @@ int main(){
         vector<char> vec = {'n','n','w','w','s','o','w','s'};
         Navigation(vec);
         break;
-      case 9:
-          running = false
+      case 6:
+        running = false;
         break;
     }
   }
