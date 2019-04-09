@@ -22,7 +22,7 @@ void encodeMotor(int32_t pos)
 
 void beweegKlauw()
 {
-	int32_t encoder = 0;
+	int32_t encoder = -50;
 	encodeMotor(-50);
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	while(encoder > -110)
