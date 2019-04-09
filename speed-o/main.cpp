@@ -42,6 +42,12 @@ void encodeMotor(int32_t pos)
 	BP.set_motor_position_relative(PORT_A, pos);
 }
 
+void brengNaarKantelPunt()
+{
+	BP.set_motor_limits(PORT_A, 30, 0);
+	encodeMotor(-50);
+}
+
 /*
 	Author		:	Joram van Leeuwen, Stef Ottenhof
 	Description	:
@@ -49,15 +55,13 @@ void encodeMotor(int32_t pos)
 */
 void gelijdelijkDownLoop()
 {
-	BP.set_motor_limits(PORT_A, 30, 0);
 	int32_t encoder = -50;
-	encodeMotor(-50);
 	while(encoder > -110)
 	{
-		BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+		//BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 		encodeMotor(-5);
 		usleep(250000);
-		encoder = BP.get_motor_encoder(PORT_A);
+		encoder = encoder - 5;
 	}
 }
 
@@ -103,6 +107,9 @@ int main()
   	BP.detect();
 	setSensors();
 	klauwOpen();
+	usleep(500000);
+	brengNaarKantelPunt();
+	usleep(250000);
 	gelijdelijkDownLoop();
 	sleep(1);
 	klauwDicht();
