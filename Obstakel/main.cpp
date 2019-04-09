@@ -102,11 +102,11 @@ void obstakelDetectie(sensor_ultrasonic_t Ultrasonic){
   while(true){
   //main van obstakel
     cout << "Forward " << endl;
-    lookForward();
+    lookForward(Ultrasonic);
     cout << "Left " << endl;
-    lookLeft();
+    lookLeft(Ultrasonic);
     cout << "Right " << endl;
-    lookRight();
+    lookRight(Ultrasonic);
     // stopHead();
     // while (obstakel.obstakelInRangeForward == true){
     //   stopHead();
