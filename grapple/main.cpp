@@ -177,7 +177,7 @@ void Drive(char direction){
         turnRight();
     }
     else{
-        cout << "Invalid operator: " << direction << endl << "Next time use: f, r, l or b" , endl;
+        cout << "Invalid operator: " << direction << endl << "Next time use: f, r, l or b" << endl;
     }
 }
 
@@ -196,21 +196,21 @@ void Navigation(vector<char> route){
             if ((route[i] == 'n' && route[i-1] == 'w') ||
                 (route[i] == 'o' && route[i-1] == 'n') ||
                 (route[i] == 's' && route[i-1] == 'o') ||
-                (route[i] == 'w' && route[i-1] == 's') ||){
+                (route[i] == 'w' && route[i-1] == 's')){
                 Drive('r');
                 Drive('f');
             }
             if ((route[i] == 'n' && route[i-1] == 'o') ||
                 (route[i] == 'o' && route[i-1] == 's') ||
                 (route[i] == 's' && route[i-1] == 'w') ||
-                (route[i] == 'w' && route[i-1] == 'n') ||){
+                (route[i] == 'w' && route[i-1] == 'n')){
                 Drive('l');
                 Drive('f');
             }
             if ((route[i] == 'n' && route[i-1] == 's') ||
                 (route[i] == 'o' && route[i-1] == 'w') ||
                 (route[i] == 's' && route[i-1] == 'n') ||
-                (route[i] == 'w' && route[i-1] == 'o') ||){
+                (route[i] == 'w' && route[i-1] == 'o')){
                 Drive('b');
                 Drive('f');
             } else{
@@ -234,21 +234,21 @@ void Navigation(vector<char> route){
             if ((route[i] == 'n' && route[i+1] == 'w') ||
                 (route[i] == 'o' && route[i+1] == 'n') ||
                 (route[i] == 's' && route[i+1] == 'o') ||
-                (route[i] == 'w' && route[i+1] == 's') ||){
+                (route[i] == 'w' && route[i+1] == 's')){
                 Drive('l');
                 Drive('f');
             }
             if ((route[i] == 'n' && route[i+1] == 'o') ||
                 (route[i] == 'o' && route[i+1] == 's') ||
                 (route[i] == 's' && route[i+1] == 'w') ||
-                (route[i] == 'w' && route[i+1] == 'n') ||){
+                (route[i] == 'w' && route[i+1] == 'n')){
                 Drive('r');
                 Drive('f');
             }
             if ((route[i] == 'n' && route[i+1] == 's') ||
                 (route[i] == 'o' && route[i+1] == 'w') ||
                 (route[i] == 's' && route[i+1] == 'n') ||
-                (route[i] == 'w' && route[i+1] == 'o') ||){
+                (route[i] == 'w' && route[i+1] == 'o') ){
                 Drive('b');
                 Drive('f');
             } else{
