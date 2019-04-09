@@ -1,4 +1,4 @@
-#include "BrickPi3.h"   // for BrickPi3                                                     //TE DOEN
+#include "BrickPi3.h"   // for BrickPi3
 #include <iostream>     // for printf
 #include <unistd.h>     // for usleep and sleep
 #include <signal.h>     // for catching exit signals
@@ -9,17 +9,6 @@ using namespace std;
 BrickPi3 BP;
 
 void exit_signal_handler(int signo);
-
-/*
-	Author		:	Joram van Leeuwen
-	Description	:
-		Simpele code om twee motoren eenmaal aan te sturen.
-*/
-void fwd(int lspd , int rspd)
-{
-	BP.set_motor_power(PORT_B, lspd);
-	BP.set_motor_power(PORT_C, rspd);
-}
 
 /*
 	Author 		:	Duur Alblas
@@ -45,7 +34,7 @@ void encodeMotor(int32_t pos)
 
 void brengNaarKantelPunt()
 {
-	BP.set_motor_limits(PORT_A, 30, 0);
+	BP.set_motor_limits(PORT_A, 50, 0);
 	encodeMotor(-50);
 }
 
@@ -59,9 +48,8 @@ void gelijdelijkDownLoop()
 	int32_t encoder = -50;
 	while(encoder > -120)
 	{
-		//BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 		encodeMotor(-5);
-		usleep(250000);
+		usleep(500000);
 		encoder = encoder - 5;
 	}
 }
@@ -73,7 +61,8 @@ void gelijdelijkDownLoop()
 */
 void klauwOmhoog()
 {
-	BP.set_motor_limits(PORT_A, 100, 0);
+	BP.set_motor_limits(PORT_A, 45, 0);
+	/*
 	int32_t encoder = -120;
 	while(encoder < 0)
 	{
@@ -81,6 +70,8 @@ void klauwOmhoog()
 		usleep(250000);
 		encoder = encoder + 10;
 	}
+	*/
+	encodeMotor(100);	// pas nog aan
 }
 
 /*
