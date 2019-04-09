@@ -58,6 +58,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasonic){
     //spin left
     encodeHead(-90);
 
+    sleep(1);
     int waarde = measure(Ultrasonic);
     if (waarde <= 10.0){obstakel.obstakelInRangeLeft = true;}
     else{obstakel.obstakelInRangeLeft = false;}
@@ -67,6 +68,7 @@ void lookLeft(sensor_ultrasonic_t Ultrasonic){
     // stopHead();
 
     //reset to middle
+    sleep(1);
     encodeHead(90);
 }
 
@@ -78,6 +80,7 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
     //spin right.
     encodeHead(90);
 
+    sleep(1);
     int waarde = measure(Ultrasonic);
     if (waarde <= 10.0){ obstakel.obstakelInRangeLeft = true;}
     else{obstakel.obstakelInRangeLeft = false;}
@@ -87,6 +90,7 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
     // stopHead();
 
     //reset to middle
+    sleep(1);
     encodeHead(-90);
 } 
 
