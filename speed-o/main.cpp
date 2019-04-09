@@ -369,6 +369,16 @@ vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinate
 	return queue;
 }
 
+vector<char> findPath(vector<coordinates> previousCoordinatesVector, vector<vector<bool>> &grid){
+	vector<char> path;
+	vector<int> getPath;	
+	for(size_t i = 0; i < previousCoordinatesVector.size(); i++){
+		getPath.push_back(getGridPointNumber(previousCoordinatesVector[i], grid));
+		cout << getPath[i] << " ";
+	}
+	return path;
+}
+
 void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
@@ -391,11 +401,11 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 		i++;
 	}
 
-
 	cout << endl;
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
-	cout << endl;
+	cout << endl << endl;
 
+	findPath(prevCoordinatesVector, grid);
 }
 
 int main(){
@@ -430,17 +440,4 @@ int main(){
 	//moveForward();
 	cout << "end of file";
 	return 0;
-}
- 
-vector<char> findPath(vector<coordinates> previousCoordinatesVector, vector<vector<bool>> &grid){
-	vector<char> path;
-	vector<int> getPath;	
-	for(size_t i = 0; i < previousCoordinatesVector.size(); i++){
-		getPath.push_back(getGridPointNumber(previousCoordinatesVector[i], grid));
-		
-	}
-	
-	
-
-	return path;
 }
