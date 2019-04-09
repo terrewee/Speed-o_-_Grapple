@@ -12,7 +12,7 @@ void setSensors(){
 }
 
 void encodeHead(int32_t pos){
-    BP.set_motor_position_relative(PORT_D,pos);
+    BP.set_motor_position_relative(PORT_A,pos);
 }
 
 void exit_signal_handler(int signo);
