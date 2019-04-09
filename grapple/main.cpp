@@ -143,13 +143,13 @@ void moveForward(){
 }
 
 void turnLeft(){
-    BP.set_motor_power(PORT_B, 10);
-    BP.set_motor_power(PORT_C, -10);
+    BP.set_motor_power(PORT_B, 20);
+    BP.set_motor_power(PORT_C, -20);
     sleep(5);
 }
 void turnRight(){
-    BP.set_motor_power(PORT_B, -10);
-    BP.set_motor_power(PORT_C, 10);
+    BP.set_motor_power(PORT_B, -20);
+    BP.set_motor_power(PORT_C, 20);
     sleep(5);
 }
 
@@ -165,15 +165,15 @@ void Drive(char direction){
         //ga 1 unit vooruit
         moveForward();
     }
-    if (direction == 'r'){
+    else if (direction == 'r'){
         //ga 90 graden links
         turnRight();
     }
-    if (direction == 'l'){
+    else if (direction == 'l'){
         //ga 90 graden links
         turnLeft();
     }
-    if (direction == 'b'){
+    else if (direction == 'b'){
         //ga 180 graden draaien
         turnRight();
         turnRight();
@@ -240,14 +240,14 @@ void Navigation(vector<char> route){
                 Drive('l');
                 Drive('f');
             }
-            if ((route[i] == 'n' && route[i+1] == 'o') ||
+            else if ((route[i] == 'n' && route[i+1] == 'o') ||
                 (route[i] == 'o' && route[i+1] == 's') ||
                 (route[i] == 's' && route[i+1] == 'w') ||
                 (route[i] == 'w' && route[i+1] == 'n')){
                 Drive('r');
                 Drive('f');
             }
-            if ((route[i] == 'n' && route[i+1] == 's') ||
+            else if ((route[i] == 'n' && route[i+1] == 's') ||
                 (route[i] == 'o' && route[i+1] == 'w') ||
                 (route[i] == 's' && route[i+1] == 'n') ||
                 (route[i] == 'w' && route[i+1] == 'o') ){
