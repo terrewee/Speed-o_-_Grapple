@@ -118,8 +118,8 @@ void turnMotorPowerUp(int motorPower) {
     while (motorPower < 20) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
-        motorPower += 2;
-        usleep(0.1);
+        motorPower += 1;
+        sleep(0.1);
     }
     BP.set_motor_power(PORT_B, 20);
     BP.set_motor_power(PORT_C, 20);
@@ -129,8 +129,8 @@ void turnMotorPowerDown(int motorPower) {
     while (motorPower > 0) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
-        motorPower -= 3;
-        usleep(0.1);
+        motorPower -= 2;
+        sleep(0.1);
     }
     BP.set_motor_power(PORT_B, 0);
     BP.set_motor_power(PORT_C, 0);
@@ -139,19 +139,19 @@ void turnMotorPowerDown(int motorPower) {
 void moveForward(){
     int motorPower = 0;
     turnMotorPowerUp(motorPower);
-    sleep(1); //dit moet afgesteld worden met de speed-o
+    sleep(2); //dit moet afgesteld worden met de speed-o
     turnMotorPowerDown(motorPower);
 }
 
 void turnLeft(){
-    BP.set_motor_power(PORT_B, 20);
-    BP.set_motor_power(PORT_C, -20);
-    sleep(5);
+    BP.set_motor_power(PORT_B, 50);
+    BP.set_motor_power(PORT_C, -50);
+    sleep(7);
 }
 void turnRight(){
-    BP.set_motor_power(PORT_B, -20);
-    BP.set_motor_power(PORT_C, 20);
-    sleep(5);
+    BP.set_motor_power(PORT_B, -50);
+    BP.set_motor_power(PORT_C, 50);
+    sleep(7);
 }
 
 
