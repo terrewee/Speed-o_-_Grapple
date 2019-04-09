@@ -5,11 +5,13 @@
 #include <signal.h>     // for catching exit signals
 #include <iostream>
 #include <vector>
+#include <string>
 
 using std::vector;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::string;
 
 //BrickPi3 BP;
 
@@ -39,8 +41,8 @@ void exit_signal_handler(int signo){
 
 
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
-vector<vector<bool>> makeGrid(gridPoints GP) {
-	vector<vector<bool>> grid;
+vector<vector<string>> makeGrid(gridPoints GP) {
+	vector<vector<string>> grid;
 	int targetX = GP.targetRelCoordinates.x;
 	int targetY = GP.targetRelCoordinates.y;
 	if (targetX < 0) {
@@ -50,9 +52,9 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
 		targetY = targetY * -1;
 	}
 	for (int i = 0; i < targetY + 5; i++) {
-		vector<bool> tempRow = {};
+		vector<string> tempRow = {};
 		for (int j = 0; j < targetX + 5; j++) {
-			tempRow.push_back(true);
+			tempRow.push_back(".");
 		}
 		grid.push_back(tempRow);
 	}
@@ -60,8 +62,8 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
 }
 
 //Asks user for GP.targetRelCoordinates for grid generation.
-vector<vector<bool>> getGrid(gridPoints & GP) {
-	vector<vector<bool>> grid = { {} };
+vector<vector<string>> getGrid(gridPoints & GP) {
+	vector<vector<string>> grid = { {} };
 
 	cout << "Please give the relative x coordinate of the object to be found." << endl;
 	cin >> GP.targetRelCoordinates.x;
@@ -74,7 +76,7 @@ vector<vector<bool>> getGrid(gridPoints & GP) {
 }
 
 //Sets all the coordinates for GP.homeCoordinates and GP.targetCoordinates based on GP.targetRelCoordinates.
-void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
+void getCoordinates(gridPoints &GP, vector<vector<string>> &grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
 	//Set home coordinates
@@ -99,29 +101,11 @@ void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
 }
 
-//Prints grid for debugging and testing grid generation.
-void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
-	for (unsigned int i = 0; i < grid.size(); i++) {
-		for (unsigned int j = 0; j < grid[i].size(); j++) {
-			if (GP.targetCoordinates.x == j && GP.targetCoordinates.y == i) {
-				cout << 'T' << ' ';
-			}
-			else if (GP.homeCoordinates.x == j && GP.homeCoordinates.y == i) {
-				cout << 'H' << ' ';
-			}
-			else {
-				cout << grid[i][j] << ' ';
-			}
-		}
-		cout << endl;
-	}
-}
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
-	int snelheid;
-	cout << "Geef snelheid" << endl;
-	cin >> snelheid;
+	int snelheid = 1;
+
 	while (motorPower < snelheid) {
 		//BP.set_motor_power(PORT_A, motorPower);
 		//BP.set_motor_power(PORT_B, motorPower);
@@ -138,8 +122,7 @@ void turnMotorPowerDown(int &motorPower) {
 		motorPower -= 10;
 	}
 }
-
-void moveForward(){
+void moveForward(gridPoints &GP){
 	int motorPower = 10;
 	turnMotorPowerUp(motorPower);
 	sleep(1);
@@ -147,45 +130,45 @@ void moveForward(){
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
-void turnLeft(gridPoints & GP){
+void turnLeft(gridPoints &GP){
   if(GP.direction == 'n'){
-    GP.direction = 'e';
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 'n';
-  }
-  else if(GP.direction == 's'){
     GP.direction = 'w';
   }
-  else{
+  else if(GP.direction == 'w'){
     GP.direction = 's';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'e';
+  }
+  else{
+    GP.direction = 'n';
   }
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
-void turnRight(gridPoints & GP){
+void turnRight(gridPoints &GP){
   if(GP.direction == 'n'){
-    GP.direction = 'w';
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 's';
-  }
-  else if(GP.direction == 's'){
     GP.direction = 'e';
   }
-  else{
+  else if(GP.direction == 'w'){
     GP.direction = 'n';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'w';
+  }
+  else{
+    GP.direction = 's';
   }
 }
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
-void resetCurrentLocation(gridPoints & GP){
+void resetCurrentLocation(gridPoints &GP){
   GP.currentLocation.x = GP.homeCoordinates.x;
   GP.currentLocation.y = GP.homeCoordinates.y;
 }
 
 //Updates GP.currentCoordinates according to distance moved and GP.direction.
-void updateLocation(gridPoints & GP, int distance){
+void updateLocation(gridPoints &GP, const unsigned int distance){
   if(GP.direction == 'n'){
     GP.currentLocation.y -= distance;
   }
@@ -201,18 +184,19 @@ void updateLocation(gridPoints & GP, int distance){
 }
 
 //Moves robot a set distance forward and calls updateLocation().
-void moveForwardDistance(gridPoints & GP, unsigned int distance){
+void moveForwardDistance(gridPoints &GP, unsigned int distance){
   unsigned int count = 0;
 
   while(count < distance){
-    moveForward();
+    moveForward(GP);
     count++;
   }
 
   updateLocation(GP, distance);
 }
 
-void moveToHomepoint(gridPoints GP){
+void moveToHomepoint(gridPoints &GP){
+	GP.direction = 'n';
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
   moveForwardDistance(GP, 1);
@@ -278,165 +262,54 @@ void turn(char direction, gridPoints GP) {
 	}
 }
 
-//Gets the coordinates of a gridPoint from its number.
-coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & grid){
-	unsigned int columnAmount = grid.size();
-	unsigned int rowAmount = grid[0].size();
-	//unsigned int gridsize = rowAmount * columnAmount;
-	coordinates gridPointCoordinates;
-
-	if(number < rowAmount){
-		gridPointCoordinates.x = number;
-		gridPointCoordinates.y = 0;
+vector<char> manualControl(gridPoints &GP){
+	vector<char> orientationList;
+	string answer;
+	while(true){
+		cin >> answer;
+		if 			(answer == "w")		{moveForward(GP);}
+		else if (answer == "a")		{turnLeft(GP); moveForward(GP);}
+		else if (answer == "d")		{turnRight(GP); moveForward(GP);}
+		else if (answer == "esc")	{break;}
+		else 											{cout << "invalid input." << endl; continue;}
+		orientationList.push_back(GP.direction);
+		cout << GP.direction << endl << endl;
 	}
-	else{
-		gridPointCoordinates.x = number % rowAmount;
-		gridPointCoordinates.y = number / columnAmount;
-	}
-
-	return gridPointCoordinates;
-	
-}
-
-//Gets the number of a gridPoint from coordinates.
-int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
-	unsigned int rowAmount = grid[0].size();
-	//unsigned int gridsize = rowAmount * columnAmount;
-	return gridPoint.x + (gridPoint.y *rowAmount);
-}
-
-//updates the current coordinate in prevCoordinatesVector with previous coordinates.
-void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevCoordinates, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid){
-	prevCoordinatesVector[getGridPointNumber(currentCoordinates, grid)] = prevCoordinates;
-}
-
-void addToQueue(coordinates & option, coordinates & gridPoint, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
-	bool optionFound = false;
-	int gridPointNumber = getGridPointNumber(option, grid);
-
-	for(unsigned int i = 0; i < queue.size(); i++){
-		if(queue[i] == gridPointNumber){
-			optionFound = true;
-		}
-	}
-
-	if(!optionFound){
-		queue.push_back(gridPointNumber);
-		updatePrevCoordinates(option, gridPoint, prevCoordinatesVector, grid);
-	}
-}
-
-//Check if point is on the grid.
-bool checkInGrid(coordinates pathCheck, vector<vector<bool>> &grid){
-	if			(pathCheck.x < 0)									{return 0;}
-	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
-	else if	(pathCheck.y < 0)									{return 0;}
-	else if	(pathCheck.y > grid.size()-1)			{return 0;}
-	else 																			{return 1;}
-}
-
-//Check if grid point is end point.
-bool checkIfTarget(coordinates targetCheck, gridPoints GP){
-	if(GP.targetRelCoordinates.x == targetCheck.x && GP.targetRelCoordinates.y == targetCheck.y){return 1;}
-	else {return 0;}
-}
-
-//Check bordering gridpoints and calls addToQueue if they are on grid.
-vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinatesVector, vector<int> queue, vector<vector<bool>> &grid){
-	
-	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
-	// cout << gridPoint.x << " " << gridPoint.y << " ; ";	
-	coordinates optionA;
-	optionA.x = gridPoint.x - 1;
-	optionA.y = gridPoint.y;
-	if(checkInGrid(optionA, grid) == 1){addToQueue(optionA, gridPoint, prevCoordinatesVector, grid, queue);}
-
-	coordinates optionB;
-	optionB.x = gridPoint.x;
-	optionB.y = gridPoint.y - 1;
-	if(checkInGrid(optionB, grid) == 1){addToQueue(optionB, gridPoint, prevCoordinatesVector, grid, queue);}
-	
-	coordinates optionC;
-	optionC.x = gridPoint.x + 1;
-	optionC.y = gridPoint.y;
-	if(checkInGrid(optionC, grid) == 1){addToQueue(optionC, gridPoint, prevCoordinatesVector, grid, queue);}
-
-	coordinates optionD;
-	optionD.x = gridPoint.x;
-	optionD.y = gridPoint.y + 1;
-	if(checkInGrid(optionD, grid) == 1){addToQueue(optionD, gridPoint, prevCoordinatesVector, grid, queue);}
-
-	return queue;
-}
-
-vector<char> findPath(vector<coordinates> previousCoordinatesVector, vector<vector<bool>> &grid){
-	vector<char> path;
-	vector<int> getPath;	
-	for(size_t i = 0; i < previousCoordinatesVector.size(); i++){
-		getPath.push_back(getGridPointNumber(previousCoordinatesVector[i], grid));
-		cout << getPath[i] << " ";
-	}
-	return path;
-}
-
-void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
-	bool targetFound = false;
-	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
-	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
-	cout << endl;
-	cout << endl;
-	vector<int> queue;
-	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
-	unsigned int i = 1;
-
-	while(!targetFound && i < (grid.size() * grid[0].size()) -1 ){
-		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
-		unsigned int queueSize = queue.size();
-		for(unsigned int j = 0; j < queueSize; j++){
-			coordinates gridPoint = getGridPointCoordinates(queue[i], grid);
-			if(gridPoint.x == GP.targetCoordinates.x && gridPoint.y == GP.targetCoordinates.y){
-				targetFound = true;
-			}
-		}
-		i++;
-	}
-
-	cout << endl;
-	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
-	cout << endl << endl;
-
-	findPath(prevCoordinatesVector, grid);
+	return orientationList;
 }
 
 int main(){
+	/*
 	signal(SIGINT, exit_signal_handler);
-	//BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
+	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
-	//Reset the encoders
-	// BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
-	// BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
-	// BP.offset_motor_encoder(PORT_C, BP.get_motor_encoder(PORT_C));
-	// BP.offset_motor_encoder(PORT_D, BP.get_motor_encoder(PORT_D));
+	Reset the encoders
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
+	BP.offset_motor_encoder(PORT_C, BP.get_motor_encoder(PORT_C));
+	BP.offset_motor_encoder(PORT_D, BP.get_motor_encoder(PORT_D));
 
-	// Read the encoders
-	// int32_t EncoderA = BP.get_motor_encoder(PORT_A);
-	// int32_t EncoderB = BP.get_motor_encoder(PORT_B);
-	// int32_t EncoderC = BP.get_motor_encoder(PORT_C);
-	// int32_t EncoderD = BP.get_motor_encoder(PORT_D);
+	Read the encoders
+	int32_t EncoderA = BP.get_motor_encoder(PORT_A);
+	int32_t EncoderB = BP.get_motor_encoder(PORT_B);
+	int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+	int32_t EncoderD = BP.get_motor_encoder(PORT_D);
 
-	// Use the encoder value from motor A to control motors B, C, and D
-	// BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
-	// BP.set_motor_dps(PORT_C, EncoderA);
-	// BP.set_motor_position(PORT_D, EncoderA);
-	
+	Use the encoder value from motor A to control motors B, C, and D
+	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
+	BP.set_motor_dps(PORT_C, EncoderA);
+	BP.set_motor_position(PORT_D, EncoderA);
+	*/
 	gridPoints GP;
-	vector<vector<bool>> grid = getGrid(GP);
+	vector<vector<string>> grid = getGrid(GP);
 	getCoordinates(GP, grid);
-	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
-	searchPath(GP, grid);
-	
+
+	vector<char> NOSWList = manualControl(GP);
+
+	for(size_t i = 0; i < NOSWList.size(); i++){cout << NOSWList[i] << " ";}
+		 
 	//moveForward();
 	cout << "end of file";
 	return 0;
