@@ -32,10 +32,10 @@ struct range {
 range obstakel;
 
 int measure(sensor_ultrasonic_t Ultrasonic){
-  BP.reset_all();
-  sleep(1);
-  setSensors();
-  sleep(1);
+  // BP.reset_all();
+  // sleep(1);
+  // setSensors();
+  // sleep(1);
   cout << "beep boop" << endl;
   int ding = BP.get_sensor(PORT_1, Ultrasonic);
   cout << ding << endl;
