@@ -114,21 +114,21 @@ void encodeMotors(int32_t lpos , int32_t rpos){
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int motorPower) {
-    while (motorPower < 60) {
+    while (motorPower < 20) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
-        motorPower += 5;
+        motorPower += 2;
         usleep(0.1);
     }
-    BP.set_motor_power(PORT_B, 60);
-    BP.set_motor_power(PORT_C, 60);
+    BP.set_motor_power(PORT_B, 20);
+    BP.set_motor_power(PORT_C, 20);
 }
 
 void turnMotorPowerDown(int motorPower) {
     while (motorPower > 0) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
-        motorPower -= 5;
+        motorPower -= 3;
         usleep(0.1);
     }
     BP.set_motor_power(PORT_B, 0);
@@ -136,19 +136,21 @@ void turnMotorPowerDown(int motorPower) {
 }
 
 void moveForward(){
-    int motorPower = 10;
+    int motorPower = 0;
     turnMotorPowerUp(motorPower);
-    sleep(3.5); //dit moet afgesteld worden met de speed-o
+    sleep(1); //dit moet afgesteld worden met de speed-o
     turnMotorPowerDown(motorPower);
 }
 
 void turnLeft(){
-    encodeMotors(-400,400);
-    sleep(1);
+    BP.set_motor_power(PORT_B, 10);
+    BP.set_motor_power(PORT_C, -10);
+    sleep(5);
 }
 void turnRight(){
-    encodeMotors(400,-400);
-    sleep(1);
+    BP.set_motor_power(PORT_B, -10);
+    BP.set_motor_power(PORT_C, 10);
+    sleep(5);
 }
 
 
@@ -159,19 +161,19 @@ void turnRight(){
 */
 
 void Drive(char direction){
-    if (direction = 'f'){
+    if (direction == 'f'){
         //ga 1 unit vooruit
         moveForward();
     }
-    if (direction = 'r'){
+    if (direction == 'r'){
         //ga 90 graden links
         turnRight();
     }
-    if (direction = 'l'){
+    if (direction == 'l'){
         //ga 90 graden links
         turnLeft();
     }
-    if (direction = 'b'){
+    if (direction == 'b'){
         //ga 180 graden draaien
         turnRight();
         turnRight();
@@ -200,14 +202,14 @@ void Navigation(vector<char> route){
                 Drive('r');
                 Drive('f');
             }
-            if ((route[i] == 'n' && route[i-1] == 'o') ||
+            else if ((route[i] == 'n' && route[i-1] == 'o') ||
                 (route[i] == 'o' && route[i-1] == 's') ||
                 (route[i] == 's' && route[i-1] == 'w') ||
                 (route[i] == 'w' && route[i-1] == 'n')){
                 Drive('l');
                 Drive('f');
             }
-            if ((route[i] == 'n' && route[i-1] == 's') ||
+            else if ((route[i] == 'n' && route[i-1] == 's') ||
                 (route[i] == 'o' && route[i-1] == 'w') ||
                 (route[i] == 's' && route[i-1] == 'n') ||
                 (route[i] == 'w' && route[i-1] == 'o')){
