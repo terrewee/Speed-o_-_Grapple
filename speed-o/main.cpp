@@ -39,8 +39,8 @@ void encodeMotor(int32_t pos)
 */
 void brengNaarKantelPunt()
 {
-	BP.set_motor_limits(PORT_A, 50, 0);
-	encodeMotor(-60);
+	BP.set_motor_limits(PORT_A, 40, 0);
+	encodeMotor(-50);
 }
 
 /*
@@ -50,7 +50,7 @@ void brengNaarKantelPunt()
 */
 void gelijdelijkDownLoop()
 {
-	int32_t encoder = -60;
+	int32_t encoder = -50;
 	while(encoder > -120)
 	{
 		encodeMotor(-5);
@@ -67,7 +67,7 @@ void gelijdelijkDownLoop()
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 50, 0);
-	encodeMotor(120);	// zelfde als totale neerwaartse beweging
+	encodeMotor(130);	// zelfde als totale neerwaartse beweging
 }
 
 /*
