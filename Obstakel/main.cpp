@@ -7,6 +7,10 @@
 BrickPi3 BP;
 using namespace std;
 
+void encodeHead(int32_t pos){
+    BP.set_motor_position_relative(PORT_A,pos);
+}
+
 void exit_signal_handler(int signo);
 bool battery = true;    //battery level function
 /*
@@ -21,116 +25,86 @@ struct range {
   bool obstakelInRangeForward = false;
   bool obstakelcurrent= false;
 };
+range obstakel;
 
 int measure(sensor_ultrasonic_t Ultrasonic){
-    cout << "beep boop" << endl;
-    int ding = BP.get_sensor(PORT_4, Ultrasonic);
-    cout << ding << endl;
-    if( ding == 0){
-		cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
- 	}
-    sleep(5);
-    return Ultrasonic.cm;
+  cout << "beep boop" << endl;
+  int ding = BP.get_sensor(PORT_4, Ultrasonic);
+  cout << ding << endl;
+  if( ding == 0){
+    cout << "Ultrasonic sensor (S4): "   << Ultrasonic.cm << "cm" << endl;
+  }
+  sleep(5);
+  return Ultrasonic.cm;
 }
 
-void stop(){
+void stopHead(){
   //reset de motor dps
   BP.set_motor_dps(PORT_A, 0);
 }
-void lookLeft(range obstakel, sensor_ultrasonic_t Ultrasonic){
-    cout << "left" << endl;
+void lookLeft(sensor_ultrasonic_t Ultrasonic){
+    // BP.set_motor_dps(PORT_B, -60);
+    // sleep(2);
+    // stopHead();
 
     //spin left
-    BP.set_motor_dps(PORT_B, -60);
-    sleep(2);
-    stop();
+    encodeHead(-90);
 
     int waarde = measure(Ultrasonic);
-    if (waarde <= 10.0){
-        obstakel.obstakelInRangeLeft = true;
-    }
-    else{
-        obstakel.obstakelInRangeLeft = false;
-    }
+    if (waarde <= 10.0){obstakel.obstakelInRangeLeft = true;}
+    else{obstakel.obstakelInRangeLeft = false;}
+
+    // BP.set_motor_dps(PORT_B, 60);
+    // sleep(2);
+    // stopHead();
 
     //reset to middle
-    BP.set_motor_dps(PORT_B, 60);
-    sleep(2);
-    stop();
+    encodeHead(90);
 }
 
-void lookRight(range obstakel, sensor_ultrasonic_t Ultrasonic){
-    cout << "right" << endl;
+void lookRight(sensor_ultrasonic_t Ultrasonic){
+    // BP.set_motor_dps(PORT_B, 60);
+    // sleep(2);
+    // stopHead();
 
     //spin right.
-    BP.set_motor_dps(PORT_B, 60);
-    sleep(2);
-    stop();
+    encodeHead(90);
 
     int waarde = measure(Ultrasonic);
-    if (waarde <= 10.0){
-        obstakel.obstakelInRangeLeft = true;
-    }
-    else{
-        obstakel.obstakelInRangeLeft = false;
-    }
+    if (waarde <= 10.0){ obstakel.obstakelInRangeLeft = true;}
+    else{obstakel.obstakelInRangeLeft = false;}
+
+    // BP.set_motor_dps(PORT_B, -60);
+    // sleep(2);
+    // stopHead();
 
     //reset to middle
-    BP.set_motor_dps(PORT_B, -60);
-    sleep(2);
-    stop();
+    encodeHead(-90);
 }
 
-void lookForward(range obstakel,sensor_ultrasonic_t Ultrasonic){
-    cout << "forward" << endl;
-
-    float gemiddelde = measure(Ultrasonic);
-    if (gemiddelde <= 10.0){
-        obstakel.obstakelInRangeForward = true;
-    }
-    else{
-        obstakel.obstakelInRangeForward = false;
-    }
+void lookForward(sensor_ultrasonic_t Ultrasonic){
+    float waarde = measure(Ultrasonic);
+    if (waarde <= 10.0){obstakel.obstakelInRangeForward = true;}
+    else{obstakel.obstakelInRangeForward = false;}
 }
 
-void obstakelDetectie(range obstacle){
+void obstakelDetectie(sensor_ultrasonic_t Ultrasonic){
   //main van obstakel
-    stop();
-    //alles voor de sensor
-    BP.detect();
-    BP.reset_all();
-    BP.set_sensor_type(PORT_4, SENSOR_TYPE_NXT_ULTRASONIC);
-    sensor_ultrasonic_t Ultrasonic;
-
-
-    range obstakel;
-    sleep(5);
-    lookForward(obstakel, Ultrasonic);
-    lookLeft(obstakel, Ultrasonic);
-    lookRight(obstakel, Ultrasonic);
-    BP.reset_all();
-    // lookForward(Ultrasonic, obstacle);
-    // stop();
-    // while (obstacle.obstakelInRangeForward== true){
-    //     stop();
-    //     lookLeft(Ultrasonic, obstacle);
-    //     if (obstacle.obstakelInRangeLeft == true){
-    //         cout << "cant go left" << endl;
-    //     }
-    //     else{
-    //         cout << "can go left" << endl;
-    //     }
-    //     sleep (1);
-    //     lookRight(Ultrasonic, obstacle);
-    //     if (obstacle.obstakelInRangeRight == true){
-    //         cout << "cant go right" << endl;
-    //     }
-    //     else{
-    //         cout << "can go right" << endl;
-    //     }
-    //     sleep (1);
-
-    // }
+    stopHead();
+    while (obstakel.obstakelInRangeForward == true){
+      stopHead();
+      
+      lookLeft(Ultrasonic);
+      if (obstakel.obstakelInRangeLeft == true){cout << "cant go left" << endl;}
+      else{cout << "can go left" << endl;}
+      sleep (1);
+      
+      lookRight(Ultrasonic);
+      if (obstakel.obstakelInRangeRight == true){cout << "cant go right" << endl;}
+      else{cout << "can go right" << endl;}
+      sleep (1);
+      if(obstakel.obstakelInRangeForward == true && obstakel.obstakelInRangeLeft == true && obstakel.obstakelInRangeRight == true){cout <<"Go back" << endl;} 
+    }
 }
 
 
@@ -233,27 +207,34 @@ void checkSensor(){
 
 }
 
+void setSensors(){
+  BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_ULTRASONIC);
+}
+
+
 int main(){
 //thread checkBattery (batteryLevel);
   BP.detect();
-  //setSensors();
-  range obstacle;
-  BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.reset_all();
+  sleep(3);
+  setSensors();
+  sleep(2);
+  stopHead();
+
+  sensor_ultrasonic_t Ultrasonic;
+  thread vooruit (lookForward, Ultrasonic);
+  thread obstakelcheck (obstakelDetectie, Ultrasonic);
 
   bool loop = true;
   while(loop){
     int keuze;
     cout << "Kies een funtie: "<< endl;
     cout << "1. Getsensor *werkt niet todat setSensors() werkt" << endl;
-    cout << "2. Obstakel detectie" << endl;
     cin >> keuze;
 
     switch(keuze){
       case 1:
         checkSensor();
-        break;
-      case 2:
-        obstakelDetectie(obstacle);
         break;
       default:
         cout << "Het programma word afgebroken" << endl;
@@ -264,7 +245,7 @@ int main(){
   return 0;
 }
 
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
+// Signal handler that will be called when Ctrl+C is pressed to stopHead the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
     BP.reset_all();    // Reset everything so there are no run-away motors
