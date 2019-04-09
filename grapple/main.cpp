@@ -301,7 +301,7 @@ int main(){
         Navigation(iServer());
         break;
       case 5:
-        vector<char> vec = {'n','n','w','w','s','o','w','s'}
+        vector<char> vec = {'n','n','w','w','s','o','w','s'};
         Navigation(vec);
         break;
     }
