@@ -5,6 +5,7 @@
 #include <linux/spi/spidev.h>
 
 using namespace std;
+BrickPi3 BP;
 
 BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_COLOR_FULL);
 sensor_color_t      Color1;
@@ -52,9 +53,42 @@ char FarbeNichtRichtig() {
     if (answer == "nee")        { cout << "Penis"<< endl;} 
 
 }
-void color_object(sensor_color_t Color1,  int powerA, int power){
-    if (sensor_color_t Color1 == colorchoice)       { "hij rijd naar achteren; op pak functie;" }
-    if (sensor_color_t Color1 =! colorchoice)       { FarbeNichtRichtig}
+void color_object(nepwaarde,  WhatIsInAColor, int powerA, int power){
+    if (gemetenwaarde == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
+    if (gemetenwaarde != colorchoice)       { FarbeNichtRichtig()}
+}
+
+int main(){
+      signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+  BP.detect();
+  BP.reset_all();
+  for (int i = 0; i < 5; ++i){
+    cout << ".";
+    if (i == 3){
+      setSensors();
+    }
+    sleep(1);
+  }
+  cout << endl << "Initialized" << endl;
+
+  thread checkBattery (batteryLevel);
+
+  while(true){
+    sleep(5);
+  }
+
+  BP.reset_all();
+  return 0;
+}
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+WhatIsInAColor(sensor_color_t)
 }
 
 
@@ -63,7 +97,7 @@ void color_object(sensor_color_t Color1,  int powerA, int power){
    
 //     if((BP.get_sensor(PORT_1, Color1) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
 //     cout << "Color1 " << (int) Color1.color << " Color4 " << (int) Color4.color << endl;
-        if     (Color1.color == 1 && Color4.color == 6)                         {rightcorrectie(powerA, powerB);}        //rechts wit links zwart
+  //      if     (Color1.color == 1 && Color4.color == 6)                         {rightcorrectie(powerA, powerB);}        //rechts wit links zwart
 //         else if(Color1.color == 2 && Color4.color == 6)                         {mediumRight(powerA, powerB);}
 //         else if((Color1.color > 2 && Color1.color < 5) && Color4.color == 1)    {slightRight(powerA, powerB);}
         
