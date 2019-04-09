@@ -25,8 +25,6 @@ void readEncodedMotor()
 	int32_t encodedB = BP.get_motor_encoder(PORT_B);
     	cout << "Motor A: " << endl << "Encoded: " << encodedA << endl << "--------------------------------" << endl;
 	cout << "Motor B: " << endl << "Encoded: " << encodedB << endl << "--------------------------------" << endl;
-	}
-
 }
 
 void setSensors()
