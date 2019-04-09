@@ -3,6 +3,7 @@
 #include <unistd.h>     // for usleep
 #include <signal.h>     // for catching exit signals
 #include <iostream>     //voor cout enz.
+#include <thread>       //thread
 
 BrickPi3 BP;
 using namespace std;
