@@ -126,7 +126,7 @@ void resetMotor(){
     BP.set_motor_position_relative(PORT_C, 0);
     BP.set_motor_power(PORT_B, 0);
     BP.set_motor_power(PORT_C, 0);
-    sleep(0.5);
+    sleep(1);
 }
 
 void turnMotorPowerUp(int motorPower) {
