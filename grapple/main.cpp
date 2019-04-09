@@ -110,21 +110,28 @@ vector<char> iServer(){
 void encodeMotors(int32_t lpos , int32_t rpos){
     BP.set_motor_position_relative(PORT_B, lpos);
     BP.set_motor_position_relative(PORT_C, rpos);
+    BP.set_motor_dps(PORT_B, 0);
+    BP.set_motor_dps(PORT_C, 0);
 }
-
 
 /*
   Author:       Stefan & Gerjan
   Description:  Functions for driving the motors
 */
 
-//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
+//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDis1tance() is made for that.
+
+void resetMotor(){
+    BP.set_motor_power(PORT_B, 0);
+    BP.set_motor_power(PORT_C, 0);
+}
+
 void turnMotorPowerUp(int motorPower) {
     while (motorPower < 20) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
         motorPower += 1;
-        sleep(0.1);
+        sleep(0.2);
     }
     BP.set_motor_power(PORT_B, 20);
     BP.set_motor_power(PORT_C, 20);
@@ -144,18 +151,18 @@ void turnMotorPowerDown(int motorPower) {
 void moveForward(){
     int motorPower = 0;
     turnMotorPowerUp(motorPower);
-    sleep(5); //dit moet afgesteld worden met de speed-o
+    sleep(3); //dit moet afgesteld worden met de speed-o
     turnMotorPowerDown(motorPower);
 }
 
 void turnLeft(){
-    BP.set_motor_dps(PORT_B, 600);
-    BP.set_motor_dps(PORT_C, -600);
+    BP.set_motor_dps(PORT_B, 100);
+    BP.set_motor_dps(PORT_C, -100);
     sleep(0.5);
 }
 void turnRight(){
-    BP.set_motor_dps(PORT_B, -600);
-    BP.set_motor_dps(PORT_C, 600);
+    BP.set_motor_dps(PORT_B, -100);
+    BP.set_motor_dps(PORT_C, 100);
     sleep(0.5);
 }
 
