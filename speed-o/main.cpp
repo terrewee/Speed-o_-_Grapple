@@ -35,7 +35,7 @@ void encodeMotor(int32_t pos)
 void brengNaarKantelPunt()
 {
 	BP.set_motor_limits(PORT_A, 50, 0);
-	encodeMotor(-50);
+	encodeMotor(-60);
 }
 
 /*
