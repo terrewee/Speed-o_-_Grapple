@@ -10,10 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5f32d60-48a7-4cf1-81e2-53f5aef913d3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/grapple/BrickPi3.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/grapple/BrickPi3.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grapple/BrickPi3.h" beforeDir="false" afterPath="$PROJECT_DIR$/grapple/BrickPi3.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grapple/Motors.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/grapple/Motors.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grapple/sensors_nxt.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/grapple/sensors_nxt.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grapple/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/grapple/main.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +23,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grapple/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1258">
-              <caret line="152" lean-forward="true" selection-start-line="152" selection-end-line="152" />
+            <state relative-caret-position="544">
+              <caret line="194" column="21" selection-start-line="194" selection-start-column="21" selection-end-line="194" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -49,17 +46,17 @@
         <option value="$PROJECT_DIR$/Communication/mainClient.cpp" />
         <option value="$PROJECT_DIR$/Communication/mainServer.cpp" />
         <option value="$PROJECT_DIR$/speed-o/main.cpp" />
-        <option value="$PROJECT_DIR$/grapple/main.cpp" />
         <option value="$PROJECT_DIR$/grapple/BrickPi3.cpp" />
         <option value="$PROJECT_DIR$/grapple/BrickPi3.h" />
         <option value="$PROJECT_DIR$/grapple/Motors.cpp" />
         <option value="$PROJECT_DIR$/grapple/sensors_nxt.cpp" />
+        <option value="$PROJECT_DIR$/grapple/main.cpp" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="260" />
-    <option name="y" value="20" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="778" />
+    <option name="y" value="16" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -131,18 +128,18 @@
       <option name="presentableId" value="Default" />
       <updated>1554285347776</updated>
       <workItem from="1554285349026" duration="4438000" />
-      <workItem from="1554798780199" duration="1449000" />
+      <workItem from="1554798780199" duration="1746000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13142000" />
+    <option name="totallyTimeSpent" value="13439000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="778" y="16" width="1400" height="1000" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16119403" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -201,8 +198,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grapple/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="152" lean-forward="true" selection-start-line="152" selection-end-line="152" />
+        <state relative-caret-position="544">
+          <caret line="194" column="21" selection-start-line="194" selection-start-column="21" selection-end-line="194" selection-end-column="21" />
         </state>
       </provider>
     </entry>

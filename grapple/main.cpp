@@ -92,7 +92,7 @@ vector<char> iServer(){
   for(unsigned int i=0; i < target.size(); i++){
     route.push_back(target[i]);
   }
-    return route
+    return route;
 }
 
 /*
@@ -187,7 +187,7 @@ void Drive(char & direction){
 */
 
 void Navigation(vector<char> & route){
-    for (int i = 0; i < route.size; ++i) { // rij naar het object toe aan de hand van de route
+    for (int i = 0; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f')
         }
@@ -225,7 +225,7 @@ void Navigation(vector<char> & route){
 
 
     Drive('b');
-    for (int i = route.size; i >= 0; --i) { // rij terug naar het startpunt aan de hand van de route
+    for (int i = route.size(); i >= 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f')
         }
