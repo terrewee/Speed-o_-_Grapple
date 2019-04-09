@@ -77,6 +77,7 @@ void klauwOmhoog()
 	while(encoder < 0)
 	{
 		encodeMotor(5);
+		usleep(250000);
 		encoder = encoder + 5;
 	}
 }
