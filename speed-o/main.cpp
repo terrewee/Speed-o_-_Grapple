@@ -127,6 +127,10 @@ void turnMotorPowerUp(int &motorPower) {
 		BP.set_motor_power(PORT_A, motorPower+6);
 		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.1);
+		int32_t EncoderA = BP.get_motor_encoder(PORT_A);
+		int32_t EncoderB = BP.get_motor_encoder(PORT_B);
+		int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+		int32_t EncoderD = BP.get_motor_encoder(PORT_D);
 		printf("Encoder A: %6d  B: %6d  C: %6d  D: %6d\n", EncoderA, EncoderB, EncoderC, EncoderD);
 		motorPower += 5;
 	}
