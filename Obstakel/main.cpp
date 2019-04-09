@@ -100,6 +100,9 @@ void lookForward(sensor_ultrasonic_t Ultrasonic){
 
 void obstakelDetectie(sensor_ultrasonic_t Ultrasonic){
   while(true){
+  float waarde = measure(Ultrasonic);
+  if (waarde <= 10.0){obstakel.obstakelInRangeForward = true;}
+  else{obstakel.obstakelInRangeForward = false;}  
   //main van obstakel
     stopHead();
     while (obstakel.obstakelInRangeForward == true){
@@ -242,7 +245,6 @@ int main(){
   signal(SIGINT, exit_signal_handler);
 
   sensor_ultrasonic_t Ultrasonic;
-  thread vooruit (lookForward, Ultrasonic);
   thread obstakelcheck (obstakelDetectie, Ultrasonic);
 
   while(true){
