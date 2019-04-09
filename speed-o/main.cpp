@@ -395,11 +395,29 @@ void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinates
 	}
 }
 
+void getDirections(vector<char> & directions, vector<coordinates> & route, gridPoints & GP){
+	for(unsigned int i = route.size() - 1; i > 0; i--){
+		if(route[i - 1].x == route[i].x && route[i - 1].y == route[i].y - 1){
+			directions.push_back('n');
+		}
+		else if(route[i - 1].x == route[i].x && route[i - 1].y == route[i].y + 1){
+			directions.push_back('s');
+		}
+		else if(route[i - 1].x == route[i].x - 1 && route[i - 1].y == route[i].y){
+			directions.push_back('w');
+		}
+		else if(route[i - 1].x == route[i].x + 1 && route[i - 1].y == route[i].y){
+			directions.push_back('e');
+		}
+	}
+}
+
 void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
 	vector<coordinates> route;
+	vector<char> directions;
 	vector<int> queue;
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
@@ -423,12 +441,22 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	for(unsigned int i = 0; i < route.size(); i++){
 		cout << route[i].x << "," << route[i].y << " ";
 	}
+
+	getDirections(directions, route, GP);
+
+	cout << endl << "Directions:" << endl;
+	cout << directions.size();
+
+	for(unsigned int j = 0; j < directions.size(); j++){
+		cout << directions[j] << ",";
+		}
+
 	cout << endl << "prevCoordinates:" << endl;
 
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
 	cout << endl << endl;
 
-	findPath(prevCoordinatesVector, grid);
+	
 }
 
 int main(){
