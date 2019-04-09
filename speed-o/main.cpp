@@ -5,7 +5,9 @@
 #include <signal.h>     // for catching exit signals
 #include <iostream>
 #include <vector>
+#include <string>
 
+using std::string;
 using std::vector;
 using std::cout;
 using std::cin;
@@ -395,19 +397,19 @@ void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinates
 	}
 }
 
-void getDirections(vector<char> & directions, vector<coordinates> & route, gridPoints & GP){
+void getDirections(string & directions, vector<coordinates> & route, gridPoints & GP){
 	for(unsigned int i = route.size() - 1; i > 0; i--){
 		if(route[i - 1].x == route[i].x && route[i - 1].y == route[i].y - 1){
-			directions.push_back('n');
+			directions += 'n';
 		}
 		else if(route[i - 1].x == route[i].x && route[i - 1].y == route[i].y + 1){
-			directions.push_back('s');
+			directions += 's';
 		}
 		else if(route[i - 1].x == route[i].x - 1 && route[i - 1].y == route[i].y){
-			directions.push_back('w');
+			directions += 'w';
 		}
 		else if(route[i - 1].x == route[i].x + 1 && route[i - 1].y == route[i].y){
-			directions.push_back('e');
+			directions += 'e';
 		}
 	}
 }
@@ -417,7 +419,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
 	vector<coordinates> route;
-	vector<char> directions;
+	string directions;
 	vector<int> queue;
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
@@ -445,11 +447,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	getDirections(directions, route, GP);
 
 	cout << endl << "Directions:" << endl;
-	cout << directions.size();
-
-	for(unsigned int j = 0; j < directions.size(); j++){
-		cout << directions[j] << ",";
-		}
+	cout << directions.size() << ", " << directions;
 
 	cout << endl << "prevCoordinates:" << endl;
 
