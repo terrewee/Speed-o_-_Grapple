@@ -300,11 +300,11 @@ int main(){
     BP.set_motor_limits(PORT_C, 50, 0);
 
   cout << endl << "Initializing" << endl;
-  int o = 30;
+  int o = 10;
   while (o != 0){
       --o;
       cout << '.';
-      sleep(0.1);
+      sleep(0.5);
   }
   cout << endl << "Initialized" << endl;
 
