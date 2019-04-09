@@ -189,7 +189,7 @@ void Drive(char direction){
 void Navigation(vector<char> route){
     for (int i = 0; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
-            Drive('f')
+            Drive('f');
         }
         else {
             if ((route[i] == 'n' && route[i-1] == 'w') ||
@@ -227,7 +227,7 @@ void Navigation(vector<char> route){
     Drive('b');
     for (int i = route.size(); i >= 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
-            Drive('f')
+            Drive('f');
         }
         else {
             if ((route[i] == 'n' && route[i+1] == 'w') ||
@@ -295,7 +295,6 @@ int main(){
         SetComm();
         break;
       case 3:
-        checkSensor();
         break;
       case 4:
         Navigation(iServer());
