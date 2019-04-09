@@ -224,8 +224,6 @@ void moveToHomepoint(gridPoints GP){
 	}
 	else if(GP.targetCoordinates.y > 0){turnRight(GP);}
 	else if(GP.targetCoordinates.y < 0){turnLeft(GP);}
-
-
 }
 
 // Tells the robot which way to turn.
@@ -278,6 +276,13 @@ void turn(char direction, gridPoints GP) {
 			turnRight(GP);
 		}
 	}
+}
+
+void move(char direction, gridPoints & GP){
+	if(GP.direction != direction){
+		turn(direction);
+	}
+	moveForwardDistance(1);
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -372,16 +377,7 @@ vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinate
 	return queue;
 }
 
-vector<char> findPath(vector<coordinates> previousCoordinatesVector, vector<vector<bool>> &grid){
-	vector<char> path;
-	vector<int> getPath;	
-	for(size_t i = 0; i < previousCoordinatesVector.size(); i++){
-		getPath.push_back(getGridPointNumber(previousCoordinatesVector[i], grid));
-		cout << getPath[i] << " ";
-	}
-	return path;
-}
-
+//Creates vector<coordinates> containing the coordinates of the route going from the target to the currenLocation.
 void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinatesVector, gridPoints & GP, vector<vector<bool>> & grid){
 	unsigned int i = 1;
 	route.push_back(GP.targetCoordinates);
@@ -397,6 +393,7 @@ void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinates
 	}
 }
 
+//Creates string with directions going from currentLocation to target.
 void getDirections(string & directions, vector<coordinates> & route, gridPoints & GP){
 	for(unsigned int i = route.size() - 1; i > 0; i--){
 		if(route[i - 1].x == route[i].x && route[i - 1].y == route[i].y - 1){
@@ -414,6 +411,7 @@ void getDirections(string & directions, vector<coordinates> & route, gridPoints 
 	}
 }
 
+//Dees everything with finding shortest route.
 void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
@@ -424,7 +422,7 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
 
-	while(!targetFound && i < (grid.size() * grid[0].size()) -1 ){
+	while(!targetFound && i < (grid.size() * grid[0].size()) -1){
 		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
 		unsigned int queueSize = queue.size();
 		for(unsigned int j = 0; j < queueSize; j++){
@@ -437,24 +435,16 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	}
 
 	getRoute(route, prevCoordinatesVector, GP, grid);
-
 	cout << "route:" << endl;
-
 	for(unsigned int i = 0; i < route.size(); i++){
 		cout << route[i].x << "," << route[i].y << " ";
 	}
-
 	getDirections(directions, route, GP);
-
 	cout << endl << "Directions:" << endl;
 	cout << directions.size() << ", " << directions;
-
 	cout << endl << "prevCoordinates:" << endl;
-
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
 	cout << endl << endl;
-
-	
 }
 
 int main(){
