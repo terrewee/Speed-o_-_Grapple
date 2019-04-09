@@ -157,7 +157,7 @@ void turnRight(){
   Description:  Takes in an command for the motors and executes it.
 */
 
-void Drive(char & direction){
+void Drive(char direction){
     if (route[i] = 'f'){
         //ga 1 unit vooruit
         moveForward();
@@ -186,7 +186,7 @@ void Drive(char & direction){
   and uses those to drive to the destination, pick up an object and drive back.
 */
 
-void Navigation(vector<char> & route){
+void Navigation(vector<char> route){
     for (int i = 0; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f')
