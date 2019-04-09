@@ -7,6 +7,9 @@
 
 BrickPi3 BP;
 using namespace std;
+void setSensors(){
+  BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_ULTRASONIC);
+}
 
 void encodeHead(int32_t pos){
     BP.set_motor_position_relative(PORT_D,pos);
@@ -216,9 +219,6 @@ void checkSensor(){
 
 }
 
-void setSensors(){
-  BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_ULTRASONIC);
-}
 
 // Signal handler that will be called when Ctrl+C is pressed to stopHead the program
 void exit_signal_handler(int signo){
