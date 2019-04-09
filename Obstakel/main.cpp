@@ -226,23 +226,23 @@ int main(){
   thread vooruit (lookForward, Ultrasonic);
   thread obstakelcheck (obstakelDetectie, Ultrasonic);
 
-  bool loop = true;
-  while(loop){
-    int keuze;
-    cout << "Kies een funtie: "<< endl;
-    cout << "1. Getsensor *werkt niet todat setSensors() werkt" << endl;
-    cin >> keuze;
+  // bool loop = true;
+  // while(loop){
+  //   int keuze;
+  //   cout << "Kies een funtie: "<< endl;
+  //   cout << "1. Getsensor *werkt niet todat setSensors() werkt" << endl;
+  //   cin >> keuze;
 
-    switch(keuze){
-      case 1:
-        checkSensor();
-        break;
-      default:
-        cout << "Het programma word afgebroken" << endl;
-        loop = false;
-        break;
-    }
-  }
+  //   switch(keuze){
+  //     case 1:
+  //       checkSensor();
+  //       break;
+  //     default:
+  //       cout << "Het programma word afgebroken" << endl;
+  //       loop = false;
+  //       break;
+  //   }
+  // }
   return 0;
 }
 
