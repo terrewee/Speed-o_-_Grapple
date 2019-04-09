@@ -67,7 +67,7 @@ void gelijdelijkDownLoop()
 void klauwOmhoog()
 {
 	BP.set_motor_limits(PORT_A, 50, 0);
-	encodeMotor(110);	// zelfde als totale neerwaartse beweging
+	encodeMotor(130);	// zelfde als totale neerwaartse beweging
 }
 
 /*
