@@ -91,18 +91,15 @@ void lookRight(sensor_ultrasonic_t Ultrasonic){
 } 
 
 void lookForward(sensor_ultrasonic_t Ultrasonic){
-  while(true){
-    float waarde = measure(Ultrasonic);
-    if (waarde <= 10.0){obstakel.obstakelInRangeForward = true;}
-    else{obstakel.obstakelInRangeForward = false;}
-  }
+  float waarde = measure(Ultrasonic);
+  if (waarde <= 10.0){obstakel.obstakelInRangeForward = true;}
+  else{obstakel.obstakelInRangeForward = false;}
+  
 }
 
 void obstakelDetectie(sensor_ultrasonic_t Ultrasonic){
   while(true){
-  float waarde = measure(Ultrasonic);
-  if (waarde <= 10.0){obstakel.obstakelInRangeForward = true;}
-  else{obstakel.obstakelInRangeForward = false;}  
+  lookForward(Ultrasonic);
   //main van obstakel
     stopHead();
     while (obstakel.obstakelInRangeForward == true){
@@ -119,6 +116,7 @@ void obstakelDetectie(sensor_ultrasonic_t Ultrasonic){
       if (obstakel.obstakelInRangeRight == true){cout << "cant go right" << endl;}
       else{cout << "can go right" << endl;}
       sleep (1);
+      lookForward(Ultrasonic);
       if(obstakel.obstakelInRangeForward == true && obstakel.obstakelInRangeLeft == true && obstakel.obstakelInRangeRight == true){cout <<"Go back" << endl;} 
     }
   }
