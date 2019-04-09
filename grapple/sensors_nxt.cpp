@@ -14,7 +14,7 @@
  *
  *  Example compile command:
  *    g++ -o program senxor_nxt.cpp BrickPi3.cpp
- *  Example run command:
+ *  Example run command:,
  *    ./program
  *
  */

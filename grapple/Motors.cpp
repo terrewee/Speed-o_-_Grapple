@@ -14,7 +14,7 @@
  *
  *  Example compile command:
  *    g++ -o program motors.cpp BrickPi3.cpp
- *  Example run command:
+ *  Example run command:,
  *   ./program
  *
  */

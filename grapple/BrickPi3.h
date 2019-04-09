@@ -6,7 +6,7 @@
  *  Released under the MIT license (http://choosealicense.com/licenses/mit/).
  *  For more information see https://github.com/DexterInd/BrickPi3/blob/master/LICENSE.md
  *
- *  C++ drivers for the BrickPi3
+ *  C++ drivers for the BrickPi3,
  */
 
 #ifndef BrickPi3_h_
