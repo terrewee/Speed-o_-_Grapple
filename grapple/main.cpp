@@ -132,7 +132,7 @@ void turnMotorPowerUp(int motorPower) {
     while (motorPower < 20) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
-        motorPower += 1;
+        motorPower += 3;
         sleep(0.2);
     }
     BP.set_motor_power(PORT_B, 20);
@@ -143,7 +143,7 @@ void turnMotorPowerDown(int motorPower) {
     while (motorPower > 0) {
         BP.set_motor_power(PORT_B, motorPower);
         BP.set_motor_power(PORT_C, motorPower);
-        motorPower -= 2;
+        motorPower -= 4;
         sleep(0.1);
     }
     resetMotor();
@@ -157,13 +157,15 @@ void moveForward(){
 }
 
 void turnLeft(){
-    encodeMotors(100, -100);
-    sleep(0.5);
+    BP.set_motor_power(PORT_B, -50);
+    BP.set_motor_power(PORT_C, 50);
+    sleep(5.5);
     resetMotor();
 }
 void turnRight(){
-    encodeMotors(-100, 100);
-    sleep(0.5);
+    BP.set_motor_power(PORT_B, 50);
+    BP.set_motor_power(PORT_C, -50);
+    sleep(5.5);
     resetMotor();
 }
 
