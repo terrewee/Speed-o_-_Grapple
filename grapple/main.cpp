@@ -10,6 +10,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <sstream> //for converting char256 to vector
 
 using namespace std;
 
@@ -158,25 +159,25 @@ void turnRight(){
 */
 
 void Drive(char direction){
-    if (route[i] = 'f'){
+    if (direction = 'f'){
         //ga 1 unit vooruit
         moveForward();
     }
-    if (route[i] = 'r'){
+    if (direction = 'r'){
         //ga 90 graden links
         turnRight();
     }
-    if (route[i] = 'l'){
+    if (direction = 'l'){
         //ga 90 graden links
         turnLeft();
     }
-    if (route[i] = 'b'){
+    if (direction = 'b'){
         //ga 180 graden draaien
         turnRight();
         turnRight();
     }
     else{
-        cout << "Invalid operator: " << route[i] << endl << "Next time use: f, r, l or b" , endl;
+        cout << "Invalid operator: " << direction << endl << "Next time use: f, r, l or b" , endl;
     }
 }
 
