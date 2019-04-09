@@ -46,6 +46,6 @@ int main()
 		cin >> motorB;
 		fwd(motorA, motorB);
 		sleep(3);
-		fwd(-6,0);
+//		fwd(-6,0);
 	}
 }
