@@ -312,13 +312,15 @@ int main(){
       case 4:
         Navigation(iServer());
         break;
-      case 5:
-        vector<char> vec = {'n','n','w','w','s','o','w','s'};
-        Navigation(vec);
-        break;
-      case 6:
-        ::running = false;
-        break;
+      case 5: {
+          vector<char> vec = {'n', 'n', 'w', 'w', 's', 'o', 'w', 's'};
+          Navigation(vec);
+          break;
+      }
+      case 6: {
+          ::running = false;
+          break;
+      }
     }
   }
 
