@@ -10,17 +10,92 @@
 #include <iostream>
 #include <thread>
 
-using std::vector;
-using std::cout;
-using std::cin;
-using std::endl;
-using std::string;
+using namespace std;
 
-//BrickPi3 BP;
+BrickPi3 BP;
 
 bool battery = true;          //battery level function
+
+void batteryLevel(void){
+  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
+  while(true){
+    if(BP.get_voltage_battery() <= 9.0){
+      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      ::battery = false;
+    }
+    else{
+      ::battery = true;
+    }
+    sleep(5);
+	}
+}
+
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+//------------------------------------------CONNECTION-----------------------------------------------
+
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
+
+void SetComm(){
+  cout << endl << "Geef het poort-nummer op: ";
+  cin >> ::ComPortNr; cout << endl;
+  cout << endl << "Geef de host-name op: ";
+  cin >> ::ComHostName; cout << endl;
+}
+
+void error(const char *msg) {
+  perror(msg);
+  exit(1);
+}
+
+void iClient(char message[256]){
+  //zet de connectie op voor het verzenden van een message.
+  char buffer[256];
+  int socketFD, n;
+  struct sockaddr_in serv_addr;
+  struct hostent *server;
+
+  socketFD = socket(AF_INET, SOCK_STREAM, 0);
+  server = gethostbyname(::ComHostName);
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+
+  bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr, server->h_length);
+  serv_addr.sin_port = htons(::ComPortNr);
+
+  if (connect(socketFD,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
+    error("ERROR connecting");
+  }
+
+  bzero(buffer,256);
+  bcopy(message,buffer,strlen(message));
+  n = write(socketFD,buffer,strlen(buffer));
+
+  if (n < 0){
+    error("ERROR writing to socket");
+  }
+
+  bzero(buffer,256);
+  n = read(socketFD,buffer,255);
+
+  if (n < 0){
+    error("ERROR reading from socket");
+  }
+  //Receive message "1" if sent message was received.
+  printf("%s\n",buffer);
+  close(socketFD);
+}
+
+
+//------------------------------------------MANUAL CONTROLS-----------------------------------------------
+
 
 struct coordinates{
   int x;
@@ -35,15 +110,6 @@ struct gridPoints{
   coordinates currentLocation;
   char direction;
 };
-
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
-}
-
 
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
 vector<vector<bool>> makeGrid(gridPoints GP) {
@@ -106,7 +172,6 @@ void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
 }
 
-
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
 	int snelheid = 1;
@@ -149,68 +214,6 @@ void turnLeft(gridPoints &GP){
     GP.direction = 'n';
   }
 }
-
-void SetComm(){
-  cout << endl << "Geef het poort-nummer op: ";
-  cin >> ::ComPortNr; cout << endl;
-  cout << endl << "Geef de host-name op: ";
-  cin >> ::ComHostName; cout << endl;
-}
-
-void error(const char *msg) {
-  perror(msg);
-  exit(1);
-}
-
-void iClient(char message[256]){
-  //zet de connectie op voor het verzenden van een message.
-  char buffer[256];
-  int socketFD, n;
-  struct sockaddr_in serv_addr;
-  struct hostent *server;
-
-  socketFD = socket(AF_INET, SOCK_STREAM, 0);
-  server = gethostbyname(::ComHostName);
-  bzero((char *) &serv_addr, sizeof(serv_addr));
-  serv_addr.sin_family = AF_INET;
-
-  bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr, server->h_length);
-  serv_addr.sin_port = htons(::ComPortNr);
-
-  if (connect(socketFD,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) {
-    error("ERROR connecting");
-  }
-
-  bzero(buffer,256);
-  bcopy(message,buffer,strlen(message));
-  n = write(socketFD,buffer,strlen(buffer));
-
-  if (n < 0){
-    error("ERROR writing to socket");
-  }
-
-  bzero(buffer,256);
-  n = read(socketFD,buffer,255);
-
-  if (n < 0){
-    error("ERROR reading from socket");
-  }
-  //Receive message "1" if sent message was received.
-  printf("%s\n",buffer);
-  close(socketFD);
-}
-
-void batteryLevel(void){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
 void turnRight(gridPoints &GP){
@@ -371,8 +374,11 @@ string manualControl(gridPoints &GP){
 	}
 	string message(orientationList.begin(), orientationList.end()); 
 	return message;
-
 }
+
+
+//------------------------------------------MAIN-----------------------------------------------
+
 
 int main(){
 	
