@@ -9,21 +9,18 @@ using namespace std;
 BrickPi3 BP;
 bool battery = true;    //battery level function
 
-void exit_signal_handler(int signo);
-/*
-  Author:       Duur
-  Description:  setSensors set all the sensors for a specific robot
-                and immediatly sets them.
-*/
-void setSensors(){
-  //BP.set_sensor_type();
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
 }
 
-/*
-  Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the
-                global bool battery to false if battery is low
-*/
+void setSensors(){
+  BP.set_sensor_type();
+}
+
 void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
@@ -38,11 +35,6 @@ void batteryLevel(void){
   }
 }
 
-/*
-  Author:       Maaike & Duur
-  Description:  Asks the user to supply a port and a sensor type to check the output
-                of said function for a certain amount of time.
-*/
 void checkSensor(){
   sensor_color_t        Color;
   sensor_ultrasonic_t   Ultrasonic;
@@ -139,12 +131,4 @@ int main(){
     }
   }
   return 0;
-}
-
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
 }
