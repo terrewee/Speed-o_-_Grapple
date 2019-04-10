@@ -29,6 +29,13 @@ struct gridPoints{
   char direction;
 };
 
+struct range {
+  bool obstakelInRangeLeft = false;
+  bool obstakelInRangeRight = false;
+  bool obstakelInRangeForward = false;
+};
+
+range obstakel;
 void exit_signal_handler(int signo);
 
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
@@ -282,7 +289,7 @@ void move(char direction, gridPoints & GP){
 	if(GP.direction != direction){
 		turn(direction, GP);
 	}
-	moveForwardDistance(1, GP);
+	moveForwardDistance(GP, 1);
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -460,42 +467,42 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 				if(GP.direction == 'n'){
 					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
 					if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
+						grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
 					}
 					else if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
+						grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
 					}
 				}
 				else if(GP.direction == 'e'){
 					grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
 					if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
+						grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
 					}
 					else if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
+						grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
 					}
 				}
 				else if(GP.direction == 's'){
 					grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
 					if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
+						grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
 					}
 					else if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
+						grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
 					}
 				}
 				else if(GP.direction == 'w'){
 					grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
 					if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
+						grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
 					}
 					else if(obstacles.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
+						grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
 					}
 				}
 			}
 			else{
-				move(directions[i], grid);
+				move(directions[i], GP);
 				followedRoute += directions[i];
 
 				if(i == directions.size() - 1){
@@ -508,33 +515,35 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 	}
 }
 
-dock();
+dockScout(gridPoints & GP){
+	move('e', GP);
+	turn('n', GP);
+}
 
-driveBack(string followedRoute, gridPoints & GP){
+void driveBack(string followedRoute, gridPoints & GP){
 	char tempChar;
 	for(unsigned int i = 0; i < followedRoute.size() / 2; i++){
-		tempChar = followedRoute[followRoute.size - (i + 1)];
-		followedRoute[followRoute.size - (i + 1)] = followedRoute[i];
+		tempChar = followedRoute[followedRoute.size() - (i + 1)];
+		followedRoute[followedRoute.size() - (i + 1)] = followedRoute[i];
 		followedRoute[i] = tempChar;
 	}
 
 	for(unsigned int j = 0; j < followedRoute.size(); j++){
-		if(followRoute[i] == 'n'){
+		if(followedRoute[j] == 'n'){
 			move('n', GP);
 		}
-		else if(followRoute[i] == 'e'){
+		else if(followedRoute[j] == 'e'){
 			move('e', GP);
 		}
-		else if(followRoute[i] == 's'){
+		else if(followedRoute[j] == 's'){
 			move('s', GP);
 		}
-		else if(followRoute[i] == 'w'){
+		else if(followedRoute[j] == 'w'){
 			move('w', GP);
 		}
 	}
 
-	move('e', GP);
-	turn('n', GP);
+	dockScout(GP);
 }
 
 int main(){
@@ -559,6 +568,7 @@ int main(){
 	// BP.set_motor_position(PORT_D, EncoderA);
 	
 	gridPoints GP;
+	range obstakel;
 	vector<vector<bool>> grid = getGrid(GP);
 	string followedRoute;
 	bool destinationArrived = false;
