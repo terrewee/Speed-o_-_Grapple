@@ -1,17 +1,5 @@
 #include "BrickPi3.h"     // for BrickPi3
-#include <stdio.h>        // for printf
-#include <unistd.h>       // for usleep
-#include <signal.h>       // for catching exit signals
-#include <stdlib.h>
-#include <sys/socket.h>   //include voor het gebruik van sockets
-#include <netinet/in.h>
-#include <netdb.h>
-#include <string>
-#include <iostream>
-#include <thread>
-#include <iomanip>	// for setw and setprecision
-
-using namespace std;
+#include "grappleHead.h"  // our main grapple headder
 
 BrickPi3 BP;
 
@@ -19,7 +7,19 @@ bool battery = true;          //battery level function
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
 
-void exit_signal_handler(int signo);
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+void setSensors(){
+	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
+	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
+	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
 
 /*
   Author:       Duur
@@ -126,157 +126,6 @@ void batteryLevel(void){
     sleep(5);
   }
 }
-/*
-  Author:       Gerjan
-  Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
-*/
-void SetComm(){
-  cout << endl << "Geef het poort-nummer op: ";
-  cin >> ::ComPortNr; cout << endl;
-}
-/*
-  Author:       Duur & Gerjan
-  Description:  Small function to throw error message
-*/
-void error(const char *msg) {
-  perror(msg);
-  exit(1);
-}
-/*
-  Author:       Gerjan & Duur
-  Description:  Opens a socket and listens for a message, return a message based on result.
-*/
-void iServer(){
-  int socketFD, newSocketFD, n;
-  socklen_t clilen;
-  char buffer[256];
-  struct sockaddr_in serv_addr, cli_addr;
-
-  socketFD = socket(AF_INET, SOCK_STREAM, 0);
-  serv_addr.sin_family = AF_INET;
-  serv_addr.sin_addr.s_addr = INADDR_ANY;
-  serv_addr.sin_port = htons(::ComPortNr);
-
-  if (bind(socketFD, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
-    error("ERROR on binding");
-  }
-
-  listen(socketFD,5);
-  clilen = sizeof(cli_addr);
-  newSocketFD = accept(socketFD, (struct sockaddr *) &cli_addr, &clilen);
-
-  if (newSocketFD < 0){
-    error("ERROR on accept");
-  }
-
-  bzero(buffer,256);
-  n = read(newSocketFD,buffer,255);
-
-  if (n < 0){
-    error("ERROR reading from socket");
-  }
-  // Received message in the buffer.
-  printf("Here is the message: %s\n",buffer);
-  // Try to send "1" back so client knows communication succeeded.
-  n = write(newSocketFD,"We received the message",23);
-
-  if (n < 0) {
-    error("ERROR writing to socket");
-  }
-
-  close(newSocketFD);
-  close(socketFD);
-}
-
-
-
-
-/*
-	Author 		:	Duur Alblas
-	Description	:
-		Initialize all sensors
-*/
-void setSensors()
-{
-	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
-	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
-	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
-	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
-}
-/*
-	Author:		:	Joram van Leeuwen, Duur Alblas
-	Description	:
-		Short code to set a single motor encoder.
-*/
-void encodeMotor(int32_t pos)
-{
-	BP.set_motor_position_relative(PORT_A, pos);
-}
-
-/*
-	Author		:	Joram van Leeuwen
-	Description	:
-		Functie om arm over kantelpunt te krijgen
-*/
-void brengNaarKantelPunt()
-{
-	BP.set_motor_limits(PORT_A, 40, 0);
-	encodeMotor(-50);
-}
-
-/*
-	Author		:	Joram van Leeuwen, Stef Ottenhof
-	Description	:
-		Functie om klauw gelijdelijk omlaag te latern gaan
-*/
-void gelijdelijkDownLoop()
-{
-	int32_t encoder = -50;
-	while(encoder > -110)
-	{
-		encodeMotor(-5);
-		usleep(500000);
-		encoder = encoder - 5;
-	}
-}
-
-/*
-	Author		:	Joram van Leeuwen, Stef Ottenhof
-	Description	:
-		Functie om klauw terug omhoog te laten gaan
-*/
-void klauwOmhoog()
-{
-	BP.set_motor_limits(PORT_A, 50, 0);
-	encodeMotor(130);	// zelfde als totale neerwaartse beweging
-}
-
-/*
-	Author		:	Joram van Leeuwen, Stef Ottenhof
-	Description	:
-		Functies om klauw te openenen en te sluiten
-*/
-void klauwOpen()
-{
-	BP.set_motor_limits(PORT_D, 60, 0);
-	BP.set_motor_position_relative(PORT_D, -180);
-}
-void klauwDicht()
-{
-	BP.set_motor_limits(PORT_D, 60, 0);
-	BP.set_motor_position_relative(PORT_D, 180);
-}
-
-void exit_signal_handler(int signo)
-{
-if(signo == SIGINT)
-    {
-        BP.reset_all();
-        exit(-2);
-    }
-}
-
-
 
 
 int main(){
@@ -342,6 +191,7 @@ int main(){
 
   return 0;
 }
+
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
