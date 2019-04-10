@@ -1,5 +1,5 @@
-#ifndef grappleMain_h
-#define grappleMain_h
+#ifndef GRAPPLEMAIN_H
+#define GRAPPLEMAIN_H
 
 #include "BrickPi3.h"
 #include <stdio.h>        // for printf
@@ -92,4 +92,6 @@ void klauwOpen();
 void klauwDicht();
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo);
+
+
 #endif
