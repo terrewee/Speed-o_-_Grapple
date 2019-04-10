@@ -9,7 +9,6 @@
 #include <string>
 #include <iostream>
 #include <thread>
-#include <iomanip>	// for setw and setprecision
 
 using namespace std;
 
@@ -30,11 +29,7 @@ void setSensors(){
 	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
 }
-/*
-  Author:       Maaike & Duur
-  Description:  Asks the user to supply a port and a sensor type to check the output
-                of said function for a certain amount of time.
-*/
+
 void checkSensor(){
   sensor_color_t        Color;
   sensor_ultrasonic_t   Ultrasonic;
@@ -264,28 +259,6 @@ int main(){
   }
 
   BP.reset_all();
-
-
-
-
-  signal(SIGINT, exit_signal_handler);
-  	BP.detect();
-	setSensors();
-	klauwOpen();
-	sleep(1);
-	brengNaarKantelPunt();
-	sleep(1);
-	gelijdelijkDownLoop();
-	sleep(1);
-	klauwDicht();
-	sleep(1);
-	klauwOmhoog();
-	sleep(3);
-	BP.set_motor_power(PORT_A, 0);
-
-
-
-
   return 0;
 }
 
