@@ -130,6 +130,102 @@ void batteryLevel(void){
 }
 
 
+
+//--------------------------------------MOTOR CODE--------------------------------------
+
+
+void encodeMotor(int32_t pos){
+	BP.set_motor_position_relative(PORT_A, pos);
+}
+
+void brengNaarKantelPunt(){
+	BP.set_motor_limits(PORT_A, 40, 0);
+	encodeMotor(-50);
+}
+
+void gelijdelijkDownLoop(){
+	int32_t encoder = -50;
+	while(encoder > -110){
+		encodeMotor(-5);
+		usleep(500000);
+		encoder = encoder - 5;
+	}
+}
+
+void klauwOmhoog(){
+	BP.set_motor_limits(PORT_A, 50, 0);
+	encodeMotor(130);	// zelfde als totale neerwaartse beweging
+}
+
+void klauwOpen(){
+	BP.set_motor_limits(PORT_D, 60, 0);
+	BP.set_motor_position_relative(PORT_D, -180);
+}
+void klauwDicht(){
+	BP.set_motor_limits(PORT_D, 60, 0);
+	BP.set_motor_position_relative(PORT_D, 180);
+}
+
+//--------------------------------------COMMUNICATION--------------------------------------
+
+int ComPortNr = 6969;         //Port number for communication
+char ComHostName[] = "dex2";  //Hostname for communication
+
+void SetComm(){
+
+  cout << endl << "Geef het poort-nummer op: ";
+  cin >> ::ComPortNr; cout << endl;
+}
+
+void error(const char *msg) {
+  perror(msg);
+  exit(1);
+}
+
+void iServer(){
+  int socketFD, newSocketFD, n;
+  socklen_t clilen;
+  char buffer[256];
+  struct sockaddr_in serv_addr, cli_addr;
+
+  socketFD = socket(AF_INET, SOCK_STREAM, 0);
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_addr.s_addr = INADDR_ANY;
+  serv_addr.sin_port = htons(::ComPortNr);
+
+  if (bind(socketFD, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
+    error("ERROR on binding");
+  }
+
+  listen(socketFD,5);
+  clilen = sizeof(cli_addr);
+  newSocketFD = accept(socketFD, (struct sockaddr *) &cli_addr, &clilen);
+
+  if (newSocketFD < 0){
+    error("ERROR on accept");
+  }
+
+  bzero(buffer,256);
+  n = read(newSocketFD,buffer,255);
+
+  if (n < 0){
+    error("ERROR reading from socket");
+  }
+  // Received message in the buffer.
+  printf("Here is the message: %s\n",buffer);
+  // Try to send "1" back so client knows communication succeeded.
+  n = write(newSocketFD,"We received the message",23);
+
+  if (n < 0) {
+    error("ERROR writing to socket");
+  }
+
+  close(newSocketFD);
+  close(socketFD);
+}
+
+//--------------------------------------MAIN--------------------------------------
+
 int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   BP.detect();
