@@ -18,7 +18,7 @@ sensor_color_t      Color2;
 
 int WhatIsInAColor (sensor_color_t,){
 int_fast64_t color;
-int colorchoice = 0;
+int colorchoice;
 cout << "Welke kleur heeft het object" << endl;
 cout << "1 : Rood " << endl;
 cout << "2 : Blauw " << endl;
@@ -34,7 +34,7 @@ return colorchoice;
 }
 
 char FarbeNichtRichtig() {
-    string answer;
+    char answer;
     cout << "Dit object heeft niet de door u opgegeven kleur. Wilt u het object alsnog oppakken?" << endl;
     cout << "Ja of Nee" << endl;
     cin >> answer;
