@@ -22,7 +22,7 @@ sensor_color_t      Color1;
 
 
 
-int WhatIsInAColor (sensor_color_t.Color1){
+int WhatIsInAColor (sensor_color_t Color1){
 int_fast64_t color;
 int colorchoice;
 cout << "Welke kleur heeft het object" << endl;
@@ -39,8 +39,8 @@ if (color == 4)     { colorchoice = Color1.ambient;}
 return colorchoice;
 }
 
-char FarbeNichtRichtig() {
-    char answer;
+void FarbeNichtRichtig() {
+    string answer;
     cout << "Dit object heeft niet de door u opgegeven kleur. Wilt u het object alsnog oppakken?" << endl;
     cout << "Ja of Nee" << endl;
     cin >> answer;
