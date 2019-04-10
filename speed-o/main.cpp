@@ -22,8 +22,8 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
   while (true){
     if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
       if (Color2.color == 1 && Color4.color == 1){ sleep(0.01); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
-      else if (Color2.color == 1 && Color4.color == 0){sleep(0.01); ::crossroad++;}
-      else if (Color2.color == 0 && Color4.color == 1){ sleep(0.01); ::crossroad++;}
+      else if (Color2.color == 1 && Color4.color == 6){sleep(0.01); ::crossroad++;}
+      else if (Color2.color == 6 && Color4.color == 1){ sleep(0.01); ::crossroad++;}
     }
   }
 }
