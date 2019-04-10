@@ -171,7 +171,7 @@ int moveForward() {
             if (BP.get_sensor(PORT_1, Color1) == 0){
                 cout << "sensor werkt" << endl;
                 if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2700)) { // las de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
-                    cout << "hier is een kruispunt"
+                    cout << "hier is een kruispunt" << endl;
                     resetMotor();
                     sleep(1);
                     return 0;
