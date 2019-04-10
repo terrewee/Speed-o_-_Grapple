@@ -27,7 +27,7 @@
               <entry file="file://$PROJECT_DIR$/../../grapple/main.cpp">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="663">
-                    <caret line="432" lean-forward="true" selection-start-line="373" selection-end-line="432" />
+                    <caret line="432" selection-start-line="373" selection-end-line="432" />
                   </state>
                 </provider>
               </entry>
@@ -42,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="797">
-              <caret line="307" column="18" selection-start-line="307" selection-start-column="18" selection-end-line="307" selection-end-column="18" />
+            <state relative-caret-position="7990">
+              <caret line="470" column="4" selection-start-line="470" selection-start-column="4" selection-end-line="470" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -120,12 +120,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1554889151450</updated>
-      <workItem from="1554889152765" duration="15625000" />
+      <workItem from="1554889152765" duration="16306000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15625000" />
+    <option name="totallyTimeSpent" value="16306000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -158,14 +158,14 @@
     <entry file="file://$PROJECT_DIR$/../../grapple/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
-          <caret line="432" lean-forward="true" selection-start-line="373" selection-end-line="432" />
+          <caret line="432" selection-start-line="373" selection-end-line="432" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="797">
-          <caret line="307" column="18" selection-start-line="307" selection-start-column="18" selection-end-line="307" selection-end-column="18" />
+        <state relative-caret-position="7990">
+          <caret line="470" column="4" selection-start-line="470" selection-start-column="4" selection-end-line="470" selection-end-column="4" />
         </state>
       </provider>
     </entry>

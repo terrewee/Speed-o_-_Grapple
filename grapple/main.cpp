@@ -402,8 +402,17 @@ void Navigation(vector<char> route){
 
 
     cout << "Arrived at destination" << endl;
+    sleep(1);
     //***************************************************************************************************************
-    sleep(10);                                             //functie voor object zien en vooral oppakken
+                                             //functie voor object zien en vooral oppakken
+    brengNaarKantelPunt();
+    klauwOpen();
+    gelijdelijkDownLoop();
+    klauwDicht();
+    sleep(1);
+    klauwOmhoog();
+    resetMotor()
+
     //***************************************************************************************************************
     cout << "Picked up ze object, time to head back" << endl;
 
@@ -444,11 +453,22 @@ void Navigation(vector<char> route){
             }
         }
     }
+
     resetMotor();
-    //***************************************************************************************************************
-    sleep(10);                                             //fucntie voor object droppen
-    //***************************************************************************************************************
     cout << "Arrived home, dropping the object like its hot" << endl;
+    sleep(1);
+    //***************************************************************************************************************
+                                                 //fucntie voor object droppen
+
+    brengNaarKantelPunt();
+    gelijdelijkDownLoop();
+    klauwOpen();
+    klauwOmhoog();
+    klauwDicht();
+    resetMotor();
+
+    //***************************************************************************************************************
+    
     Drive('b'); // orienteer jezelf goed voor de volgende missie
 }
 
