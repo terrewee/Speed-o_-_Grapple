@@ -464,7 +464,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 		}
 
 		for(int i = 0; i < directions.size(); i++){
-			cout << i << "," << directions[i] << ":";
+			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
 				if(GP.direction == 'n'){
@@ -514,6 +514,9 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 					destinationArrived = true;
 				}
 			}
+
+			cout << i << "  " << directions[i] << ":";
+			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 		}
 		
 	}
@@ -531,14 +534,32 @@ void driveBack(string followedRoute, gridPoints & GP){
 		followedRoute[followedRoute.size() - (i + 1)] = followedRoute[i];
 		followedRoute[i] = tempChar;
 	}
+	for(unsigned int k = 0; k < followedRoute.size(); k++){
+		if(followedRoute[k] == 'n'){
+			followedRoute[k] = 's';
+		}
+		else if(followedRoute[k] == 'e'){
+			followedRoute[k] = 'w';
+		}
+		else if(followedRoute[k] == 's'){
+			followedRoute[k] = 'n';
+		}
+		else if(followedRoute[k] == 'w'){
+			followedRoute[k] = 'e';
+		}
+	}
 
-	cout << "followedRoute:" << endl;
+	//debugging
+	cout << "route back:" << endl;
 	for(unsigned int i = 0; i < followedRoute.size(); i++){
 		cout << followedRoute[i];
 	}
 	cout<< endl;
 
 	for(unsigned int j = 0; j < followedRoute.size(); j++){
+		cout << j << "  " << followedRoute[j] << ":";
+		cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
+
 		if(followedRoute[j] == 'n'){
 			move('n', GP);
 		}
@@ -551,6 +572,9 @@ void driveBack(string followedRoute, gridPoints & GP){
 		else if(followedRoute[j] == 'w'){
 			move('w', GP);
 		}
+
+		cout << j << "  " << followedRoute[j] << ":";
+		cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 	}
 
 	dockScout(GP);
