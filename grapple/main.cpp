@@ -155,6 +155,9 @@ rspd){
 int moveForward() {
     //Aan de hand van pid controller
 
+    fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
+    sleep(0.5);
+
     sensor_light_t Light3;
     sensor_color_t Color1;
 
@@ -173,10 +176,8 @@ int moveForward() {
     while (true) {
         if (BP.get_sensor(PORT_3, Light3) == 0) {
             lightvalue = Light3.reflected; // neem waarde van zwartwit sensor
-            cout << lightvalue << endl;
 
             if (BP.get_sensor(PORT_1, Color1) == 0){
-                cout << "sensor werkt" << endl;
 
                 if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2400)) { // las de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
                     cout << "hier is een kruispunt" << endl;
@@ -184,7 +185,6 @@ int moveForward() {
                     sleep(1);
                     return 0;
                 }
-
             }
         }
 
@@ -207,13 +207,13 @@ int moveForward() {
 }
 
 void turnLeft(){
-    fwd(-25, 25);
-    sleep(5);
+    fwd(25, -50);
+    sleep(7);
     resetMotor();
 }
 void turnRight(){
-    fwd(25, -25);
-    sleep(5);
+    fwd(-50, 25);
+    sleep(7);
     resetMotor();
 }
 
