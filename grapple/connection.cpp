@@ -3,8 +3,11 @@
 
 using namespace std;
 
+int ComPortNr = 6969;         //Port number for communication
+char ComHostName[] = "dex2";  //Hostname for communication
+
 void SetComm(){
-  int ComPortNr;
+
   cout << endl << "Geef het poort-nummer op: ";
   cin >> ::ComPortNr; cout << endl;
 }
