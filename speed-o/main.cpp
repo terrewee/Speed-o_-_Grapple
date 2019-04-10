@@ -15,119 +15,46 @@ using namespace std;
 BrickPi3 BP;
 
 bool battery = true;          //battery level function
+
+void batteryLevel(void){
+  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
+  while(true){
+    if(BP.get_voltage_battery() <= 9.0){
+      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      ::battery = false;
+    }
+    else{
+      ::battery = true;
+    }
+    sleep(5);
+	}
+}
+
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
+
+//------------------------------------------CONNECTION-----------------------------------------------
+
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
 
-void exit_signal_handler(int signo);
-
-/*
-  Author:       Duur
-  Description:  setSensors set all the sensors for a specific robot
-                and immediatly sets them.
-*/
-void setSensors(){
-  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
-}
-/*
-  Author:       Maaike & Duur
-  Description:  Asks the user to supply a port and a sensor type to check the output
-                of said function for a certain amount of time.
-*/
-void checkSensor(){
-  sensor_color_t        Color;
-  sensor_ultrasonic_t   Ultrasonic;
-  sensor_light_t        Light;
-  sensor_touch_t        Touch;
-
-  int portNr = 0;
-  uint8_t portValue = 0;
-  int sensorNr = 0;
-  int nTimes = 1;
-
-  cout << "Geef poort nummer (1-4): " << endl;
-  cin >> portNr;
-  cout << "Geef sensor type: " << endl;
-  cout << "1: Color" << endl;
-  cout << "2: Ultrasonic" << endl;
-  cout << "3: Light" << endl;
-  cout << "4: Touch" << endl;
-  cin >> sensorNr;
-  cout << "Hoe vaak checken: " << endl;
-  cin >> nTimes;
-
-  if(portNr == 1) portValue = 0x01;
-  else if (portNr == 2) portValue = 0x02;
-  else if (portNr == 3) portValue = 0x03;
-  else if (portNr == 4) portValue = 0x04;
-  else {
-    cout << "Geen juiste keuze ontvangen.";
-    return;
-  }
-
-  switch(sensorNr){
-    case 1:
-      for (int i = 0; i < nTimes; ++i) {
-        if(BP.get_sensor(portValue,Color) == 0){
-          cout << " red : " << Color.reflected_red;
-          cout << " green : " << Color.reflected_green;
-          cout << " blue : " << Color.reflected_blue;
-          cout << " ambient : " << Color.ambient << endl;
-          cout << " color code : " << (int) Color.color << endl;
-        }
-        sleep(5);
-      }
-      break;
-    case 2:
-      cout << "Case 2" << endl;
-      for (int i = 0; i < nTimes; ++i) {
-        cout << "In de case 2 loop nr : " << i << endl;
-        if(BP.get_sensor(portValue,Ultrasonic) == 0){
-          cout << Ultrasonic.cm << " cm" << endl;
-        }
-        sleep(5);
-      }
-      break;
-    case 3:
-      for (int i = 0; i < nTimes; ++i) {
-        if(BP.get_sensor(portValue,Light) == 0){
-          cout << " ambient : " << Light.ambient << endl;
-          cout << " reflected : " << Light.reflected << endl;
-        }
-        sleep(5);
-      }
-      break;
-    case 4:
-      for (int i = 0; i < nTimes; ++i) {
-        if(BP.get_sensor(portValue,Touch) == 0){
-          cout << "pressed : " << Touch.pressed << endl;
-        }
-        sleep(5);
-      }
-      break;
-  }
-}
-/*
-  Author:       Gerjan
-  Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
-*/
 void SetComm(){
   cout << endl << "Geef het poort-nummer op: ";
   cin >> ::ComPortNr; cout << endl;
   cout << endl << "Geef de host-name op: ";
   cin >> ::ComHostName; cout << endl;
 }
-/*
-  Author:       Duur & Gerjan
-  Description:  Small function to throw error message
-*/
+
 void error(const char *msg) {
   perror(msg);
   exit(1);
 }
-/*
-  Author:       Duur
-  Description:  Verstuur bericht naar opgegeven hostname en port, neemt input van een string en verzend die via STREAM naar server-host.
-*/
+
 void iClient(char message[256]){
   //zet de connectie op voor het verzenden van een message.
   char buffer[256];
@@ -165,39 +92,170 @@ void iClient(char message[256]){
   printf("%s\n",buffer);
   close(socketFD);
 }
-/*
-  Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the
-                global bool battery to false if battery is low
-*/
-void batteryLevel(void){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
+
+
+//------------------------------------------MANUAL CONTROLS-----------------------------------------------
+
+
+struct coordinates{
+  int x;
+  int y;
+};
+
+//contains information on all needed grid coordinates, and facing direction of robot.
+struct gridPoints{
+  coordinates targetCoordinates;
+  coordinates targetRelCoordinates;
+  coordinates homeCoordinates;
+  coordinates currentLocation;
+  char direction;
+};
+
+//Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
+vector<vector<bool>> makeGrid(gridPoints GP) {
+	vector<vector<bool>> grid;
+	int targetX = GP.targetRelCoordinates.x;
+	int targetY = GP.targetRelCoordinates.y;
+	if (targetX < 0) {
+		targetX = targetX * -1;
+	}
+	if (targetY < 0) {
+		targetY = targetY * -1;
+	}
+	for (int i = 0; i < targetY + 5; i++) {
+		vector<string> tempRow = {};
+		for (int j = 0; j < targetX + 5; j++) {
+			tempRow.push_back(".");
+		}
+		grid.push_back(tempRow);
+	}
+	return grid;
+}
+
+//Asks user for GP.targetRelCoordinates for grid generation.
+vector<vector<bool>> getGrid(gridPoints & GP) {
+	vector<vector<bool>> grid = { {} };
+
+	cout << "Please give the relative x coordinate of the object to be found." << endl;
+	cin >> GP.targetRelCoordinates.x;
+	cout << "Please give the relative y coordinate of the object to be found." << endl;
+	cin >> GP.targetRelCoordinates.y;
+
+	grid = makeGrid(GP);
+
+	return grid;
+}
+
+//Sets all the coordinates for GP.homeCoordinates and GP.targetCoordinates based on GP.targetRelCoordinates.
+void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
+	int ySize = grid.size();
+	int xSize = grid[1].size();
+	//Set home coordinates
+	if (GP.targetRelCoordinates.x >= 0 && GP.targetRelCoordinates.y >= 0) {   //if X-Coordinate is + and Y-Coordinate is +
+		GP.homeCoordinates.x = 2;
+		GP.homeCoordinates.y = 2;
+	}
+	else if (GP.targetRelCoordinates.x < 0 && GP.targetRelCoordinates.y < 0) {  //if X-Coordinate is - and Y-Coordinate is -
+		GP.homeCoordinates.x = xSize - 3;
+		GP.homeCoordinates.y = ySize - 3;
+	}
+	else if (GP.targetRelCoordinates.x > 0 && GP.targetRelCoordinates.y < 0) {    //if X-Coordinate is + and Y-Coordinate is -
+		GP.homeCoordinates.x = 2;
+		GP.homeCoordinates.y = ySize - 3;
+	}
+	else {                                      //if X-Coordinate is - and Y-Coordinate is +
+		GP.homeCoordinates.x = xSize - 3;
+		GP.homeCoordinates.y = 2;
+	}
+	//Set target coordinates
+	GP.targetCoordinates.x = GP.homeCoordinates.x + GP.targetRelCoordinates.x;
+	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
+}
+
+//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
+void turnMotorPowerUp(int &motorPower) {
+	int snelheid = 1;
+
+	while (motorPower < snelheid) {
+		BP.set_motor_power(PORT_A, motorPower);
+		BP.set_motor_power(PORT_B, motorPower);
+		usleep(0.5);
+		motorPower += 1;
+
+	}
+}
+
+void turnMotorPowerDown(int &motorPower) {
+	while (motorPower > 10) {
+		BP.set_motor_power(PORT_A, motorPower+1);
+		BP.set_motor_power(PORT_B, motorPower);
+		motorPower -= 10;
+	}
+}
+void moveForward(gridPoints &GP){
+	int motorPower = 10;
+	turnMotorPowerUp(motorPower);
+	sleep(1);
+	turnMotorPowerDown(motorPower);
+}
+
+//Turns the rorbot to the right, and updates the value of GP.direction.
+void turnLeft(gridPoints &GP){
+  if(GP.direction == 'n'){
+    GP.direction = 'w';
+  }
+  else if(GP.direction == 'w'){
+    GP.direction = 's';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'e';
+  }
+  else{
+    GP.direction = 'n';
   }
 }
 
-int main(){
-  signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
-  BP.detect();
-  BP.reset_all();
-  for (int i = 0; i < 5; ++i){
-    cout << ".";
-    if (i == 3){
-      setSensors();
-    }
-    sleep(1);
+//Turns the rorbot to the left, and updates the value of GP.direction.
+void turnRight(gridPoints &GP){
+  if(GP.direction == 'n'){
+    GP.direction = 'e';
   }
-  cout << endl << "Initialized" << endl;
+  else if(GP.direction == 'w'){
+    GP.direction = 'n';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'w';
+  }
+  else{
+    GP.direction = 's';
+  }
+}
 
-  thread checkBattery (batteryLevel);
+//Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
+void resetCurrentLocation(gridPoints &GP){
+  GP.currentLocation.x = GP.homeCoordinates.x;
+  GP.currentLocation.y = GP.homeCoordinates.y;
+}
+
+//Updates GP.currentCoordinates according to distance moved and GP.direction.
+void updateLocation(gridPoints &GP, const unsigned int distance){
+  if(GP.direction == 'n'){
+    GP.currentLocation.y -= distance;
+  }
+  else if(GP.direction == 's'){
+    GP.currentLocation.y += distance;
+  }
+  else if(GP.direction == 'w'){
+    GP.currentLocation.x -= distance;
+  }
+  else{
+    GP.currentLocation.y += distance;
+  }
+}
+
+//Moves robot a set distance forward and calls updateLocation().
+void moveForwardDistance(gridPoints &GP, unsigned int distance){
+  unsigned int count = 0;
 
   int uChoice;
 
@@ -223,15 +281,138 @@ int main(){
         checkSensor();
         break;
     }
+
+
+
+  while(count < distance){
+    moveForward(GP);
+    count++;
   }
 
-  BP.reset_all();
-  return 0;
+  updateLocation(GP, distance);
 }
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
+
+void moveToHomepoint(gridPoints &GP){
+	GP.direction = 'n';
+	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
+	turnLeft(GP);
+  moveForwardDistance(GP, 1);
+	if(GP.targetCoordinates.y == 0){
+		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
+		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
+	}
+	else if(GP.targetCoordinates.y > 0){turnRight(GP);}
+	else if(GP.targetCoordinates.y < 0){turnLeft(GP);}
+
+
+}
+
+// Tells the robot which way to turn.
+void turn(char direction, gridPoints GP) {
+	if (GP.direction == 'n') {
+		if (direction == 'w') {
+			turnLeft(GP);
+		}
+		else if (direction == 's') {
+			turnLeft(GP);
+			turnLeft(GP);
+		}
+		else if (direction == 'e') {
+			turnRight(GP);
+		}
+	}
+	else if (GP.direction == 'e') {
+		if (direction == 'w') {
+			turnLeft(GP);
+			turnLeft(GP);
+		}
+		else if (direction == 's') {
+			turnRight(GP);
+		}
+		else if (direction == 'n') {
+			turnLeft(GP);
+		}
+	}
+	else if (GP.direction == 's') {
+		if (direction == 'e') {
+			turnLeft(GP);
+		}
+		else if (direction == 'n') {
+			turnLeft(GP);
+			turnLeft(GP);
+		}
+		else if (direction == 'w') {
+			turnRight(GP);
+		}
+	}
+	else if (GP.direction == 'w') {
+		if (direction == 's') {
+			turnLeft(GP);
+		}
+		else if (direction == 'e') {
+			turnLeft(GP);
+			turnLeft(GP);
+		}
+		else if (direction == 'n') {
+			turnRight(GP);
+		}
+	}
+}
+
+string manualControl(gridPoints &GP){
+	vector<char> orientationList;
+	string answer;
+	while(true){
+		cin >> answer;
+		if 			(answer == "w")		{moveForward(GP);}
+		else if (answer == "a")		{turnLeft(GP); moveForward(GP);}
+		else if (answer == "d")		{turnRight(GP); moveForward(GP);}
+		else if (answer == "esc")	{break;}
+		else 											{cout << "invalid input." << endl; continue;}
+		orientationList.push_back(GP.direction);
+		cout << GP.direction << endl << endl;
+	}
+	string message(orientationList.begin(), orientationList.end()); 
+	return message;
+}
+
+
+//------------------------------------------MAIN-----------------------------------------------
+
+
+int main(){
+	
+	signal(SIGINT, exit_signal_handler);
+	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
+
+	Reset the encoders
+	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
+	BP.offset_motor_encoder(PORT_C, BP.get_motor_encoder(PORT_C));
+	BP.offset_motor_encoder(PORT_D, BP.get_motor_encoder(PORT_D));
+
+	Read the encoders
+	int32_t EncoderA = BP.get_motor_encoder(PORT_A);
+	int32_t EncoderB = BP.get_motor_encoder(PORT_B);
+	int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+	int32_t EncoderD = BP.get_motor_encoder(PORT_D);
+
+	Use the encoder value from motor A to control motors B, C, and D
+	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
+	BP.set_motor_dps(PORT_C, EncoderA);
+	BP.set_motor_position(PORT_D, EncoderA);
+	
+	gridPoints GP;
+	vector<vector<bool>> grid = getGrid(GP);
+	getCoordinates(GP, grid);
+	moveToHomepoint(GP);
+	resetCurrentLocation(GP);
+
+	string NOSWList = manualControl(GP);
+
+	cout << NOSWList << " ";
+		 
+	//moveForward();
+	cout << "end of file";
+	return 0;
 }
