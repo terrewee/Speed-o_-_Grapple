@@ -93,7 +93,7 @@ void exit_signal_handler(int signo){
 
 int main(){
 
-  color_object (WhatIsInAColor());
+  
 
 
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
@@ -107,7 +107,7 @@ int main(){
     sleep(1);
   }
   cout << endl << "Initialized" << endl;
-
+  color_object (WhatIsInAColor());
 
 
   while(true){
