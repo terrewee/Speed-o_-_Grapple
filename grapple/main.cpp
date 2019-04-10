@@ -1,4 +1,3 @@
-#include "grappleHead.h"
 #include "BrickPi3.h"
 #include <stdio.h>        // for printf
 #include <unistd.h>       // for usleep
