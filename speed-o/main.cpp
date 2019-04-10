@@ -26,7 +26,7 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
       else if (Color2.color == 6 && Color4.color == 1){ sleep(0.01); ::crossroad++;}
     }
   sleep(2);
-  cout << "2: " << Color2.color << " 4: " << Color4.color << endl;
+  cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
   cout << "Crossroad number: " << ::crossroad << endl;
 
   }
@@ -110,7 +110,7 @@ void turnRight(int lpos, int rpos){	// zet gridpoints GP er weer in
 
 
 void setSensors(){
-  BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
 	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
 	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
