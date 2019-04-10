@@ -68,7 +68,7 @@ void FarbeNichtRichtig() {
 //}
 
 
-char color_object (BP.get_sensor(PORT_1, Color1, colorchoice){
+char color_object (BP.get_sensor(PORT_1, Color1, int colorchoice){
     if (BP.get_sensor(PORT_1, Color1) == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
     if (BP.get_sensor(PORT_1, Color1) != colorchoice)       { FarbeNichtRichtig();}
 }
