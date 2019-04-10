@@ -232,7 +232,7 @@ void moveToHomepoint(gridPoints GP){
 }
 
 // Tells the robot which way to turn.
-void turn(char direction, gridPoints GP) {
+void turn(char direction, gridPoints & GP) {
 	if (GP.direction == 'n') {
 		if (direction == 'w') {
 			turnLeft(GP);
