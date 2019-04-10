@@ -280,9 +280,9 @@ void turn(char direction, gridPoints GP) {
 
 void move(char direction, gridPoints & GP){
 	if(GP.direction != direction){
-		turn(direction);
+		turn(direction, GP);
 	}
-	moveForwardDistance(1);
+	moveForwardDistance(1, GP);
 }
 
 //Gets the coordinates of a gridPoint from its number.
@@ -395,7 +395,7 @@ void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinates
 
 //Creates string with directions going from currentLocation to target.
 void getDirections(string & directions, vector<coordinates> & route, gridPoints & GP){
-	for(unsigned int i = route.size() - 1; i > 0; i--){
+	for(unsigned int i = route.size(); i > 0; i--){
 		if(route[i - 1].x == route[i].x && route[i - 1].y == route[i].y - 1){
 			directions += 'n';
 		}
@@ -412,12 +412,11 @@ void getDirections(string & directions, vector<coordinates> & route, gridPoints 
 }
 
 //Dees everything with finding shortest route.
-void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
+void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & grid){
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
 	vector<coordinates> route;
-	string directions;
 	vector<int> queue;
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
@@ -439,12 +438,74 @@ void searchPath(gridPoints & GP, vector<vector<bool>> & grid){
 	for(unsigned int i = 0; i < route.size(); i++){
 		cout << route[i].x << "," << route[i].y << " ";
 	}
+
+	directions = '';
 	getDirections(directions, route, GP);
 	cout << endl << "Directions:" << endl;
 	cout << directions.size() << ", " << directions;
 	cout << endl << "prevCoordinates:" << endl;
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
 	cout << endl << endl;
+}
+
+void followRoute(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
+	string directions;
+
+	while(!destinationArrived){
+		searchPath(directions, GP, grid);
+
+		for(int i = 0; i < directions.size(); i++){
+
+			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
+				if(GP.direction == 'n'){
+					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
+					}
+				}
+				else if(GP.direction == 'e'){
+					grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
+					}
+				}
+				else if(GP.direction == 's'){
+					grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
+					}
+				}
+				else if(GP.direction == 'w'){
+					grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
+					}
+				}
+			}
+			else{
+				move(directions[i], grid);
+				followedRoute += directions[i];
+
+				if(i == directions.size() - 1){
+					destinationArrived = true;
+				}
+			}
+
+		}
+
+	}
 }
 
 int main(){
@@ -471,72 +532,16 @@ int main(){
 	gridPoints GP;
 	vector<vector<bool>> grid = getGrid(GP);
 	string followedRoute;
-	bool DestinationArrived = false;
+	bool destinationArrived = false;
+
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
-
-	while(!destinationArrived){
-		searchPath(GP, grid);
-
-		for(int i = 0; i < route.size(); i++){
-
-			if(!obastakel.obstakelInRangeForward){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
-				move(directions[i]);
-
-				if(i == route.size() - 1){
-					destinationArrived = true;
-				}
-			}
-			else{
-				if(GP.direction[i] == 'n'){
-					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
-					if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
-					}
-					else if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
-					}
-				}
-				else if(GP.direction[i] == 'e'){
-					grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
-					if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
-					}
-					else if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
-					}
-				}
-				else if(GP.direction[i] == 's'){
-					grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
-					if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
-					}
-					else if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
-					}
-				}
-				else if(GP.direction[i] == 'w'){
-					grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
-					if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
-					}
-					else if(obstakel.obstakelInRangeLeft){
-						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
-					}
-				}
-			}
-		}
-	}
-
-
-}
+	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 	
 
-	
-	
 	//moveForward();
-	cout << "end of file";
-	return 0;
+		cout << "end of file";
+		return 0;
 }
