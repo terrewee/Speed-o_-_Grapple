@@ -128,9 +128,7 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
-	int snelheid;
-	cout << "Geef snelheid" << endl;
-	cin >> snelheid;
+	int snelheid = 10;
 	while (motorPower < snelheid) {
 		//BP.set_motor_power(PORT_A, motorPower);
 		//BP.set_motor_power(PORT_B, motorPower);
@@ -158,16 +156,16 @@ void moveForward(){
 //Turns the rorbot to the right, and updates the value of GP.direction.
 void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
-    GP.direction = 'e';
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 'n';
-  }
-  else if(GP.direction == 's'){
     GP.direction = 'w';
   }
-  else{
+  else if(GP.direction == 'w'){
     GP.direction = 's';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'e';
+  }
+  else{
+    GP.direction = 'n';
   }
 }
 
@@ -205,7 +203,7 @@ void updateLocation(gridPoints & GP, int distance){
     GP.currentLocation.x -= distance;
   }
   else{
-    GP.currentLocation.y += distance;
+    GP.currentLocation.x += distance;
   }
 }
 
@@ -224,7 +222,7 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
 void moveToHomepoint(gridPoints GP){
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
-  moveForwardDistance(GP, 1);
+ 	moveForwardDistance(GP, 1);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
@@ -286,9 +284,7 @@ void turn(char direction, gridPoints GP) {
 }
 
 void move(char direction, gridPoints & GP){
-	if(GP.direction != direction){
-		turn(direction, GP);
-	}
+	turn(direction, GP);
 	moveForwardDistance(GP, 1);
 }
 
@@ -423,8 +419,8 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	bool targetFound = false;
 	int homeGridPointNumber = getGridPointNumber(GP.homeCoordinates, grid);
 	vector<coordinates> prevCoordinatesVector(grid.size() * grid[0].size());
-	vector<coordinates> route;
-	vector<int> queue;
+	vector<coordinates> route = {};
+	vector<int> queue = {};
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
 
@@ -457,12 +453,19 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 
 void followRoute(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
 	string directions;
+	bool obstructed = false;
+
+	searchPath(directions, GP, grid);
 
 	while(!destinationArrived){
-		searchPath(directions, GP, grid);
+		if(obstructed){
+			searchPath(directions, GP, grid);
+			obstructed = false;
+		}
 
 		for(int i = 0; i < directions.size(); i++){
-
+			cout << i << ": " << directions[i] << ":";
+			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << " ";
 			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
 				if(GP.direction == 'n'){
 					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
@@ -500,6 +503,8 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 						grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
 					}
 				}
+
+				obstructed = true;
 			}
 			else{
 				move(directions[i], GP);
@@ -509,9 +514,8 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 					destinationArrived = true;
 				}
 			}
-
 		}
-
+		
 	}
 }
 
@@ -574,6 +578,7 @@ int main(){
 	// BP.set_motor_position(PORT_D, EncoderA);
 	
 	gridPoints GP;
+	GP.direction = 'e';
 	range obstakel;
 	vector<vector<bool>> grid = getGrid(GP);
 	string followedRoute;
@@ -583,7 +588,9 @@ int main(){
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
+	cout << GP.direction << endl;
 	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
+	cout << "kip" << endl;
 	//communicate(followedRoute);
 	driveBack(followedRoute, GP);
 	resetCurrentLocation(GP);
