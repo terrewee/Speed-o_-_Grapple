@@ -14,7 +14,7 @@
 #include <thread>
 #include <iomanip>	// for setw and setprecision
 
-BrickPi3 BP;
+extern BrickPi3 BP;
 
 
 /*
