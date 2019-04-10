@@ -51,8 +51,8 @@ void followLine()
         sensor_light_t Light3;
 
         int offset = 45;
-        int Tp = 25;
-        int Kp = 5;
+        int Tp = 90;
+        int Kp = 1;
 
         int lastError = 0;
         int Turn = 0;
@@ -65,7 +65,7 @@ void followLine()
         if (BP.get_sensor(PORT_3, Light3) == 0)
         {
           lightvalue = Light3.reflected;
-	cout << "Lichtwaarde: " << lightvalue << endl;
+//	cout << "Lichtwaarde: " << lightvalue << endl;
           error = ((lightvalue-600)/100)+30 - offset;
 
           Turn = error * Kp;
@@ -74,7 +74,7 @@ void followLine()
           lspd = Tp + Turn;
           rspd = Tp - Turn;
 
-//          moveForward(lspd,rspd);
+          moveForward(lspd,rspd);
 
           lastError = error;
         }
