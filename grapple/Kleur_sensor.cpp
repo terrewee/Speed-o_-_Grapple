@@ -24,7 +24,7 @@ sensor_color_t      Color1;
 
 int WhatIsInAColor (){
 int_fast64_t color;
-int colorchoice;
+int colorchoice = -1;
 cout << "Welke kleur heeft het object" << endl;
 cout << "1 : Rood " << endl;
 cout << "2 : Blauw " << endl;
@@ -33,11 +33,11 @@ cout << "4 : Zwart " << endl;
 cout << "5 : Wit " << endl;
 cin >> color;
 cout << color;
-if (color == 1)     { colorchoice = 5;}
-if (color == 2)     { colorchoice = 2;}
-if (color == 3)     { colorchoice = 3;} 
-if (color == 4)     { colorchoice = 1;}
-if (color == 5)     { colorchoice = 6;}
+if (color == 1)          { colorchoice = 5;}
+else if (color == 2)     { colorchoice = 2;}
+else if (color == 3)     { colorchoice = 3;} 
+else if (color == 4)     { colorchoice = 1;}
+else if (color == 5)     { colorchoice = 6;}
 return colorchoice;
 }
 
@@ -72,9 +72,15 @@ void FarbeNichtRichtig() {
 
 
 void color_object (int colorchoice){
+  if (colorchoice == -1) {
+    cout << "ey" << endl;
+    return;
+  }
+  
   if (BP.get_sensor(PORT_2, ::Color1) == 0)
     if (::Color1.color == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
     if ( ::Color1.color != colorchoice)       { FarbeNichtRichtig();}
+  else { cout << BP.get_sensor(PORT_2, ::Color1); }
 }
   // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
@@ -85,7 +91,7 @@ void exit_signal_handler(int signo){
 }
 
 int main(){
-  
+
   color_object (WhatIsInAColor());
 
 
