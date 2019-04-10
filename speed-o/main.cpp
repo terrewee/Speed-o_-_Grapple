@@ -508,6 +508,35 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 	}
 }
 
+dock();
+
+driveBack(string followedRoute, gridPoints & GP){
+	char tempChar;
+	for(unsigned int i = 0; i < followedRoute.size() / 2; i++){
+		tempChar = followedRoute[followRoute.size - (i + 1)];
+		followedRoute[followRoute.size - (i + 1)] = followedRoute[i];
+		followedRoute[i] = tempChar;
+	}
+
+	for(unsigned int j = 0; j < followedRoute.size(); j++){
+		if(followRoute[i] == 'n'){
+			move('n', GP);
+		}
+		else if(followRoute[i] == 'e'){
+			move('e', GP);
+		}
+		else if(followRoute[i] == 's'){
+			move('s', GP);
+		}
+		else if(followRoute[i] == 'w'){
+			move('w', GP);
+		}
+	}
+
+	move('e', GP);
+	turn('n', GP);
+}
+
 int main(){
 	signal(SIGINT, exit_signal_handler);
 	//BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
@@ -539,9 +568,11 @@ int main(){
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
 	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
+	//communicate(followedRoute);
+	driveBack(followedRoute, GP);
 	
 
 	//moveForward();
-		cout << "end of file";
-		return 0;
+	cout << "end of file";
+	return 0;
 }
