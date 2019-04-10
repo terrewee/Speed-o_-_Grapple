@@ -25,6 +25,8 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
       else if (Color2.color == 1 && Color4.color == 6){sleep(0.01); ::crossroad++;}
       else if (Color2.color == 6 && Color4.color == 1){ sleep(0.01); ::crossroad++;}
     }
+  sleep(2);
+  cout << "Crossroad number: " << ::crossroad << endl;
   }
 }
 
@@ -185,7 +187,7 @@ int main(){
 */
 //		if(BP.get_sensor(PORT_3, Light3) == 0){cout << "Ligt value: " <<  (int)Light3.reflected << endl; sleep(2);}
 		followLine();
-    cout << "Crossroad number: " << ::crossroad << endl;
+    
 	}
 }
 
