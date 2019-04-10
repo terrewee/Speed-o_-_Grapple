@@ -629,7 +629,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 	}
 }
 
-dockScout(gridPoints & GP){
+void dockScout(gridPoints & GP){
 	move('e', GP);
 	turn('n', GP);
 }
