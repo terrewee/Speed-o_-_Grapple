@@ -185,14 +185,6 @@ int main(){
   return 0;
 }
 
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
-}
-
 
 
 
