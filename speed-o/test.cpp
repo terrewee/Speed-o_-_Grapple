@@ -26,7 +26,7 @@ void readEncodedMotor()
     	cout << "Motor A: " << endl << "Encoded: " << encodedA << endl << "--------------------------------" << endl;
 	cout << "Motor B: " << endl << "Encoded: " << encodedB << endl << "--------------------------------" << endl;
 }
-
+t
 void encodeMotors(int32_t pos)
 {
 	BP.set_motor_position_relative(PORT_A, pos);
@@ -43,29 +43,42 @@ void setSensors()
 
 void exit_signal_handler(int signo);
 
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();
-    exit(-2);
-  }
-}
-
-int main()
+void vraagMotorPower()
 {
-	signal(SIGINT, exit_signal_handler);
-	BP.detect();
 	int motorA;
 	int motorB;
 	while(true)
 	{
 		cout << "Motor A power: ";
 		cin >> motorA;
-//		cout << "Motor B power: ";
-//		cin >> motorB;
-//		fwd(-6,0);
-		encodeMotors(motorA);
-//		fwd(motorA, motorB);
-//		sleep(3);
-		readEncodedMotor();
+		cout << "Motor B power: ";
+		cin >> motorB;
+		fwd(motorA, motorB);
 	}
+}
+
+void vraagEncodeMotors()
+{
+	int rotatie;
+	while(true)
+	{
+		cout << "Rotatie";
+		cin >> rotatie;
+		encodeMotors(rotatie);
+	}
+}
+
+void exit_signal_handler()
+{
+	if(signo == SIGINT)
+	{
+		BP.reset_all();
+		èxit(-2);
+	}
+}
+
+int main()
+{
+	signal(SIGINT, exit_signal_handler);
+	BP.detect();
 }
