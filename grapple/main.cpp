@@ -3,31 +3,35 @@
 #include <unistd.h>       // for usleep
 #include <signal.h>       // for catching exit signals
 #include <stdlib.h>
-#include <sys/socket.h>   //include voor het gebruik van sockets
-#include <netinet/in.h>
-#include <netdb.h>
+#include <sys/socket.h>   // include voor het gebruik van sockets
+#include <netinet/in.h>   // include voor het gebruik van sockets
+#include <netdb.h>        // include voor het gebruik van sockets
 #include <string>
 #include <iostream>
-#include <thread>
+#include <thread>         // include voor het gebruik van threads
 #include <vector>
-#include <sstream> //for converting char256 to vector
+#include <sstream>        // for converting char256 to vector
 
 using namespace std;
 
+
+
+    // initializing some stuff
+
 BrickPi3 BP;
 
-int ComPortNr = 6969;         //Port number for communication
-char ComHostName[] = "dex2";  //Hostname for communication
-bool running = true;
+int ComPortNr = 6969;         //Standaard Port number for communication
+char ComHostName[] = "dex2";  //StandaardHostname for communication
+bool running = true;          //Bool for turning off the program including threads
 
-void exit_signal_handler(int signo);
+void exit_signal_handler(int signo); // for initializing the Ctrl + C exit handler
 
 
 /*
 	Author 		:	Duur Alblas
-	Description	:
-		Initialize all sensors
+	Description	:   Initialize all sensors
 */
+
 void setSensors(){
     BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
     BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
@@ -35,26 +39,37 @@ void setSensors(){
     BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
 }
 
+
+
+//      Functions for communications
+
 /*
   Author:       Gerjan
   Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
 */
+
 void SetComm(){
   cout << endl << "Geef het poort-nummer op: ";
   cin >> ::ComPortNr; cout << endl;
 }
+
+
 /*
   Author:       Duur & Gerjan
   Description:  Small function to throw error message
 */
+
 void error(const char *msg) {
   perror(msg);
   exit(1);
 }
+
+
 /*
   Author:       Gerjan & Duur
   Description:  Opens a socket and listens for a message, return a message based on result.
 */
+
 vector<char> iServer(){
 
   int socketFD, newSocketFD, n;
@@ -111,25 +126,29 @@ vector<char> iServer(){
   }
 
   cout << "route received and decoded, time to roll" << endl;
-    return route;
+    return route;  //returned een vector<char> met de route (wss naar de Navigation() functie)
 }
+
+
+
+//      Functions for driving
 
 /*
 	Author		:	Duur Alblas
 	Description :
 		Short code to set motor encoders.
 */
+
 void encodeMotors(int32_t lpos , int32_t rpos){
     BP.set_motor_position_relative(PORT_B, lpos);
     BP.set_motor_position_relative(PORT_C, rpos);
 }
 
-/*
-  Author:       Stefan & Gerjan
-  Description:  Functions for driving the motors
-*/
 
-//Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDis1tance() is made for that.
+/*
+  Author:       Gerjan
+  Description:  Functions for controlling the motors
+*/
 
 void resetMotor(){
     BP.set_motor_dps(PORT_B, 0);
@@ -141,10 +160,26 @@ void resetMotor(){
     sleep(1);
 }
 
-void fwd(const int lspd, const int
-rspd){
+void fwd(const int lspd, const int rspd){
     BP.set_motor_power(PORT_B, lspd);
     BP.set_motor_power(PORT_C, rspd);
+}
+
+void turnLeft(){
+    fwd(-20, -20);
+    sleep(1);
+    resetMotor();
+    sleep(0.5);
+    fwd(20, -60);
+    sleep(7);
+}
+void turnRight(){
+    fwd(-20, -20);
+    sleep(1);
+    resetMotor();
+    sleep(0.5);
+    fwd(-60, 20);
+    sleep(7);
 }
 
 /*
@@ -158,8 +193,6 @@ int moveForward() {
     sensor_color_t Color1;
 
     fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
-    sleep(2);
-    resetMotor();
     sleep(0.5);
 
     int offset = 45;
@@ -180,10 +213,8 @@ int moveForward() {
 
             if (BP.get_sensor(PORT_1, Color1) == 0){
 
-                if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2400)) { // las de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+                if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2300)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
                     cout << "hier is een kruispunt" << endl;
-                    resetMotor();
-                    sleep(1);
                     return 0;
                 }
             }
@@ -193,7 +224,8 @@ int moveForward() {
 
         Turn = error * Kp;
 
-
+        // als de Turnsnelheid meer dan 2 keer zo groot word dan de normale rijsnelheid,
+        // gaat de robot alleen foccussen op draaien, zonder nog te rijden
         if (Turn > Tp){
             fwd(Tp, -1 * Tp);
         }
@@ -207,24 +239,6 @@ int moveForward() {
     }
 }
 
-void turnLeft(){
-    fwd(-20, -20);
-    sleep(1);
-    resetMotor();
-    sleep(0.5);
-    fwd(20, -60);
-    sleep(7);
-    resetMotor();
-}
-void turnRight(){
-    fwd(-20, -20);
-    sleep(1);
-    resetMotor();
-    sleep(0.5);
-    fwd(-60, 20);
-    sleep(7);
-    resetMotor();
-}
 
 /*
   Author:       Gerjan
@@ -259,6 +273,7 @@ void Drive(char direction){
     }
 }
 
+
 /*
   Author:       Gerjan
   Description:  Takes a Vector with chars n,e,s and w,
@@ -266,33 +281,37 @@ void Drive(char direction){
 */
 
 void Navigation(vector<char> route){
-    route.insert(route.begin(), 1, 'n');
+    route.insert(route.begin(), 1, 'n');    //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]){
             Drive('f');
         }
         else {
-            if ((route[i] == 'n' && route[i-1] == 'w') ||
+            resetMotor();
+            if
+                ((route[i] == 'n' && route[i-1] == 'w') ||
                 (route[i] == 'o' && route[i-1] == 'n') ||
                 (route[i] == 's' && route[i-1] == 'o') ||
                 (route[i] == 'w' && route[i-1] == 's')){
                 Drive('r');
                 Drive('f');
             }
-            else if ((route[i] == 'n' && route[i-1] == 'o') ||
+            else if
+                ((route[i] == 'n' && route[i-1] == 'o') ||
                 (route[i] == 'o' && route[i-1] == 's') ||
                 (route[i] == 's' && route[i-1] == 'w') ||
                 (route[i] == 'w' && route[i-1] == 'n')){
                 Drive('l');
                 Drive('f');
             }
-            else if ((route[i] == 'n' && route[i-1] == 's') ||
+            else if
+                ((route[i] == 'n' && route[i-1] == 's') ||
                 (route[i] == 'o' && route[i-1] == 'w') ||
                 (route[i] == 's' && route[i-1] == 'n') ||
                 (route[i] == 'w' && route[i-1] == 'o')){
                 Drive('b');
                 Drive('f');
-            } else{
+            } else{ // als geen van de opties gepakt word gebeurt er iets abnormaals
                 cout << "help, er gebeurt iets geks: " << route[i] << route[i-1] << endl;
             }
         }
@@ -300,52 +319,58 @@ void Navigation(vector<char> route){
 
 
     cout << "Arrived at destination" << endl;
-     sleep(10);                                                                               //functie voor object zien en pakken
+    //***************************************************************************************************************
+     sleep(10);                                             //functie voor object zien en vooral oppakken
+    //***************************************************************************************************************
     cout << "Picked up ze object, time to head back" << endl;
 
 
-    Drive('b');
-    route.push_back('n');
-    sleep(4);
+    route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = (route.size() - 2); i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
         if (route[i] == route[i+1]){
             Drive('f');
         }
         else {
-            if ((route[i] == 'n' && route[i+1] == 'w') ||
+            resetMotor();
+            sleep(1);
+            if
+                ((route[i] == 'n' && route[i+1] == 'w') ||
                 (route[i] == 'o' && route[i+1] == 'n') ||
                 (route[i] == 's' && route[i+1] == 'o') ||
                 (route[i] == 'w' && route[i+1] == 's')){
-                Drive('r');
-                Drive('f');
-            }
-            else if ((route[i] == 'n' && route[i+1] == 'o') ||
-                (route[i] == 'o' && route[i+1] == 's') ||
-                (route[i] == 's' && route[i+1] == 'w') ||
-                (route[i] == 'w' && route[i+1] == 'n')){
                 Drive('l');
                 Drive('f');
             }
-            else if ((route[i] == 'n' && route[i+1] == 's') ||
+            else if
+                ((route[i] == 'n' && route[i+1] == 'o') ||
+                (route[i] == 'o' && route[i+1] == 's') ||
+                (route[i] == 's' && route[i+1] == 'w') ||
+                (route[i] == 'w' && route[i+1] == 'n')){
+                Drive('r');
+                Drive('f');
+            }
+            else if
+                ((route[i] == 'n' && route[i+1] == 's') ||
                 (route[i] == 'o' && route[i+1] == 'w') ||
                 (route[i] == 's' && route[i+1] == 'n') ||
                 (route[i] == 'w' && route[i+1] == 'o') ){
                 Drive('b');
                 Drive('f');
-            } else{
+            } else{  // als geen van de opties gepakt word gebeurt er iets abnormaals
                 cout << "help, er gebeurt iets geks: " << route[i] << route[i+1] << endl;
             }
         }
     }
     resetMotor();
-    sleep(10);
+    //***************************************************************************************************************
+    sleep(10);                                             //fucntie voor object droppen
+    //***************************************************************************************************************
     cout << "Arrived home, dropping the object like its hot" << endl;
-                                                                                             //Drop object
-    Drive('b');
+    Drive('b'); // orienteer jezelf goed voor de volgende missie
 }
 
 
-
+//  main to initialize the program
 
 int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
@@ -356,6 +381,7 @@ int main(){
   BP.set_motor_limits(PORT_C, 50, 0);
   setSensors();
 
+  // mooie manier om even te wachten tot alle sensor zijn ge initialiseerd en goed werken.
   cout << endl << "Initializing" << endl;
   int o = 10;
   while (o != 0){
@@ -363,40 +389,38 @@ int main(){
       cout << '.';
       sleep(0.5);
   }
-  cout << endl << "Initialized" << endl;
+  cout << endl << "Initialized" << endl << endl;
+
 
   int uChoice;
 
   while (running){
     cout << endl << "Kies een van deze functies: " << endl;
-    cout << "1: Receive message" << endl;
-    cout << "2: Set communication details" << endl;
-    cout << "3: Check sensor" << endl;
-    cout << "4: Wait for message (route) , then return the object" << endl;
-    cout << "5: Drive the giving route" << endl;
-    cout << "6: Stop it and die" << endl << endl;
+    cout << "1: Receive message" << endl; // wacht voor een message en print deze
+    cout << "2: Set communication details" << endl;  // stel portnummer in
+    cout << "4: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
+    cout << "5: Drive the given route" << endl;  // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
+    cout << "0: Stop it and die" << endl << endl; // functie om programma te stoppen
     cout << "Uw keuze is: ";
 
       cin >> uChoice; cout << endl << endl;
 
     switch(uChoice) {
-      case 1:
+      case 1:   // wacht voor een message en print deze
         iServer();
         break;
-      case 2:
+      case 2:   // stel portnummer in
         SetComm();
         break;
-      case 3:
-        break;
-      case 4:
+      case 3:    // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
         Navigation(iServer());
         break;
-      case 5: {
+      case 4: { // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
           vector<char> vec = {'n', 'n', 'w', 'w', 's'};
           Navigation(vec);
           break;
       }
-      case 6: {
+      case 0: {  // functie om programma te stoppen
           ::running = false;
           break;
       }
@@ -406,11 +430,13 @@ int main(){
   BP.reset_all();
   return 0;
 }
+
+
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    resetMotor();
+      ::running = false;
+      BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
 }
