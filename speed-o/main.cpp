@@ -28,6 +28,8 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
   sleep(2);
   cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
   cout << "Crossroad number: " << ::crossroad << endl;
+
+  exit_signal_handler(signo);
   }
 }
 
