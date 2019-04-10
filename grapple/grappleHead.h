@@ -14,6 +14,10 @@
 #include <thread>
 #include <iomanip>	// for setw and setprecision
 
+bool battery = true;          //battery level function
+int ComPortNr = 6969;         //Port number for communication
+char ComHostName[] = "dex2";  //Hostname for communication
+
 /*
   Author:       Duur
   Description:  setSensors set all the sensors for a specific robot
