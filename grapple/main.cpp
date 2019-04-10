@@ -175,6 +175,8 @@ int moveForward() {
                 }
             }
         }
+
+        cout << lightvalue << endl;
         error = ((lightvalue - 1400) / 60) + 30 - offset;
 
         integral = integral * 2 / 3 + error;
