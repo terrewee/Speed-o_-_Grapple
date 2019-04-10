@@ -145,7 +145,6 @@ int moveForward() {
 
     sensor_light_t Light3;
     sensor_color_t Color1;
-    sensor_color_t Color4;
 
     int offset = 45;
     int Tp = 25;
@@ -166,15 +165,15 @@ int moveForward() {
     int rspd = 0;
 
     while (true) {
-        if (BP.get_sensor(PORT_1, Color1) == 0 && BP.get_sensor(PORT_4, Color4) == 0){
-            if ((Color1.color == 1 || Color1.color == 2) && (Color4.color == 1 || Color4.color)) {
-                resetMotor();
-                sleep(1);
-                return 0;
-            }
-        }
         if (BP.get_sensor(PORT_3, Light3) == 0) {
-            lightvalue = Light3.reflected;
+            lightvalue = Light3.reflected; // neem waarde van zwartwit sensor
+            if (BP.get_sensor(PORT_1, Color1) == 0){
+                if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2700)) { // las de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+                    resetMotor();
+                    sleep(1);
+                    return 0;
+                }
+            }
         }
         error = ((lightvalue - 1400) / 60) + 30 - offset;
 
