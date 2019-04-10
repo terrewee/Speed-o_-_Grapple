@@ -446,7 +446,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 		cout << route[i].x << "," << route[i].y << " ";
 	}
 
-	directions = '';
+	directions = "";
 	getDirections(directions, route, GP);
 	cout << endl << "Directions:" << endl;
 	cout << directions.size() << ", " << directions;
@@ -582,10 +582,12 @@ int main(){
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
+	resetCurrentLocation(GP);
 	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 	//communicate(followedRoute);
 	driveBack(followedRoute, GP);
 	resetCurrentLocation(GP);
+	
 	
 
 	//moveForward();
