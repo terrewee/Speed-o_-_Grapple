@@ -33,9 +33,9 @@ void resetMotors(){
 	BP.set_motor_power(PORT_C, 0);
 }
 
-void moveForward(){
-	BP.set_motor_power(PORT_B,-60);
-	BP.set_motor_power(PORT_C,-60);
+void moveForward(int lspd, int rspd){
+	BP.set_motor_power(PORT_B,-lspd);
+	BP.set_motor_power(PORT_C,-rspd);
 	resetMotors();
 }
 
@@ -67,7 +67,7 @@ void followLine()
           lspd = Tp + Turn;
           rspd = Tp - Turn;
 
-          moveForward();
+          moveForward(lspd,rspd);
 
           lastError = error;
         }
