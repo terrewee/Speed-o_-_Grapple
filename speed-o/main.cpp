@@ -17,18 +17,15 @@ void exit_signal_handler(int signo);
 
 int crossroad;
 
-void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
+void crossroaddetectie(sensor_color_t & Color2, sensor_color_t & Color4){
   ::crossroad = 0;
   while (true){
     if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
-      if (Color2.color == 1 && Color4.color == 1){ sleep(0.01); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
-      else if (Color2.color == 1 && Color4.color == 6){sleep(0.01); ::crossroad++;}
-      else if (Color2.color == 6 && Color4.color == 1){ sleep(0.01); ::crossroad++;}
+      if (Color2.color == 1 || Color4.color == 1){ sleep(0.01); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
     }
   sleep(2);
   cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
   cout << "Crossroad number: " << ::crossroad << endl;
-
   }
 }
 
