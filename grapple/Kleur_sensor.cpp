@@ -30,14 +30,17 @@ cout << "1 : Rood " << endl;
 cout << "2 : Blauw " << endl;
 cout << "3 : Groen " << endl;
 cout << "4 : Zwart " << endl;
+cout << "5 : Wit " << endl;
 cin >> color;
 cout << color;
-if (color == 1)     { colorchoice = Color1.reflected_red;}
-if (color == 2)     { colorchoice = Color1.reflected_blue;}
-if (color == 3)     { colorchoice = Color1.reflected_green;} 
-if (color == 4)     { colorchoice = Color1.ambient;}
+if (color == 1)     { colorchoice = 5;}
+if (color == 2)     { colorchoice = 2;}
+if (color == 3)     { colorchoice = 3;} 
+if (color == 4)     { colorchoice = 1;}
+if (color == 5)     { colorchoice = 6;}
 return colorchoice;
 }
+
 
 void FarbeNichtRichtig() {
     string answer;
@@ -68,9 +71,10 @@ void FarbeNichtRichtig() {
 //}
 
 
-char color_object (BP.get_sensor(PORT_1, Color1, int colorchoice){
-    if (BP.get_sensor(PORT_1, Color1) == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
-    if (BP.get_sensor(PORT_1, Color1) != colorchoice)       { FarbeNichtRichtig();}
+void color_object (int colorchoice){
+  if (BP.get_sensor(PORT_2, ::Color1) == 0)
+    if (::Color1.color == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
+    if ( ::Color1.color != colorchoice)       { FarbeNichtRichtig();}
 }
 
 int main(){
