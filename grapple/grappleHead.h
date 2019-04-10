@@ -1,5 +1,5 @@
-#ifndef grappleMain_h_
-#define grappleMain_h_
+#ifndef grappleMain_h
+#define grappleMain_h
 
 #include "BrickPi3.h"
 #include <stdio.h>        // for printf
