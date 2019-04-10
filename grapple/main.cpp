@@ -194,12 +194,12 @@ int moveForward() {
 }
 
 void turnLeft(){
-    fwd(-25, 25)
+    fwd(-25, 25);
     sleep(5);
     resetMotor();
 }
 void turnRight(){
-    fwd(25, -25)
+    fwd(25, -25);
     sleep(5);
     resetMotor();
 }
