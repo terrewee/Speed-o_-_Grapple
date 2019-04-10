@@ -16,18 +16,90 @@ BrickPi3 BP;
 void exit_signal_handler(int signo);
 
 int crossroad;
-/*
-bool crossroaddetectie(const sensor_color_t & Color2, const sensor_color_t & Color4){
+
+bool crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
   ::crossroad = 0;
   while (true){
     if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
-      if      (Color2.color == 1 && Color4.color == 1){ usleep(0.5); ::crossroad++;}    //sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
-      else if (Color2.color == 1 && Color4.color == 0){ usleep(0.5); ::crossroad++;}
+      if (Color2.color == 1 && Color4.color == 1){ usleep(0.5); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 
+keer registreert
+      else if (Color2.color == 1 && Color4.color == 0){usleep(0.5); ::crossroad++;}
       else if (Color2.color == 0 && Color4.color == 1){ usleep(0.5); ::crossroad++;}
     }
   }
 }
-*/
+
+//Turns the robot to the right, and updates the value of GP.direction.
+void turnLeft(gridPoints & GP){
+  int lpos = -250; 		//Left position
+  int rpos = 250;		//Right position
+  int32_t EncoderB = BP.get_motor_encoder(PORT_B);
+  int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+  if(GP.direction == 'n'){
+    GP.direction = 'w';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+  else if(GP.direction == 'w'){
+    GP.direction = 's';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'e';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+  else{
+    GP.direction = 'n';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+}
+
+//Turns the rorbot to the left, and updates the value of GP.direction.
+void turnRight(gridPoints & GP){
+  int lpos = 250;		//Left position
+  int rpos = -250;		//Right position
+  int32_t EncoderB = BP.get_motor_encoder(PORT_B);
+  int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+  if(GP.direction == 'n'){
+    GP.direction = 'e';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+  else if(GP.direction == 'e'){
+    GP.direction = 's';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'w';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+  else{
+    GP.direction = 'n';
+		BP.set_motor_position_relative(PORT_B, lpos);
+		BP.set_motor_position_relative(PORT_C, rpos);
+		sleep(1);
+		resetMotorsAB();
+  }
+}
 
 void setSensors(){
 	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
@@ -38,7 +110,7 @@ void setSensors(){
 
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
-	BP.set_motor_power(PORT_C, 0);
+	BP.set_motor_power(PORT_C, 0); 
 }
 
 void moveForward(int lspd, int rspd){
