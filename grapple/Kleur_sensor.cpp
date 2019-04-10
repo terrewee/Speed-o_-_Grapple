@@ -68,7 +68,7 @@ void FarbeNichtRichtig() {
 //}
 
 
-char color_object (BP.get_sensor(PORT_1, Color1, int colorchoice){
+char color_object (BP.get_sensor(PORT_1, Color1, colorchoice){
     if (BP.get_sensor(PORT_1, Color1) == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
     if (BP.get_sensor(PORT_1, Color1) != colorchoice)       { FarbeNichtRichtig();}
 }
@@ -94,15 +94,17 @@ int main(){
 
   BP.reset_all();
   return 0;
-}
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
+
+  
+  // Signal handler that will be called when Ctrl+C is pressed to stop the program
+  void exit_signal_handler(int signo){
+    if(signo == SIGINT){
+      BP.reset_all();    // Reset everything so there are no run-away motors
+      exit(-2);
+    }
   }
-}
 
 
-color_object (WhatIsInAColor());
+  color_object (WhatIsInAColor());
 }
+
