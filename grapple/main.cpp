@@ -398,8 +398,8 @@ int main(){
     cout << endl << "Kies een van deze functies: " << endl;
     cout << "1: Receive message" << endl; // wacht voor een message en print deze
     cout << "2: Set communication details" << endl;  // stel portnummer in
-    cout << "4: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
-    cout << "5: Drive the given route" << endl;  // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
+    cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
+    cout << "4: Drive the given route" << endl;  // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
     cout << "0: Stop it and die" << endl << endl; // functie om programma te stoppen
     cout << "Uw keuze is: ";
 
