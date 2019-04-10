@@ -14,6 +14,10 @@
 #include <thread>
 #include <iomanip>	// for setw and setprecision
 
+#include "main.cpp"
+#include "connection.cpp"
+#include "armCode.cpp"
+
 extern BrickPi3 BP;
 
 
