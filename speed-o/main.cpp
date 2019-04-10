@@ -16,7 +16,7 @@ BrickPi3 BP;
 void exit_signal_handler(int signo);
 
 int crossroad;
-
+/*
 bool crossroaddetectie(const sensor_color_t & Color2, const sensor_color_t & Color4){
   ::crossroad = 0;
   while (true){
@@ -26,6 +26,17 @@ bool crossroaddetectie(const sensor_color_t & Color2, const sensor_color_t & Col
       else if (Color2.color == 0 && Color4.color == 1){ usleep(0.5); ::crossroad++;}
     }
   }
+}
+*/
+void resetMotors(){
+	BP.set_motor_power(PORT_A, 0);
+	BP.set_motor_power(PORT_B, 0);
+}
+
+void moveForward(){
+	BP.set_motor_power(PORT_A,60);
+	BP.set_motor_power(PORT_B,60);
+	resetMotors();
 }
 
 void followLine()
