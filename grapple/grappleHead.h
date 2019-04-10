@@ -1,23 +1,6 @@
 #ifndef GRAPPLEMAIN_H
 #define GRAPPLEMAIN_H
 
-#include "BrickPi3.h"
-#include <stdio.h>        // for printf
-#include <unistd.h>       // for usleep
-#include <signal.h>       // for catching exit signals
-#include <stdlib.h>
-#include <sys/socket.h>   //include voor het gebruik van sockets
-#include <netinet/in.h>
-#include <netdb.h>
-#include <string>
-#include <iostream>
-#include <thread>
-#include <iomanip>	// for setw and setprecision
-
-#include "main.cpp"
-#include "connection.cpp"
-#include "armCode.cpp"
-
 extern BrickPi3 BP;
 
 
