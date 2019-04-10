@@ -24,6 +24,18 @@ void exit_signal_handler(int signo);
 
 
 /*
+	Author 		:	Duur Alblas
+	Description	:
+		Initialize all sensors
+*/
+void setSensors(){
+    BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
+    BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
+    BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+    BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
+
+/*
   Author:       Gerjan
   Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
 */
@@ -341,6 +353,7 @@ int main(){
 
   BP.set_motor_limits(PORT_B, 50, 0);
   BP.set_motor_limits(PORT_C, 50, 0);
+  setSensors();
 
   cout << endl << "Initializing" << endl;
   int o = 10;
