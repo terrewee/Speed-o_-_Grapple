@@ -30,11 +30,10 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
 }
 
 //Turns the robot to the right, and updates the value of GP.direction.
-void turnLeft(gridPoints & GP){
-  int lpos = -250; 		//Left position
-  int rpos = 250;		//Right position
+void turnLeft(int lpos, int rpos){	// zet gridpoints GP er weer in
   int32_t EncoderB = BP.get_motor_encoder(PORT_B);
   int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+/*
   if(GP.direction == 'n'){
     GP.direction = 'w';
 		BP.set_motor_position_relative(PORT_B, lpos);
@@ -63,14 +62,16 @@ void turnLeft(gridPoints & GP){
 		sleep(1);
 		resetMotorsAB();
   }
+*/
+	BP.set_motor_position_relative(PORT_B, lpos);
+	BP.set_motor_position_relative(PORT_C, rpos);
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
-void turnRight(gridPoints & GP){
-  int lpos = 250;		//Left position
-  int rpos = -250;		//Right position
+void turnRight(int lpos, int rpos){	// zet gridpoints GP er weer in
   int32_t EncoderB = BP.get_motor_encoder(PORT_B);
   int32_t EncoderC = BP.get_motor_encoder(PORT_C);
+/*
   if(GP.direction == 'n'){
     GP.direction = 'e';
 		BP.set_motor_position_relative(PORT_B, lpos);
@@ -99,7 +100,11 @@ void turnRight(gridPoints & GP){
 		sleep(1);
 		resetMotorsAB();
   }
+*/
+	BP.set_motor_position_relative(PORT_B, lpos);
+	BP.set_motor_position_relative(PORT_C, rpos);
 }
+
 
 void setSensors(){
 	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
@@ -123,8 +128,8 @@ void followLine()
         sensor_light_t Light3;
 
         int offset = 45;
-        int Tp = 90;
-        int Kp = 1;
+        int Tp = 40;
+        int Kp = 5;
 
         int lastError = 0;
         int Turn = 0;
@@ -138,10 +143,10 @@ void followLine()
         {
           lightvalue = Light3.reflected;
 //	cout << "Lichtwaarde: " << lightvalue << endl;
-          error = ((lightvalue-600)/100)+30 - offset;
+          error = ((lightvalue-1600)/50)+30 - offset;
 
           Turn = error * Kp;
-          Turn = Turn/1;
+          Turn = Turn/3;
 
           lspd = Tp + Turn;
           rspd = Tp - Turn;
@@ -160,11 +165,21 @@ void exit_signal_handler(int signo){
 }
 
 int main(){
+	sensor_light_t Light3;
 	setSensors();
 	signal(SIGINT, exit_signal_handler); 
 	BP.detect();
 
  	while(true){
+/*		int lpos;
+		int rpos;
+		cout << "lpos: ";
+		cin >> lpos;
+		cout << "rpos: ";
+		cin >> rpos;
+		turnRight(lpos, rpos);
+*/
+//		if(BP.get_sensor(PORT_3, Light3) == 0){cout << "Ligt value: " <<  (int)Light3.reflected << endl; sleep(2);}
 		followLine();
 	}
 }
