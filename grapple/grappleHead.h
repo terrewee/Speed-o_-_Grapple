@@ -1,5 +1,5 @@
-#ifndef BrickPi3_h_
-#define BrickPi3_h_
+#ifndef grappleMain_h_
+#define grappleMain_h_
 
 #include <stdio.h>        // for printf
 #include <unistd.h>       // for usleep
