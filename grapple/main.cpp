@@ -411,7 +411,7 @@ void Navigation(vector<char> route){
     klauwDicht();
     sleep(1);
     klauwOmhoog();
-    resetMotor()
+    resetMotor();
 
     //***************************************************************************************************************
     cout << "Picked up ze object, time to head back" << endl;
@@ -468,7 +468,7 @@ void Navigation(vector<char> route){
     resetMotor();
 
     //***************************************************************************************************************
-    
+
     Drive('b'); // orienteer jezelf goed voor de volgende missie
 }
 
@@ -542,17 +542,7 @@ int main() {
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
     if(signo == SIGINT){
-        klauwOpen();
-        sleep(1);
-        brengNaarKantelPunt();
-        sleep(1);
-        gelijdelijkDownLoop();
-        sleep(1);
-        klauwDicht();
-        sleep(1);
-        klauwOmhoog();
-        sleep(3);
-        reset
+        resetMotor();
         ::running = false;
         BP.reset_all();    // Reset everything so there are no run-away motors
         exit(-2);
