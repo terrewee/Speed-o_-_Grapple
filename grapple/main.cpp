@@ -22,15 +22,6 @@ void setSensors(){
 	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
 }
-
-/*
-  Author:       Duur
-  Description:  setSensors set all the sensors for a specific robot
-                and immediatly sets them.
-*/
-void setSensors(){
-  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
-}
 /*
   Author:       Maaike & Duur
   Description:  Asks the user to supply a port and a sensor type to check the output
