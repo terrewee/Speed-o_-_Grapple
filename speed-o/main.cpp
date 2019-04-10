@@ -528,6 +528,12 @@ void driveBack(string followedRoute, gridPoints & GP){
 		followedRoute[i] = tempChar;
 	}
 
+	cout << "followedRoute:" << endl;
+	for(unsigned int i = 0; i < followedRoute.size(); i++){
+		cout << followedRoute[i];
+	}
+	cout<< endl;
+
 	for(unsigned int j = 0; j < followedRoute.size(); j++){
 		if(followedRoute[j] == 'n'){
 			move('n', GP);
@@ -576,10 +582,10 @@ int main(){
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
-	resetCurrentLocation(GP);
 	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 	//communicate(followedRoute);
 	driveBack(followedRoute, GP);
+	resetCurrentLocation(GP);
 	
 
 	//moveForward();
