@@ -85,6 +85,10 @@ void exit_signal_handler(int signo){
 }
 
 int main(){
+  
+  color_object (WhatIsInAColor());
+
+
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   BP.detect();
   BP.reset_all();
@@ -106,6 +110,6 @@ int main(){
   BP.reset_all();
   return 0;
   
-  color_object (WhatIsInAColor());
+  
 
 }
