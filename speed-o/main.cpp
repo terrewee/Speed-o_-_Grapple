@@ -134,9 +134,9 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
 		targetY = targetY * -1;
 	}
 	for (int i = 0; i < targetY + 5; i++) {
-		vector<string> tempRow = {};
+		vector<bool> tempRow = {};
 		for (int j = 0; j < targetX + 5; j++) {
-			tempRow.push_back("1");
+			tempRow.push_back(1);
 		}
 		grid.push_back(tempRow);
 	}
@@ -694,19 +694,19 @@ int main(){
 	signal(SIGINT, exit_signal_handler);
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
-	Reset the encoders
+	//Reset the encoders
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
 	BP.offset_motor_encoder(PORT_C, BP.get_motor_encoder(PORT_C));
 	BP.offset_motor_encoder(PORT_D, BP.get_motor_encoder(PORT_D));
 
-	Read the encoders
+	//Read the encoders
 	int32_t EncoderA = BP.get_motor_encoder(PORT_A);
 	int32_t EncoderB = BP.get_motor_encoder(PORT_B);
 	int32_t EncoderC = BP.get_motor_encoder(PORT_C);
 	int32_t EncoderD = BP.get_motor_encoder(PORT_D);
 
-	Use the encoder value from motor A to control motors B, C, and D
+	//Use the encoder value from motor A to control motors B, C, and D
 	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
 	BP.set_motor_dps(PORT_C, EncoderA);
 	BP.set_motor_position(PORT_D, EncoderA);
