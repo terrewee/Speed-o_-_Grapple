@@ -97,7 +97,7 @@ int main(){
   }
   cout << endl << "Initialized" << endl;
 
-  thread checkBattery (batteryLevel);
+
 
   while(true){
     sleep(5);
