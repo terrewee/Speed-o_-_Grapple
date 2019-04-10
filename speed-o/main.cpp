@@ -107,8 +107,8 @@ void turnRight(int lpos, int rpos){	// zet gridpoints GP er weer in
 
 
 void setSensors(){
-	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
-	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
+	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
 	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
 }
@@ -165,10 +165,15 @@ void exit_signal_handler(int signo){
 }
 
 int main(){
-	sensor_light_t Light3;
+	sensor_light_t      Light3;
+  sensor_color_t      Color2;
+  sensor_color_t      Color4;
+
 	setSensors();
 	signal(SIGINT, exit_signal_handler); 
 	BP.detect();
+
+  thread kruispunt (crossroaddetectie, Color2, Color4);
 
  	while(true){
 /*		int lpos;
@@ -181,6 +186,7 @@ int main(){
 */
 //		if(BP.get_sensor(PORT_3, Light3) == 0){cout << "Ligt value: " <<  (int)Light3.reflected << endl; sleep(2);}
 		followLine();
+    cout << "Crossroad number: " << ::crossroad << endl;
 	}
 }
 
