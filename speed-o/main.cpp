@@ -17,7 +17,9 @@ void exit_signal_handler(int signo);
 
 int crossroad;
 
-void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
+void crossroaddetectie(){
+  sensor_color_t      Color2;
+  sensor_color_t      Color4;
   ::crossroad = 0;
   while (true){
     if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
@@ -178,10 +180,9 @@ int main(){
   cout << endl << "Initialized" << endl;
 	
   sensor_light_t      Light3;
-  sensor_color_t      Color2;
-  sensor_color_t      Color4;
+  
 
-  thread kruispunt (crossroaddetectie, Color2, Color4);
+  thread kruispunt (crossroaddetectie);
 
  	while(true){
 /*		int lpos;
