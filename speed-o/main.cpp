@@ -66,7 +66,7 @@ void followLine()
         {
           lightvalue = Light3.reflected;
 	cout << "Lichtwaarde: " << lightvalue << endl;
-          error = ((lightvalue-1400)/60)+30 - offset;
+          error = ((lightvalue-600)/100)+30 - offset;
 
           Turn = error * Kp;
           Turn = Turn/1;
