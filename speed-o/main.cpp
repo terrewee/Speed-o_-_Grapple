@@ -29,7 +29,6 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
   cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
   cout << "Crossroad number: " << ::crossroad << endl;
 
-  exit_signal_handler(signo);
   }
 }
 
@@ -169,13 +168,21 @@ void exit_signal_handler(int signo){
 }
 
 int main(){
-	sensor_light_t      Light3;
+  signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+  BP.detect();
+  BP.reset_all();
+  for (int i = 0; i < 5; ++i){
+    cout << ".";
+    if (i == 3){
+      setSensors();
+    }
+    sleep(1);
+  }
+  cout << endl << "Initialized" << endl;
+	
+  sensor_light_t      Light3;
   sensor_color_t      Color2;
   sensor_color_t      Color4;
-
-	setSensors();
-	signal(SIGINT, exit_signal_handler); 
-	BP.detect();
 
   thread kruispunt (crossroaddetectie, Color2, Color4);
 
