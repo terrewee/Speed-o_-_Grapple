@@ -28,6 +28,14 @@ bool crossroaddetectie(const sensor_color_t & Color2, const sensor_color_t & Col
   }
 }
 */
+
+void setSensors(){
+	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
+	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_ULTRASONIC);
+	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
+
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
 	BP.set_motor_power(PORT_C, 0);
@@ -36,7 +44,6 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
-	resetMotors();
 }
 
 void followLine()
@@ -81,6 +88,7 @@ void exit_signal_handler(int signo){
 }
 
 int main(){
+	setSensors();
 	signal(SIGINT, exit_signal_handler); 
 	BP.detect();
 
