@@ -14,6 +14,8 @@
 #include <thread>
 #include <iomanip>	// for setw and setprecision
 
+BrickPi3 BP;
+
 bool battery = true;          //battery level function
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
