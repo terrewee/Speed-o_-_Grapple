@@ -470,11 +470,71 @@ int main(){
 	
 	gridPoints GP;
 	vector<vector<bool>> grid = getGrid(GP);
+	string followedRoute;
+	bool DestinationArrived = false;
 	getCoordinates(GP, grid);
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
-	searchPath(GP, grid);
+
+	while(!destinationArrived){
+		searchPath(GP, grid);
+
+		for(int i = 0; i < route.size(); i++){
+
+			if(!obastakel.obstakelInRangeForward){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
+				move(directions[i]);
+
+				if(i == route.size() - 1){
+					destinationArrived = true;
+				}
+			}
+			else{
+				if(GP.direction[i] == 'n'){
+					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
+					if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
+					}
+					else if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
+					}
+				}
+				else if(GP.direction[i] == 'e'){
+					grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
+					if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
+					}
+					else if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
+					}
+				}
+				else if(GP.direction[i] == 's'){
+					grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
+					if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x + 1]GP.[currentLocation.y] = 0;
+					}
+					else if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x - 1]GP.[currentLocation.y] = 0;
+					}
+				}
+				else if(GP.direction[i] == 'w'){
+					grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
+					if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y + 1] = 0;
+					}
+					else if(obstakel.obstakelInRangeLeft){
+						grid[GP.currentLocation.x]GP.[currentLocation.y - 1] = 0;
+					}
+				}
+			}
+		}
+	}
+
+
+}
+	
+
+	
 	
 	//moveForward();
 	cout << "end of file";
