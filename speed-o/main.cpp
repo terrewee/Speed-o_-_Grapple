@@ -464,8 +464,8 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 		}
 
 		for(int i = 0; i < directions.size(); i++){
-			cout << i << ": " << directions[i] << ":";
-			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << " ";
+			cout << i << "," << directions[i] << ":";
+			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
 				if(GP.direction == 'n'){
 					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
@@ -578,7 +578,7 @@ int main(){
 	// BP.set_motor_position(PORT_D, EncoderA);
 	
 	gridPoints GP;
-	GP.direction = 'e';
+	GP.direction = 'n';
 	range obstakel;
 	vector<vector<bool>> grid = getGrid(GP);
 	string followedRoute;
