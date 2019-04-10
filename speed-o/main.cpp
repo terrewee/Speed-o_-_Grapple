@@ -269,28 +269,28 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
 
   int uChoice;
 
-  while (true){
-    cout << "Kies functie: " << endl;
-    cout << "1: Send message" << endl;
-    cout << "2: Set communication details" << endl;
-    cout << "3: Check sensor" << endl;
+  // while (true){
+  //   cout << "Kies functie: " << endl;
+  //   cout << "1: Send message" << endl;
+  //   cout << "2: Set communication details" << endl;
+  //   cout << "3: Check sensor" << endl;
 
-    cin >> uChoice;
+  //   cin >> uChoice;
 
-    switch(uChoice) {
-      case 1:
-        char message[256];
-        cout << "Message: " << endl;
-        cin >> message;
-        iClient(message);
-        break;
-      case 2:
-        SetComm();
-        break;
-      case 3:
-        checkSensor();
-        break;
-    }
+  //   switch(uChoice) {
+  //     case 1:
+  //       char message[256];
+  //       cout << "Message: " << endl;
+  //       cin >> message;
+  //       iClient(message);
+  //       break;
+  //     case 2:
+  //       SetComm();
+  //       break;
+  //     case 3:
+  //       checkSensor();
+  //       break;
+  //   }
 
 
 
@@ -388,7 +388,7 @@ string manualControl(gridPoints &GP){
 }
 
 
-//------------------------------------------MAIN-----------------------------------------------
+//------------------------------------------GRID-----------------------------------------------
 
 void move(char direction, gridPoints & GP){
 	turn(direction, GP);
@@ -686,6 +686,8 @@ void driveBack(string followedRoute, gridPoints & GP){
 
 	dockScout(GP);
 }
+
+//------------------------------------------MAIN-----------------------------------------------
 
 int main(){
 	
