@@ -22,6 +22,7 @@ using std::string;
 bool battery = true;          //battery level function
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
+
 struct coordinates{
   int x;
   int y;
@@ -36,12 +37,10 @@ struct gridPoints{
   char direction;
 };
 
-void exit_signal_handler(int signo);
-
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-    //BP.reset_all();    // Reset everything so there are no run-away motors
+    BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
 }
@@ -114,8 +113,8 @@ void turnMotorPowerUp(int &motorPower) {
 	int snelheid = 1;
 
 	while (motorPower < snelheid) {
-		//BP.set_motor_power(PORT_A, motorPower);
-		//BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_A, motorPower);
+		BP.set_motor_power(PORT_B, motorPower);
 		usleep(0.5);
 		motorPower += 1;
 
@@ -124,8 +123,8 @@ void turnMotorPowerUp(int &motorPower) {
 
 void turnMotorPowerDown(int &motorPower) {
 	while (motorPower > 10) {
-		//BP.set_motor_power(PORT_A, motorPower+1);
-		//BP.set_motor_power(PORT_B, motorPower);
+		BP.set_motor_power(PORT_A, motorPower+1);
+		BP.set_motor_power(PORT_B, motorPower);
 		motorPower -= 10;
 	}
 }
@@ -387,7 +386,7 @@ string manualControl(gridPoints &GP){
 }
 
 int main(){
-	/*
+	
 	signal(SIGINT, exit_signal_handler);
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
@@ -407,7 +406,7 @@ int main(){
 	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
 	BP.set_motor_dps(PORT_C, EncoderA);
 	BP.set_motor_position(PORT_D, EncoderA);
-	*/
+	
 	gridPoints GP;
 	vector<vector<bool>> grid = getGrid(GP);
 	getCoordinates(GP, grid);
