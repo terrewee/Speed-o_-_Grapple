@@ -14,25 +14,22 @@ using namespace std;
 
 BrickPi3 BP;
 
+//---------------------------------------ESSENTIALS---------------------------------------------
+
 bool battery = true;          //battery level function
-int ComPortNr = 6969;         //Port number for communication
-char ComHostName[] = "dex2";  //Hostname for communication
 
-void exit_signal_handler(int signo);
+// Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
 
-/*
-  Author:       Duur
-  Description:  setSensors set all the sensors for a specific robot
-                and immediatly sets them.
-*/
 void setSensors(){
   BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
 }
-/*
-  Author:       Maaike & Duur
-  Description:  Asks the user to supply a port and a sensor type to check the output
-                of said function for a certain amount of time.
-*/
+
 void checkSensor(){
   sensor_color_t        Color;
   sensor_ultrasonic_t   Ultrasonic;
@@ -107,11 +104,7 @@ void checkSensor(){
   }
 
 }
-/*
-  Author:       Maaike & Duur
-  Description:  Bateryscheck which changes the
-                global bool battery to false if battery is low
-*/
+
 void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
@@ -125,26 +118,22 @@ void batteryLevel(void){
     sleep(5);
   }
 }
-/*
-  Author:       Gerjan
-  Description:  Functie voor het vragen en aanpassen van de hostname en de port voor communicatie met de server.
-*/
+
+//---------------------------------------COMMUNICATION---------------------------------------------
+
+int ComPortNr = 6969;         //Port number for communication
+char ComHostName[] = "dex2";  //Hostname for communication
+
 void SetComm(){
   cout << endl << "Geef het poort-nummer op: ";
   cin >> ::ComPortNr; cout << endl;
 }
-/*
-  Author:       Duur & Gerjan
-  Description:  Small function to throw error message
-*/
+
 void error(const char *msg) {
   perror(msg);
   exit(1);
 }
-/*
-  Author:       Gerjan & Duur
-  Description:  Opens a socket and listens for a message, return a message based on result.
-*/
+
 void iServer(){
   int socketFD, newSocketFD, n;
   socklen_t clilen;
@@ -187,6 +176,9 @@ void iServer(){
   close(socketFD);
 }
 
+
+//---------------------------------------MAIN---------------------------------------------
+
 int main(){
   signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   BP.detect();
@@ -227,11 +219,4 @@ int main(){
 
   BP.reset_all();
   return 0;
-}
-// Signal handler that will be called when Ctrl+C is pressed to stop the program
-void exit_signal_handler(int signo){
-  if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
-    exit(-2);
-  }
 }
