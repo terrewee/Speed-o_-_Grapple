@@ -445,7 +445,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	directions = "";
 	getDirections(directions, route, GP);
 	cout << endl << "Directions:" << endl;
-	cout << directions.size() << ", " << directions;
+	cout << directions;
 	cout << endl << "prevCoordinates:" << endl;
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
 	cout << endl << endl;
@@ -612,7 +612,6 @@ int main(){
 	testFunctie(GP, grid);
 	moveToHomepoint(GP);
 	resetCurrentLocation(GP);
-	cout << GP.direction << endl;
 	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 	cout << "kip" << endl;
 	//communicate(followedRoute);
@@ -622,6 +621,6 @@ int main(){
 	
 
 	//moveForward();
-	cout << "end of file";
+	cout << "exit(0)";
 	return 0;
 }
