@@ -4,6 +4,7 @@
 using namespace std;
 
 void SetComm(){
+  int ComPortNr;
   cout << endl << "Geef het poort-nummer op: ";
   cin >> ::ComPortNr; cout << endl;
 }
