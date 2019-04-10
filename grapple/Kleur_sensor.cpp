@@ -98,8 +98,11 @@ int main(){
 
   BP.reset_all();
   return 0;
-
   
+  color_object (WhatIsInAColor());
+
+}
+
   // Signal handler that will be called when Ctrl+C is pressed to stop the program
   void exit_signal_handler(int signo){
     if(signo == SIGINT){
@@ -109,6 +112,6 @@ int main(){
   }
 
 
-  color_object (WhatIsInAColor());
+  
 }
 
