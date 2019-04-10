@@ -78,8 +78,9 @@ void color_object (int colorchoice){
   }
   
   if (BP.get_sensor(PORT_2, ::Color1) == 0)
+    cout << ::Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
     if (::Color1.color == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
-    if ( ::Color1.color != colorchoice)       { FarbeNichtRichtig();}
+    else if ( ::Color1.color != colorchoice)       { FarbeNichtRichtig();}
   else { cout << BP.get_sensor(PORT_2, ::Color1); }
 }
   // Signal handler that will be called when Ctrl+C is pressed to stop the program
