@@ -1,6 +1,7 @@
 #ifndef grappleMain_h_
 #define grappleMain_h_
 
+#include "BrickPi3.h"
 #include <stdio.h>        // for printf
 #include <unistd.h>       // for usleep
 #include <signal.h>       // for catching exit signals
