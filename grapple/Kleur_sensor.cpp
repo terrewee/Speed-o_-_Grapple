@@ -4,7 +4,7 @@
 #include <signal.h>     // for catching exit signals
 #include <iostream>
 #include <string>
-
+#include <thread>
 
 using namespace std;
 
@@ -22,7 +22,7 @@ sensor_color_t      Color1;
 
 
 
-int WhatIsInAColor (sensor_color_t Color1){
+int WhatIsInAColor (){
 int_fast64_t color;
 int colorchoice;
 cout << "Welke kleur heeft het object" << endl;
@@ -76,9 +76,16 @@ void color_object (int colorchoice){
     if (::Color1.color == colorchoice)       { cout << "hij rijd naar achteren; op pak functie;" << endl;}
     if ( ::Color1.color != colorchoice)       { FarbeNichtRichtig();}
 }
+  // Signal handler that will be called when Ctrl+C is pressed to stop the program
+void exit_signal_handler(int signo){
+  if(signo == SIGINT){
+    BP.reset_all();    // Reset everything so there are no run-away motors
+    exit(-2);
+  }
+}
 
 int main(){
-      signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+  signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
   BP.detect();
   BP.reset_all();
   for (int i = 0; i < 5; ++i){
@@ -102,16 +109,3 @@ int main(){
   color_object (WhatIsInAColor());
 
 }
-
-  // Signal handler that will be called when Ctrl+C is pressed to stop the program
-  void exit_signal_handler(int signo){
-    if(signo == SIGINT){
-      BP.reset_all();    // Reset everything so there are no run-away motors
-      exit(-2);
-    }
-  }
-
-
-  
-}
-
