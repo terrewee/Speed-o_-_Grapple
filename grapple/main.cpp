@@ -129,7 +129,8 @@ void resetMotor(){
     sleep(1);
 }
 
-void fwd(lspd, rspd){
+void fwd(const int lspd, const int
+rspd){
     BP.set_motor_power(PORT_B, lspd);
     BP.set_motor_power(PORT_C, rspd);
 }
