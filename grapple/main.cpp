@@ -1,6 +1,8 @@
-#include "grappleHead.h"  // our main grapple headder
+#include <grappleHead.h>  // our main grapple headder
 
 using namespace std;
+
+BrickPi3 BP;
 
 bool battery = true; //battery level function
 

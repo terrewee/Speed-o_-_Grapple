@@ -1,9 +1,8 @@
 
-#include "grappleHead.h"  // our main grapple headder
+#include <grappleHead.h>  // our main grapple headder
 
 using namespace std;
 
-BrickPi3 BP;
 
 void encodeMotor(int32_t pos){
 	BP.set_motor_position_relative(PORT_A, pos);
