@@ -161,14 +161,8 @@ int moveForward() {
     int offset = 45;
     int Tp = 20;
 
-    int Kp = 9;
-    int Ki = 1;
-    int Kd = 1;
+    int Kp = 4;
 
-    int integral = 0;
-    int derivative = 0;
-
-    int lastError = 0;
     int Turn = 0;
     int lightvalue = 0;
     int error = 0;
@@ -180,24 +174,23 @@ int moveForward() {
         if (BP.get_sensor(PORT_3, Light3) == 0) {
             lightvalue = Light3.reflected; // neem waarde van zwartwit sensor
             cout << lightvalue << endl;
+
             if (BP.get_sensor(PORT_1, Color1) == 0){
                 cout << "sensor werkt" << endl;
+
                 if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2700)) { // las de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
                     cout << "hier is een kruispunt" << endl;
                     resetMotor();
                     sleep(1);
                     return 0;
                 }
+
             }
         }
 
         error = ((lightvalue - 1400) / 60) + 30 - offset;
 
-        integral = integral * 2 / 3 + error;
-        derivative = error - lastError;
-
-        Turn = error * Kp + integral * Ki + Kd * derivative;
-        Turn = Turn / 2;
+        Turn = error * Kp;
 
         if (Turn > Tp){
             fwd(Tp, -1 * Tp);
@@ -209,8 +202,6 @@ int moveForward() {
             rspd = Tp - Turn;
             fwd(lspd, rspd);
         }
-
-        lastError = error;
     }
 }
 
