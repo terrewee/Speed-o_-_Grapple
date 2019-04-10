@@ -14,11 +14,11 @@
 #include <thread>
 #include <iomanip>	// for setw and setprecision
 
-BrickPi3 BP;
+inline BrickPi3 BP;
 
-bool battery = true;          //battery level function
-int ComPortNr = 6969;         //Port number for communication
-char ComHostName[] = "dex2";  //Hostname for communication
+inline bool battery = true;          //battery level function
+inline int ComPortNr = 6969;         //Port number for communication
+inline char ComHostName[] = "dex2";  //Hostname for communication
 
 /*
   Author:       Duur
