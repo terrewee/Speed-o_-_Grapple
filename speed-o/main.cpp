@@ -21,14 +21,19 @@ bool crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
   ::crossroad = 0;
   while (true){
     if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
+<<<<<<< HEAD
       if (Color2.color == 1 && Color4.color == 1){ usleep(0.5); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 
 keer registreert
+=======
+      if (Color2.color == 1 && Color4.color == 1){ usleep(0.5); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
+>>>>>>> 8b7518664569cdcc0b2cefe3b8975ecb94e15189
       else if (Color2.color == 1 && Color4.color == 0){usleep(0.5); ::crossroad++;}
       else if (Color2.color == 0 && Color4.color == 1){ usleep(0.5); ::crossroad++;}
     }
   }
 }
 
+<<<<<<< HEAD
 //Turns the robot to the right, and updates the value of GP.direction.
 void turnLeft(gridPoints & GP){
   int lpos = -250; 		//Left position
@@ -100,6 +105,8 @@ void turnRight(gridPoints & GP){
 		resetMotorsAB();
   }
 }
+=======
+>>>>>>> 8b7518664569cdcc0b2cefe3b8975ecb94e15189
 
 void setSensors(){
 	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
