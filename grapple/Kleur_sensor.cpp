@@ -65,7 +65,7 @@ void FarbeNichtRichtig() {
 //     if (gemeten == 4)     { gemetenwaarde = 4;}
 //     return gemetenwaarde;
      
-}
+//}
 
 
 char color_object (BP.get_sensor(PORT_1, Color1, int colorchoice){
