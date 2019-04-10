@@ -167,7 +167,7 @@ int moveForward() {
 
     while (true) {
         if (BP.get_sensor(PORT_1, Color1) == 0 && BP.get_sensor(PORT_4, Color4) == 0){
-            if (Color1.color == 1 || Color1.color == 2) && (Color4.color == 1 || Color4.color) {
+            if ((Color1.color == 1 || Color1.color == 2) && (Color4.color == 1 || Color4.color)) {
                 resetMotor();
                 sleep(1);
                 return 0;
