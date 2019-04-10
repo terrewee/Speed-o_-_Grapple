@@ -129,44 +129,77 @@ void resetMotor(){
     sleep(1);
 }
 
-void turnMotorPowerUp(int motorPower) {
-    while (motorPower < 20) {
-        BP.set_motor_power(PORT_B, motorPower);
-        BP.set_motor_power(PORT_C, motorPower);
-        motorPower += 3;
-        sleep(0.2);
-    }
-    BP.set_motor_power(PORT_B, 20);
-    BP.set_motor_power(PORT_C, 20);
+void fwd(lspd, rspd){
+    BP.set_motor_power(PORT_B, lspd);
+    BP.set_motor_power(PORT_C, rspd);
 }
 
-void turnMotorPowerDown(int motorPower) {
-    while (motorPower > 0) {
-        BP.set_motor_power(PORT_B, motorPower);
-        BP.set_motor_power(PORT_C, motorPower);
-        motorPower -= 4;
-        sleep(0.1);
-    }
-    resetMotor();
-}
+/*
+  Author:       Gerjan
+  Description:  Pid function which shuts down when it meets an intersection
+*/
 
-void moveForward(){
-    int motorPower = 0;
-    turnMotorPowerUp(motorPower);
-    sleep(3); //dit moet afgesteld worden met de speed-o
-    turnMotorPowerDown(motorPower);
+int moveForward() {
+    //Aan de hand van pid controller
+
+    sensor_light_t Light3;
+    sensor_color_t Color1;
+    sensor_color_t Color4;
+
+    int offset = 45;
+    int Tp = 25;
+
+    int Kp = 9;
+    int Ki = 1;
+    int Kd = 1;
+
+    int integral = 0;
+    int derivative = 0;
+
+    int lastError = 0;
+    int Turn = 0;
+    int lightvalue = 0;
+    int error = 0;
+
+    int lspd = 0;
+    int rspd = 0;
+
+    while (true) {
+        if (BP.get_sensor(PORT_1, Color1) == 0 && BP.get_sensor(PORT_4, Color4) == 0){
+            if (Color1.color == 1 || Color1.color == 2) && (Color4.color == 1 || Color4.color) {
+                resetMotor();
+                sleep(1);
+                return 0;
+            }
+        }
+        if (BP.get_sensor(PORT_3, Light3) == 0) {
+            lightvalue = Light3.reflected;
+        }
+        error = ((lightvalue - 1400) / 60) + 30 - offset;
+
+        integral = integral * 2 / 3 + error;
+        derivative = error - lastError;
+
+        Turn = error * Kp + integral * Ki + Kd * derivative;
+        Turn = Turn / 2;
+
+        lspd = Tp + Turn;
+        rspd = Tp - Turn;
+
+        fwd(lspd, rspd);
+
+        lastError = error;
+    }
 }
 
 void turnLeft(){
-    BP.set_motor_power(PORT_B, 27);
-    BP.set_motor_power(PORT_C, -27);
-    sleep(10);
+    fwd(-25, 25)
+    sleep(5);
     resetMotor();
 }
 void turnRight(){
-    BP.set_motor_power(PORT_B, -27);
-    BP.set_motor_power(PORT_C, 27);
-    sleep(10);
+    fwd(25, -25)
+    sleep(5);
     resetMotor();
 }
 
@@ -296,8 +329,8 @@ int main(){
   BP.detect();
   BP.reset_all();
 
-    BP.set_motor_limits(PORT_B, 50, 0);
-    BP.set_motor_limits(PORT_C, 50, 0);
+  BP.set_motor_limits(PORT_B, 50, 0);
+  BP.set_motor_limits(PORT_C, 50, 0);
 
   cout << endl << "Initializing" << endl;
   int o = 10;
