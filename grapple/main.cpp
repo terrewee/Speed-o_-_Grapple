@@ -154,12 +154,13 @@ rspd){
 
 int moveForward() {
     //Aan de hand van pid controller
-
-    fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
-    sleep(0.5);
-
     sensor_light_t Light3;
     sensor_color_t Color1;
+
+    fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
+    sleep(2);
+    resetMotor();
+    sleep(0.5);
 
     int offset = 45;
     int Tp = 20;
@@ -207,12 +208,20 @@ int moveForward() {
 }
 
 void turnLeft(){
-    fwd(25, -50);
+    fwd(-20, -20);
+    sleep(1);
+    resetMotor()
+    sleep(0.5);
+    fwd(20, -60);
     sleep(7);
     resetMotor();
 }
 void turnRight(){
-    fwd(-50, 25);
+    fwd(-20, -20);
+    sleep(1);
+    resetMotor()
+    sleep(0.5);
+    fwd(-60, 20);
     sleep(7);
     resetMotor();
 }
