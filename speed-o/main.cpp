@@ -26,7 +26,7 @@ void crossroaddetectie(sensor_color_t Color2, sensor_color_t Color4){
       else if (Color2.color == 6 && Color4.color == 1){ sleep(0.01); ::crossroad++;}
     }
   sleep(2);
-  cout << "2: " << Color2.color << " 4: " << COlor4.color << endl;
+  cout << "2: " << Color2.color << " 4: " << Color4.color << endl;
   cout << "Crossroad number: " << ::crossroad << endl;
   }
 }
