@@ -25,7 +25,7 @@ void crossroaddetectie(){
     if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
       if (Color2.color == 1 || Color4.color == 1){ sleep(0.01); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
     }
-  sleep(2);
+  sleep(0.5);
   cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
   cout << "Crossroad number: " << ::crossroad << endl;
   }
