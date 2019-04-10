@@ -10,13 +10,19 @@ using namespace std;
 
 BrickPi3 BP;
 
-BP.set_sensor_type(PORT_1, SENSOR_TYPE_NXT_COLOR_FULL);
+
+void setSensors(){
+    BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
+    BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
+    BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+    BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
+
 sensor_color_t      Color1;
-BP.set_sensor_type(PORT_2, SENSOR_TYPE_NXT_COLOR_FULL);
-sensor_color_t      Color2;
 
 
-int WhatIsInAColor (sensor_color_t,){
+
+int WhatIsInAColor (sensor_color_t.Color1){
 int_fast64_t color;
 int colorchoice;
 cout << "Welke kleur heeft het object" << endl;
@@ -98,5 +104,5 @@ void exit_signal_handler(int signo){
 }
 
 
-color_object (nepwaarde(), WhatIsInAColor());
+color_object (WhatIsInAColor());
 }
