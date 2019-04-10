@@ -29,13 +29,13 @@ bool crossroaddetectie(const sensor_color_t & Color2, const sensor_color_t & Col
 }
 */
 void resetMotors(){
-	BP.set_motor_power(PORT_A, 0);
 	BP.set_motor_power(PORT_B, 0);
+	BP.set_motor_power(PORT_C, 0);
 }
 
 void moveForward(){
-	BP.set_motor_power(PORT_A,60);
-	BP.set_motor_power(PORT_B,60);
+	BP.set_motor_power(PORT_B,-60);
+	BP.set_motor_power(PORT_C,-60);
 	resetMotors();
 }
 
@@ -47,7 +47,7 @@ void followLine()
         int Tp = 25;
         int Kp = 5;
 
-        lastError = 0;
+        int lastError = 0;
         int Turn = 0;
         int lightvalue = 0;
         int error = 0;
@@ -57,19 +57,20 @@ void followLine()
 
         if (BP.get_sensor(PORT_3, Light3) == 0)
         {
-                lightvalue = Light3.reflected;
+          lightvalue = Light3.reflected;
+        
+          error = ((lightvalue-1400)/60)+30 - offset;
+
+          Turn = error * Kp;
+          Turn = Turn/1;
+
+          lspd = Tp + Turn;
+          rspd = Tp - Turn;
+
+          moveForward();
+
+          lastError = error;
         }
-        error = ((lightvalue-1400)/60)+30 - offset;
-
-        Turn = error * Kp;
-        Turn = Turn/1;
-
-        lspd = Tp + Turn;
-        rspd = Tp - Turn;
-
-        moveForward();
-
-        lastError = error;
 }
 
 void exit_signal_handler(int signo){
@@ -84,7 +85,7 @@ int main(){
 	BP.detect();
 
  	while(true){
-		followline();
+		followLine();
 	}
 }
 
