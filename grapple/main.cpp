@@ -403,8 +403,16 @@ void Navigation(vector<char> route){
 
     cout << "Arrived at destination" << endl;
     sleep(1);
+
     //***************************************************************************************************************
-                                             //functie voor object zien en vooral oppakken
+                            //hier moet een functie van mathilde komen die zorgt van kleurherkenning van het object
+
+    //***************************************************************************************************************
+
+
+    
+    //***************************************************************************************************************
+                            // functie voor object zien en vooral oppakken
     brengNaarKantelPunt();
     klauwOpen();
     gelijdelijkDownLoop();
@@ -459,7 +467,6 @@ void Navigation(vector<char> route){
     sleep(1);
     //***************************************************************************************************************
                                                  //fucntie voor object droppen
-
     brengNaarKantelPunt();
     gelijdelijkDownLoop();
     klauwOpen();
@@ -470,6 +477,8 @@ void Navigation(vector<char> route){
     //***************************************************************************************************************
 
     Drive('b'); // orienteer jezelf goed voor de volgende missie
+    resetMotor();
+
 }
 
 
