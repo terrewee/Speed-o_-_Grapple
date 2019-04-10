@@ -13,10 +13,6 @@
 #include <thread>
 #include <iomanip>	// for setw and setprecision
 
-using namespace std;
-
-
-
 /*
   Author:       Duur
   Description:  setSensors set all the sensors for a specific robot
