@@ -3,12 +3,6 @@
 
 using namespace std;
 
-BrickPi3 BP;
-
-bool battery = true;          //battery level function
-int ComPortNr = 6969;         //Port number for communication
-char ComHostName[] = "dex2";  //Hostname for communication
-
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
     BP.reset_all();    // Reset everything so there are no run-away motors
