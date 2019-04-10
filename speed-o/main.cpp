@@ -172,16 +172,16 @@ void turnLeft(gridPoints & GP){
 //Turns the rorbot to the left, and updates the value of GP.direction.
 void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
-    GP.direction = 'w';
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 's';
-  }
-  else if(GP.direction == 's'){
     GP.direction = 'e';
   }
-  else{
+  else if(GP.direction == 'w'){
     GP.direction = 'n';
+  }
+  else if(GP.direction == 's'){
+    GP.direction = 'w';
+  }
+  else{
+    GP.direction = 's';
   }
 }
 
