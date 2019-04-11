@@ -138,21 +138,21 @@ void encodeMotorA(int32_t pos) {
 
 void brengNaarKantelPunt() {
   BP.set_motor_limits(PORT_A, 40, 0);
-  encodeMotorA(-50);
+  encodeMotorA(50);
 }
 
 void gelijdelijkDownLoop() {
-  int32_t encoder = -50;
-  while(encoder > -110) {
-    encodeMotorA(-5);
+  int32_t encoder = 50;
+  while(encoder > 110) {
+    encodeMotorA(5);
     usleep(500000);
-    encoder = encoder - 5;
+    encoder = encoder + 5;
   }
 }
 
 void klauwOmhoog() {
   BP.set_motor_limits(PORT_A, 50, 0);
-  encodeMotorA(130);  // zelfde als totale neerwaartse beweging
+  encodeMotorA(-130);  // zelfde als totale neerwaartse beweging
 }
 
 void klauwOpen() {
@@ -312,10 +312,10 @@ void backUpFromObject(){
 
 void turnLeft() {
     fwd(-20, -20);
-    sleep(2);
+    sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(30, 4 );
+    fwd(10, -10);
     sleep(7);
     resetMotor();
 }
@@ -323,10 +323,10 @@ void turnLeft() {
 
 void turnRight() {
     fwd(-20, -20);
-    sleep(2);
+    sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(4, 30);
+    fwd(-10, 10);
     sleep(7);
     resetMotor();
 }
