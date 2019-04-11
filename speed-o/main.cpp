@@ -529,11 +529,14 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
+		thread kruispunt(crossroaddetectie);
 		if 			(answer == "w")		{moveForward(10,10);}
 		else if (answer == "a")		{turnLeft(GP); moveForward(10,10);}
 		else if (answer == "d")		{turnRight(GP); moveForward(10,10);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
+
+		if(crossroad == 1){resetMotors();}
 		orientationList.push_back(GP.direction);
 		cout << GP.direction << endl << endl;
 	}
@@ -914,7 +917,7 @@ int main(){
 
   while(::running){
 
-		thread kruispunt(crossroaddetectie);
+		
  		//followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 
     cout << "Kies functie: " << endl;
