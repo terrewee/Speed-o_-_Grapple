@@ -178,10 +178,6 @@ void iClient(char message[256]){
   close(socketFD);
 }
 
-
-
-
-
 	void crossroaddetectie(){
 		sensor_color_t      Color2;
 		sensor_color_t      Color4;
@@ -483,6 +479,7 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
     count++;
   }
   updateLocation(GP, distance);
+	cout << distance << endl;
 }
 
 void moveToHomepoint(gridPoints GP){
