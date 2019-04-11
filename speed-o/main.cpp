@@ -31,6 +31,22 @@ void crossroaddetectie(){
   }
 }
 
+struct routeCount {
+  vector<char> direction = {};
+  vector<int> amount = {};
+};
+
+routeCount initRouteCount(const string & myRoute) {
+  routeCount tStruct = {.direction.push_back(''), .amount.push_back(0)};
+  int sIndex = 0;
+  for(char direction in myRoute){
+    if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
+    else if (tStruct.direction[sIndex] == '') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
+    else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
+  }
+  return tStruct;
+}
+
 //Turns the robot to the right, and updates the value of GP.direction.
 void turnLeft(int lpos, int rpos){	// zet gridpoints GP er weer in
   int32_t EncoderB = BP.get_motor_encoder(PORT_B);
@@ -117,7 +133,7 @@ void setSensors(){
 
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
-	BP.set_motor_power(PORT_C, 0); 
+	BP.set_motor_power(PORT_C, 0);
 }
 
 void moveForward(int lspd, int rspd){
@@ -178,9 +194,9 @@ int main(){
     sleep(1);
   }
   cout << endl << "Initialized" << endl;
-	
+
   sensor_light_t      Light3;
-  
+
 
   thread kruispunt (crossroaddetectie);
 
@@ -195,7 +211,7 @@ int main(){
 */
 //		if(BP.get_sensor(PORT_3, Light3) == 0){cout << "Ligt value: " <<  (int)Light3.reflected << endl; sleep(2);}
 		followLine();
-    
+
 	}
 }
 
