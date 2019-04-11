@@ -88,7 +88,7 @@ void draaiRechts(){
 	sensor_light_t Light3;
 	bool stillBlack = true;
 	while(true){
-		if (BP.get_sensor(PORT_3, Light3)) {
+		if (BP.get_sensor(PORT_3, Light3) == 0) {
 			if (stillBlack) {
 				cout << "I havent seen grey yet." << endl;
 				if (Light3.reflected < 2375){
@@ -103,7 +103,7 @@ void draaiRechts(){
 				}
 			}
 			cout << "Turning" << endl;
-			moveForward(20, 5);
+			moveForward(5,20);
 		}
 		usleep(100000);
 	}
@@ -141,7 +141,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 
         int lspd = 0;
         int rspd = 0;
-		while(::crossroad <= aantalKeerTeGaan)
+		while(::crossroad < aantalKeerTeGaan)
 		{
 			if(BP.get_sensor(PORT_3, Light3) == 0){
 			cout << "crossroad: " << ::crossroad << endl;
@@ -179,8 +179,8 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 			lastError = error;
 			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
 		}
-        }
-        resetMotors();
+    }
+    resetMotors();
 // 				break;
 }
 
