@@ -103,7 +103,7 @@ bool stopVoorObject()
 	}
 }
 
-void followLine(int aantalKeerTeGaan)
+void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
 {
         sensor_light_t Light3;
 
@@ -146,6 +146,7 @@ void followLine(int aantalKeerTeGaan)
 			{
 				resetMotors();
 				// gebruik draaiLinks en/of draaiRechts voor 90 graden draaien
+				::crossroad = 0;	// reset crossroad voor een volgende call v/d functie
 				break;
 			}
 		}
