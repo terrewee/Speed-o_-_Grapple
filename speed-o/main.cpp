@@ -176,7 +176,7 @@ void iClient(char message[256]){
   //Receive message "1" if sent message was received.
   printf("%s\n",buffer);
   close(socketFD);
-
+}
 
 
 
