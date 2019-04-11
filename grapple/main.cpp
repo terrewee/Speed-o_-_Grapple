@@ -286,56 +286,54 @@ void turnRight(){
 
 
 int moveForward() {
-    //Aan de hand van pid controller
-    sensor_light_t Light3;
-    sensor_color_t Color1;
+  //Aan de hand van pid controller
+  sensor_light_t Light3;
+  sensor_color_t Color1;
 
-    fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
-    sleep(0.5);
+  fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
+  sleep(0.5);
 
-    int offset = 45;
-    int Tp = 20;
+  int offset = 45;
+  int Tp = 20;
 
-    int Kp = 4;
+  int Kp = 4;
 
-    int Turn = 0;
-    int lightvalue = 0;
-    int error = 0;
+  int Turn = 0;
+  int lightvalue = 0;
+  int error = 0;
 
-    int lspd = 0;
-    int rspd = 0;
+  int lspd = 0;
+  int rspd = 0;
 
-    while (running) {
-        if (BP.get_sensor(PORT_3, Light3) == 0) {
-            lightvalue = Light3.reflected; // neem waarde van zwartwit sensor
-
-            if (BP.get_sensor(PORT_1, Color1) == 0){
-
-                if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2300)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
-                    cout << "hier is een kruispunt" << endl;
-                    return 0;
-                }
-            }
+  while (running) {
+    if (BP.get_sensor(PORT_3, Light3) == 0) {
+      lightvalue = Light3.reflected; // neem waarde van zwartwit sensor
+      if (BP.get_sensor(PORT_1, Color1) == 0){
+        if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2300)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+          cout << "hier is een kruispunt" << endl;
+          return 0;
         }
-
-        error = ((lightvalue - 500) / 110) + 30 - offset;
-
-        Turn = error * Kp;
-
-        // als de Turnsnelheid meer dan 2 keer zo groot word dan de normale rijsnelheid,
-        // gaat de robot alleen foccussen op draaien, zonder nog te rijden
-        if (Turn > Tp){
-            fwd(Tp, -1 * Tp);
-        }
-        else if (Turn < -1 * Tp){
-            fwd(-1 * Tp, Tp);
-        }
-        else{
-            lspd = Tp + Turn;
-            rspd = Tp - Turn;
-            fwd(lspd, rspd);
-        }
+      }
     }
+
+    error = ((lightvalue - 500) / 110) + 30 - offset;
+
+    Turn = error * Kp;
+
+    // als de Turnsnelheid meer dan 2 keer zo groot word dan de normale rijsnelheid,
+    // gaat de robot alleen foccussen op draaien, zonder nog te rijden
+    if (Turn > Tp){
+      fwd(Tp, -1 * Tp);
+    }
+    else if (Turn < -1 * Tp){
+      fwd(-1 * Tp, Tp);
+    }
+    else{
+      lspd = Tp + Turn;
+      rspd = Tp - Turn;
+      fwd(lspd, rspd);
+    }
+  }
 }
 
 

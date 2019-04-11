@@ -13,6 +13,8 @@
 
 using namespace std;
 
+//------------------------------------------ESSENSIALS-----------------------------------------------
+
 BrickPi3 BP;
 
 bool battery = true;          //battery level function
@@ -21,7 +23,7 @@ void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
     if(BP.get_voltage_battery() <= 9.0){
-      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      cout << "Battery be dead m8." << endl;
       ::battery = false;
     }
     else{
@@ -268,29 +270,32 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
   unsigned int count = 0;
 
   int uChoice;
+	bool running = 1;
+  while(running){
+    cout << "Kies functie: " << endl;
+		cout << "0: Exit" << endl;
+    cout << "1: Send message" << endl;
+    cout << "2: Set communication details" << endl;
+    cout << "3: Check sensor" << endl;
 
-  // while (true){
-  //   cout << "Kies functie: " << endl;
-  //   cout << "1: Send message" << endl;
-  //   cout << "2: Set communication details" << endl;
-  //   cout << "3: Check sensor" << endl;
-
-  //   cin >> uChoice;
-
-  //   switch(uChoice) {
-  //     case 1:
-  //       char message[256];
-  //       cout << "Message: " << endl;
-  //       cin >> message;
-  //       iClient(message);
-  //       break;
-  //     case 2:
-  //       SetComm();
-  //       break;
-  //     case 3:
-  //       checkSensor();
-  //       break;
-  //   }
+    cin >> uChoice;
+    switch(uChoice) {
+      case 1:
+        char message[256];
+        cout << "Message: " << endl;
+        cin >> message;
+        iClient(message);
+        break;
+      case 2:
+        SetComm();
+        break;
+      case 3:
+        checkSensor();
+        break;
+			case 0:
+				running = 0;
+				break;
+    }
 
 
 
@@ -366,9 +371,6 @@ void turn(char direction, gridPoints & GP) {
 		}
 	}
 }
-
-
-
 
 string manualControl(gridPoints &GP){
 	vector<char> orientationList;
@@ -690,9 +692,19 @@ void driveBack(string followedRoute, gridPoints & GP){
 //------------------------------------------MAIN-----------------------------------------------
 
 int main(){
-	
+	//Startup stuff.
 	signal(SIGINT, exit_signal_handler);
 	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
+  BP.reset_all();
+  for (int i = 0; i < 5; ++i){
+    cout << ".";
+    if (i == 3){
+      setSensors();
+    }
+    sleep(1);
+  }
+  cout << endl << "Initialized" << endl;
+
 
 	//Reset the encoders
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
@@ -727,12 +739,38 @@ int main(){
 	cout << NOSWList << " ";
 		 
 	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
-	cout << "kip" << endl;
+	cout << "followed route" << endl;
 	//communicate(followedRoute);
 	driveBack(followedRoute, GP);
 	resetCurrentLocation(GP);
 	
-	
+	int uChoice;
+	bool running = 1;
+  while(running){
+    cout << "Kies functie: " << endl;
+		cout << "0: Exit" << endl;
+    cout << "1: Send message" << endl;
+    cout << "2: Set communication details" << endl;
+    cout << "3: Check sensor" << endl;
+
+    cin >> uChoice;
+    switch(uChoice) {
+      case 1:
+        char message[256];
+        cout << "Message: " << endl;
+        cin >> message;
+        iClient(message);
+        break;
+      case 2:
+        SetComm();
+        break;
+      case 3:
+        checkSensor();
+        break;
+			case 0:
+				running = 0;
+				break;
+    }
 
 	//moveForward();
 	cout << "exit(0)";
