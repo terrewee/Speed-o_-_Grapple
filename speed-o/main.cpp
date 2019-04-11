@@ -35,6 +35,11 @@ struct range {
   bool obstakelInRangeForward = false;
 };
 
+struct routeCount {
+  vector<char> direction = {};
+  vector<int> amount = {};
+};
+
 range obstakel;
 void exit_signal_handler(int signo);
 
@@ -205,6 +210,17 @@ void updateLocation(gridPoints & GP, int distance){
   else{
     GP.currentLocation.x += distance;
   }
+}
+
+routeCount initRouteCount(const string & myRoute) {
+  routeCount tStruct = {.direction.push_back(''), .amount.push_back(0)};
+  int sIndex = 0;
+  for(char direction in myRoute){
+    if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
+    else if (tStruct.direction[sIndex] == '') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
+    else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
+  }
+  return tStruct;
 }
 
 //Moves robot a set distance forward and calls updateLocation().
