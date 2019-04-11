@@ -133,36 +133,36 @@ void batteryLevel() {
 //---------------------------------------ARM---------------------------------------------
 
 void encodeMotorA(int32_t pos) {
-	BP.set_motor_position_relative(PORT_A, pos);
+  BP.set_motor_position_relative(PORT_A, pos);
 }
 
 void brengNaarKantelPunt() {
-	BP.set_motor_limits(PORT_A, 40, 0);
-	encodeMotorA(-50);
+  BP.set_motor_limits(PORT_A, 40, 0);
+  encodeMotorA(-50);
 }
 
 void gelijdelijkDownLoop() {
-	int32_t encoder = -50;
-	while(encoder > -110) {
-		encodeMotorA(-5);
-		usleep(500000);
-		encoder = encoder - 5;
-	}
+  int32_t encoder = -50;
+  while(encoder > -110) {
+    encodeMotorA(-5);
+    usleep(500000);
+    encoder = encoder - 5;
+  }
 }
 
 void klauwOmhoog() {
-	BP.set_motor_limits(PORT_A, 50, 0);
-	encodeMotorA(130);	// zelfde als totale neerwaartse beweging
+  BP.set_motor_limits(PORT_A, 50, 0);
+  encodeMotorA(130);  // zelfde als totale neerwaartse beweging
 }
 
 void klauwOpen() {
-	BP.set_motor_limits(PORT_D, 60, 0);
-	BP.set_motor_position_relative(PORT_D, -180);
+  BP.set_motor_limits(PORT_D, 60, 0);
+  BP.set_motor_position_relative(PORT_D, -180);
 }
 
 void klauwDicht() {
-	BP.set_motor_limits(PORT_D, 60, 0);
-	BP.set_motor_position_relative(PORT_D, 180);
+  BP.set_motor_limits(PORT_D, 60, 0);
+  BP.set_motor_position_relative(PORT_D, 180);
 }
 
 //---------------------------------------COMMUNICATION---------------------------------------------
@@ -419,6 +419,7 @@ void navigation(vector<char> route) {
     sleep(1);
 
     //***************************************************************************************************************
+<<<<<<< HEAD
     if (color_object(whatIsInAColor())) {
       cout << "Pak het op" << endl;
       brengNaarKantelPunt();
@@ -434,6 +435,22 @@ void navigation(vector<char> route) {
       gotAObject = false;
     }
     //***************************************************************************************************************
+=======
+                            //hier moet een functie van mathilde komen die zorgt van kleurherkenning van het object
+
+    //***************************************************************************************************************
+
+    // functies voor object oppakken
+    brengNaarKantelPunt();
+    klauwOpen();
+    gelijdelijkDownLoop();
+    klauwDicht();
+    sleep(1);
+    klauwOmhoog();
+    resetMotor();
+
+    cout << "Picked up ze object, time to head back" << endl;
+>>>>>>> bcbaa0e02df6c8e87c85ce88286b602954aac4fd
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = (route.size() - 2); i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
@@ -474,6 +491,7 @@ void navigation(vector<char> route) {
     resetMotor();
     cout << "Arrived home, dropping the object like its hot" << endl;
     sleep(1);
+<<<<<<< HEAD
     //***************************************************************************************************************
     //fucntie voor object droppen
     if (gotAObject) {
@@ -486,6 +504,16 @@ void navigation(vector<char> route) {
     }
     /* code */
     //***************************************************************************************************************
+=======
+
+    //fucnties voor object droppen
+    brengNaarKantelPunt();
+    gelijdelijkDownLoop();
+    klauwOpen();
+    klauwOmhoog();
+    klauwDicht();
+    resetMotor();
+>>>>>>> bcbaa0e02df6c8e87c85ce88286b602954aac4fd
 
     drive('b'); // orienteer jezelf goed voor de volgende missie
     resetMotor();
@@ -520,10 +548,17 @@ int main() {
         cout << "0: Exit" << endl;                                              // functie om programma te stoppen
         cout << "1: Receive message" << endl;                                   // wacht voor een message en print deze
         cout << "2: Set communication details" << endl;                         // stel portnummer in
+<<<<<<< HEAD
         cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten,
                                                                                 // die worden daarna gebruikt om het opject op te pakken en terug te rijden
         cout << "4: Check sensor" << endl;
         cout << "Uw keuze is: ";
+=======
+        cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
+        cout << "4: Drive the given route" << endl;                             // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
+        cout << "5: Check sensor" << endl;
+        cout << endl << "Uw keuze is: ";
+>>>>>>> bcbaa0e02df6c8e87c85ce88286b602954aac4fd
 
         cin >> uChoice;
         cout << "|==================================================|" << endl;
@@ -556,8 +591,8 @@ int main() {
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo) {
     if(signo == SIGINT){
-        resetMotor();
         ::running = false;
+        resetMotor();
         BP.reset_all(); // Reset everything so there are no run-away motors
         exit(-2);
     }
