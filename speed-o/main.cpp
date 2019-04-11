@@ -513,7 +513,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	vector<int> queue = {};
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
-
+	cout << "test2" << endl;
 	while(!targetFound && i < (grid.size() * grid[0].size()) -1){
 		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
 		unsigned int queueSize = queue.size();
@@ -552,7 +552,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			searchPath(directions, GP, grid);
 			obstructed = false;
 		}
-
+		cout << "test1" << endl;
 		for(int i = 0; i < directions.size(); i++){
 			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
