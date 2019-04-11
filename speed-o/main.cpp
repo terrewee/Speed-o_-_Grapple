@@ -18,10 +18,11 @@ using namespace std;
 BrickPi3 BP;
 
 bool battery = true;          //battery level function
+bool running = 1;
 
-void batteryLevel(void){
+void batteryLevel(){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
+  while(::running){
     if(BP.get_voltage_battery() <= 9.0){
       cout << "Battery be dead m8." << endl;
       ::battery = false;
@@ -36,6 +37,7 @@ void batteryLevel(void){
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
+		running = 0;
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
@@ -186,6 +188,8 @@ void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
 }
 
+//--------movement---------
+
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
 	int snelheid = 10;
@@ -244,6 +248,8 @@ void turnRight(gridPoints &GP){
   }
 }
 
+//-------path instructions--------
+
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
 void resetCurrentLocation(gridPoints &GP){
   GP.currentLocation.x = GP.homeCoordinates.x;
@@ -269,42 +275,10 @@ void updateLocation(gridPoints &GP, const unsigned int distance){
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
   unsigned int count = 0;
-
-  int uChoice;
-	bool running = 1;
-  while(running){
-    cout << "Kies functie: " << endl;
-		cout << "0: Exit" << endl;
-    cout << "1: Send message" << endl;
-    cout << "2: Set communication details" << endl;
-    cout << "3: Check sensor" << endl;
-
-    cin >> uChoice;
-    switch(uChoice) {
-      case 1:
-        char message[256];
-        cout << "Message: " << endl;
-        cin >> message;
-        iClient(message);
-        break;
-      case 2:
-        SetComm();
-        break;
-      case 3:
-        checkSensor();
-        break;
-			case 0:
-				running = 0;
-				break;
-    }
-
-
-
   while(count < distance){
     moveForward(GP);
     count++;
   }
-
   updateLocation(GP, distance);
 }
 
@@ -724,8 +698,9 @@ int main(){
 	BP.set_motor_position(PORT_D, EncoderA);	
 	
 	int uChoice;
-	bool running = 1;
-  while(running){
+	char message[256];
+
+  while(::running){
     cout << "Kies functie: " << endl;
 		cout << "0: Exit" << endl;
     cout << "1: Send message" << endl;
@@ -735,12 +710,13 @@ int main(){
 		cout << "5: Manual pathing." << endl;
 
     cin >> uChoice;
+		cout << "|==================================================|" << endl;
+		
     switch(uChoice) {
 			case 0:
-				running = 0;
+				::running = 0;
 				break;
       case 1:
-        char message[256];
         cout << "Message: " << endl;
         cin >> message;
         iClient(message);
@@ -762,6 +738,7 @@ int main(){
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				string NOSWList = manualControl(GP);
+				strcpy(message, NOSWList.c_str());
 				cout << NOSWList << " ";
     }
 
