@@ -39,7 +39,7 @@ void crossroaddetectie()
 	}
 }
 
-
+/*
 struct routeCount {
   vector<char> direction = {};
   vector<int> amount = {};
@@ -55,7 +55,7 @@ routeCount initRouteCount(const string & myRoute) {
   }
   return tStruct;
 }
-
+*/
 
 void draaiLinks()
 {
