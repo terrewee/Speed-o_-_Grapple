@@ -920,7 +920,7 @@ int main(){
 	bool destinationArrived = false;
 	getCoordinates(GP, grid);
 
-	threat kruispunt(crossroaddetectie);
+	thread kruispunt(crossroaddetectie);
 
   while(::running){
 
