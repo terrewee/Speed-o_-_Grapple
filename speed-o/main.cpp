@@ -678,6 +678,27 @@ void driveBack(string followedRoute, gridPoints & GP){
 	dockScout(GP);
 }
 
+
+
+
+//Prints grid for debugging and testing grid generation.
+void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
+	for (unsigned int i = 0; i < grid.size(); i++) {
+		for (unsigned int j = 0; j < grid[i].size(); j++) {
+			if (GP.targetCoordinates.x == j && GP.targetCoordinates.y == i) {
+				cout << 'T' << ' ';
+			}
+			else if (GP.homeCoordinates.x == j && GP.homeCoordinates.y == i) {
+				cout << 'H' << ' ';
+			}
+			else {
+				cout << grid[i][j] << ' ';
+			}
+		}
+		cout << endl;
+	}
+}
+
 //------------------------------------------MAIN-----------------------------------------------
 
 int main(){
@@ -749,6 +770,7 @@ int main(){
         checkSensor();
         break;
 			case 4:
+				testFunctie(GP, grid);
 				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
