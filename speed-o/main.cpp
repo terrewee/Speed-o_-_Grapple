@@ -538,7 +538,7 @@ string manualControl(gridPoints &GP){
 		if 			(answer == "w")		{moveForward(20,20);}
 		else if (answer == "a")		{turnLeft(GP); moveForward(20,20);}
 		else if (answer == "d")		{turnRight(GP); moveForward(20,20);}
-		else if (answer == "quit")	{break;}
+		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
 		//if(crossroad == 1){resetMotors();}
@@ -920,7 +920,7 @@ int main(){
 	bool destinationArrived = false;
 	getCoordinates(GP, grid);
 
-	thread kruispunt(crossroaddetectie);
+	//thread kruispunt(crossroaddetectie);
 
   while(::running){
 
@@ -962,7 +962,7 @@ int main(){
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
 				//iClient(followedRoute);
-				kruispunt.join();	
+				//kruispunt.join();	
 			case 5:		
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
@@ -970,7 +970,7 @@ int main(){
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
 				//iClient(message);
-				kruispunt.join();	
+				//kruispunt.join();	
 			case 6:
 				// testFunctie(GP, grid);
 				resetCurrentLocation(GP);
