@@ -112,6 +112,7 @@ void followLine(int aantalKeerTeGaan)
 		while(true)
 		{
 			kruispunt == ::crossroad;
+			cout << "Kruispunt: " << kruispunt << endl;
 			if(kruispunt == aantalKeerTeGaan)
 			{
 				resetMotors();
