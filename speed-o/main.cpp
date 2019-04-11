@@ -195,5 +195,7 @@ int main()
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 	draaiRechts();
 	BP.reset_all();
+
+	kruispunt.join();
 }
 
