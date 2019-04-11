@@ -43,6 +43,12 @@ void exit_signal_handler(int signo){
   }
 }
 
+void setSensors(){
+  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
+  BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+  BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
 
 //------------------------------------------CONNECTION-----------------------------------------------
 
@@ -700,6 +706,13 @@ int main(){
 	int uChoice;
 	char message[256];
 
+	gridPoints GP;
+	GP.direction = 'n';
+	range obstakel;
+	vector<vector<bool>> grid = getGrid(GP);
+	string followedRoute;
+	bool destinationArrived = false;
+
   while(::running){
     cout << "Kies functie: " << endl;
 		cout << "0: Exit" << endl;
@@ -711,7 +724,7 @@ int main(){
 
     cin >> uChoice;
 		cout << "|==================================================|" << endl;
-		
+
     switch(uChoice) {
 			case 0:
 				::running = 0;
@@ -737,9 +750,9 @@ int main(){
 				getCoordinates(GP, grid);
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
-				string NOSWList = manualControl(GP);
-				strcpy(message, NOSWList.c_str());
-				cout << NOSWList << " ";
+				followedRoute = manualControl(GP);
+				strcpy(message, followedRoute.c_str());
+				cout << message << " ";
     }
 
 	//moveForward();
