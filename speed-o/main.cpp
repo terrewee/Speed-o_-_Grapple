@@ -45,7 +45,9 @@ struct routeCount {
 };
 
 routeCount initRouteCount(const string & myRoute) {
-  struct routeCount tStruct = {.direction.push_back(' '), .amount.push_back(0)};
+  routeCount tStruct;
+  tStruct.direction.push_back(' ');
+  tStruct.amount.push_back(0);
   int sIndex = 0;
   for(char direction : myRoute){
     if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
@@ -90,7 +92,6 @@ void moveForward(int lspd, int rspd){
 
 void followLine(int aantalKeerTeGaan)
 {
-	int kruispunt;
         sensor_light_t Light3;
 
         int offset = 45;
@@ -109,9 +110,8 @@ void followLine(int aantalKeerTeGaan)
         {
 		while(true)
 		{
-			kruispunt == ::crossroad;
-			cout << "Kruispunt: " << kruispunt << endl;
-			if(kruispunt == aantalKeerTeGaan)
+			cout << "Kruispunt: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan)
 			{
 				resetMotors();
 				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
