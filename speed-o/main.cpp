@@ -206,23 +206,6 @@ struct routeCount {
   vector<int> amount = {};
 };
 
-routeCount initRouteCount(const string & myRoute) {
-  routeCount tStruct;
-  tStruct.direction.push_back(' ');
-  tStruct.amount.push_back(0);
-  int sIndex = 0;
-  for(char direction : myRoute){
-    if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
-    else if (tStruct.direction[sIndex] == ' ') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
-    else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
-  }
-  return tStruct;
-}
-
-
-
-
-
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
 	BP.set_motor_power(PORT_C, 0);
@@ -404,11 +387,6 @@ void turnRight(gridPoints & GP){
 	BP.get_motor_encoder(PORT_C);
 	BP.set_motor_position_relative(PORT_B, -116);
 	BP.set_motor_position_relative(PORT_C, 116);
-}
-
-void resetMotors(){
-	BP.set_motor_power(PORT_B, 0);
-	BP.set_motor_power(PORT_C, 0);
 }
 
 //-------line intructions---------
@@ -1004,7 +982,7 @@ int main(){
 				cout << "followed route" << endl;
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
-				iClient(followedRoute);
+				//iClient(followedRoute);
 			case 5:				
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
