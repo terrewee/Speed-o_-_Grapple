@@ -45,6 +45,7 @@ void crossroaddetectie()
 		//cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
 		//cout << "Crossroad number: " << ::crossroad << endl;
 	}
+	cout << "gon exit now" << endl;
 }
 
 struct routeCount {
@@ -199,6 +200,7 @@ int main()
 	draaiRechts();
 	sleep(1);
 	BP.reset_all();
+	::running = false;
 	kruispunt.join();
 	return 0;
 }
