@@ -309,7 +309,7 @@ void followLine(int aantalKeerTeGaan){
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			moveForward(lspd,rspd);
+			//moveForward(lspd,rspd);
 
 			lastError = error;
 		}
@@ -353,7 +353,7 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
 }
 
 void moveToHomepoint(gridPoints GP){
-	GP.direction = 'n'
+	GP.direction = 'n';
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
  	moveForwardDistance(GP, 1);
