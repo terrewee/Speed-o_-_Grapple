@@ -299,7 +299,7 @@ bool color_object (int colorchoice){
 //---------------------------------------DRIVING---------------------------------------------
 
 void fwd(const int lspd, const int rspd) {
-    BP.set_motor_power(PORT_B, lspd);
+    BP.set_motor_power(PORT_A, lspd);
     BP.set_motor_power(PORT_C, rspd);
 }
 
@@ -312,21 +312,23 @@ void backUpFromObject(){
 
 void turnLeft() {
     fwd(-20, -20);
-    sleep(1);
+    sleep(3);
     resetMotor();
     sleep(0.5);
-    fwd(20, -60);
+    fwd(30, 10);
     sleep(7);
+    resetMotor();
 }
 
 
 void turnRight() {
     fwd(-20, -20);
-    sleep(1);
+    sleep(3);
     resetMotor();
     sleep(0.5);
-    fwd(-60, 20);
+    fwd(10, 30);
     sleep(7);
+    resetMotor();
 }
 
 
@@ -339,7 +341,7 @@ int moveForward() {
   sleep(0.5);
 
   int offset = 45;
-  int Tp = 20;
+  int Tp = 15;
 
   int Kp = 4;
 
@@ -354,30 +356,20 @@ int moveForward() {
     if (BP.get_sensor(PORT_1, Light1) == 0) {
       lightvalue = Light1.reflected; // neem waarde van zwartwit sensor
       if (BP.get_sensor(PORT_3, Color3) == 0) {
-        if ((Color3.color == 1 || Color3.color == 2) && (lightvalue > 2300)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+        if ((Color3.reflected_red < 300) && (lightvalue > 2700)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
           cout << "hier is een kruispunt" << endl;
           return 0;
         }
       }
     }
 
-    error = ((lightvalue - 500) / 110) + 30 - offset;
+    error = ((lightvalue - 1850) / 55) + 30 - offset;
 
     Turn = error * Kp;
 
-    // als de Turnsnelheid meer dan 2 keer zo groot word dan de normale rijsnelheid,
-    // gaat de robot alleen foccussen op draaien, zonder nog te rijden
-    if (Turn > Tp){
-      fwd(Tp, -1 * Tp);
-    }
-    else if (Turn < -1 * Tp){
-      fwd(-1 * Tp, Tp);
-    }
-    else{
       lspd = Tp + Turn;
       rspd = Tp - Turn;
       fwd(lspd, rspd);
-    }
   }
 }
 
@@ -442,6 +434,7 @@ void navigation(vector<char> route) {
         }
     }
 
+    resetMotor();
     cout << "Arrived at destination" << endl;
     sleep(1);
 
@@ -527,6 +520,9 @@ int main() {
     signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
     BP.detect();
     BP.reset_all();
+
+    cout << "Initializing" << endl;
+
     for (int i = 0; i < 5; ++i) {
       cout << ".";
       if (i == 1) {
@@ -551,6 +547,7 @@ int main() {
         cout << "2: Set communication details" << endl;                         // stel portnummer in
         cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
         cout << "4: Check sensor" << endl;
+        cout << "5: Drive given road to object" << endl << endl;
         cout << "Uw keuze is: ";
 
         cin >> uChoice;
@@ -574,6 +571,11 @@ int main() {
             case 4: // Check the sensors
                 checkSensor();
                 break;
+            case 5: //test pls dont delete this time duur :D
+            {   vector<char> vec = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'};
+                navigation(vec);
+                break;
+            }
             case 0:{ // functie om programma te stoppen
                 ::running = false;
                 break;}
