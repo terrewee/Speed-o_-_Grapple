@@ -316,6 +316,7 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
+	sleep(1);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -337,6 +338,7 @@ void turnLeft(gridPoints & GP){
 	BP.get_motor_encoder(PORT_C);
 	BP.set_motor_position_relative(PORT_B, 116);
 	BP.set_motor_position_relative(PORT_C, -116);
+	sleep(1);
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
@@ -358,6 +360,7 @@ void turnRight(gridPoints & GP){
 	BP.get_motor_encoder(PORT_C);
 	BP.set_motor_position_relative(PORT_B, -116);
 	BP.set_motor_position_relative(PORT_C, 116);
+	sleep(1);
 }
 
 //-------line intructions---------
