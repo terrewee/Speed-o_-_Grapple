@@ -810,6 +810,7 @@ int main(){
 	vector<vector<bool>> grid = getGrid(GP);
 	string followedRoute;
 	bool destinationArrived = false;
+	getCoordinates(GP, grid);
 
   while(::running){
     cout << "Kies functie: " << endl;
@@ -839,6 +840,7 @@ int main(){
         checkSensor();
         break;
 			case 4:
+				
 				testFunctie(GP, grid);
 				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
