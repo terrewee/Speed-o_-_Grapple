@@ -25,9 +25,9 @@ bool running = true;                                              // Bool for tu
 void exit_signal_handler(int signo);                              // For initializing the Ctrl + C exit handler
 
 void setSensors() {
-    BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_COLOR_FULL);
+    BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_LIGHT_ON);
     BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
-    BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+    BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_COLOR_FULL);
 }
 
 void resetMotor() {
@@ -303,6 +303,13 @@ void fwd(const int lspd, const int rspd) {
     BP.set_motor_power(PORT_C, rspd);
 }
 
+
+void backUpFromObject(){
+    fwd(-10, -10);
+    sleep(1);
+    resetMotor();
+}
+
 void turnLeft() {
     fwd(-20, -20);
     sleep(1);
@@ -311,6 +318,7 @@ void turnLeft() {
     fwd(20, -60);
     sleep(7);
 }
+
 
 void turnRight() {
     fwd(-20, -20);
@@ -321,10 +329,11 @@ void turnRight() {
     sleep(7);
 }
 
+
 int moveForward() {
   //Aan de hand van pid controller
-  sensor_light_t Light3;
-  sensor_color_t Color1;
+  sensor_light_t Light1;
+  sensor_color_t Color3;
 
   fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
   sleep(0.5);
@@ -342,10 +351,10 @@ int moveForward() {
   int rspd = 0;
 
   while (running) {
-    if (BP.get_sensor(PORT_3, Light3) == 0) {
-      lightvalue = Light3.reflected; // neem waarde van zwartwit sensor
-      if (BP.get_sensor(PORT_1, Color1) == 0) {
-        if ((Color1.color == 1 || Color1.color == 2) && (lightvalue > 2300)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+    if (BP.get_sensor(PORT_1, Light1) == 0) {
+      lightvalue = Light1.reflected; // neem waarde van zwartwit sensor
+      if (BP.get_sensor(PORT_3, Color3) == 0) {
+        if ((Color3.color == 1 || Color3.color == 2) && (lightvalue > 2300)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
           cout << "hier is een kruispunt" << endl;
           return 0;
         }
@@ -371,6 +380,7 @@ int moveForward() {
     }
   }
 }
+
 
 void drive(char direction) {
     if (direction == 'f') {
@@ -446,7 +456,8 @@ void navigation(vector<char> route) {
       klauwOmhoog();
       resetMotor();
       cout << "Picked up ze object, time to head back" << endl;
-    } else {
+    }
+    else {
       cout << "Pak het niet op ga terug" << endl;
       gotAObject = false;
     }
@@ -507,7 +518,6 @@ void navigation(vector<char> route) {
 
     drive('b'); // orienteer jezelf goed voor de volgende missie
     resetMotor();
-
 }
 
 
