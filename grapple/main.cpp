@@ -311,23 +311,33 @@ void backUpFromObject(){
 }
 
 void turnLeft() {
+    sensor_light_t Light1;
     fwd(-20, -20);
     sleep(1);
     resetMotor();
     sleep(0.5);
     fwd(40, -80);
-    sleep(7);
+    if (BP.get_sensor(PORT_1, Light1) == 0) {
+        while (Light1.reflected > 2600) {
+            usleep(1000);
+        }
+    }
     resetMotor();
 }
 
 
 void turnRight() {
+    sensor_light_t Light1;
     fwd(-20, -20);
     sleep(1);
     resetMotor();
     sleep(0.5);
     fwd(-80, 40);
-    sleep(7);
+    if (BP.get_sensor(PORT_1, Light1) == 0) {
+        while (Light1.reflected > 2600) {
+            usleep(1000);
+        }
+    }
     resetMotor();
 }
 
