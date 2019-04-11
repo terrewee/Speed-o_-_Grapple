@@ -317,9 +317,9 @@ void turnLeft() {
     sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(40, -80);
+    fwd(20, -80);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
-        while (Light1.reflected > 2600) {
+        while (Light1.reflected < 2800) {
             usleep(1000);
         }
     }
@@ -333,9 +333,9 @@ void turnRight() {
     sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(-80, 40);
+    fwd(-80, 20);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
-        while (Light1.reflected > 2600) {
+        while (Light1.reflected < 2800) {
             usleep(1000);
         }
     }
@@ -349,7 +349,7 @@ int moveForward() {
   sensor_color_t Color3;
 
   fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
-  sleep(0.5);
+  sleep(1);
 
   int offset = 45;
   int Tp = 15;
