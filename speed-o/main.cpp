@@ -43,7 +43,7 @@ void exit_signal_handler(int signo){
   }
 }
 
-void setSensors(){
+void checkSensors(){
   BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
   BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
   BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
@@ -680,7 +680,7 @@ int main(){
   for (int i = 0; i < 5; ++i){
     cout << ".";
     if (i == 3){
-      setSensors();
+      checkSensors();
     }
     sleep(1);
   }
@@ -754,7 +754,7 @@ int main(){
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
     }
-
+	}
 	//moveForward();
 	cout << "exit(0)";
 	return 0;
