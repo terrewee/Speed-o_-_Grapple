@@ -911,16 +911,25 @@ int main(){
 				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
-				//communicate(followedRoute);
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
+				iClient(followedRoute);
 			case 5:				
-				getCoordinates(GP, grid);
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				followedRoute = manualControl(GP);
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
+				iClient(message);
+			case 6:
+				// testFunctie(GP, grid);
+				resetCurrentLocation(GP);
+				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
+				cout << "followed route" << endl;
+				driveBack(followedRoute, GP);
+				resetCurrentLocation(GP);
+				strcpy(message, followedRoute.c_str());
+				iClient(message);
     }
 	}
 	//moveForward();
