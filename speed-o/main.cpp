@@ -16,6 +16,7 @@ using namespace std;
 BrickPi3 BP;
 void exit_signal_handler(int signo);
 
+bool running = true;
 int crossroad;
 
 void setSensors(){
@@ -30,7 +31,7 @@ void crossroaddetectie()
 	sensor_color_t      Color2;
 	sensor_color_t      Color4;
 	::crossroad = 0;
-	while (true)
+	while (::running)
 	{
 		if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
 		{
@@ -137,11 +138,11 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			/*if(stopVoorObject() == true)
+			if(stopVoorObject() == true)
 			{
 				resetMotors();
 				sleep(1);
-			}*/
+			}
 			moveForward(lspd,rspd);
 			lastError = error;
 			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
@@ -152,13 +153,13 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
     BP.reset_all();    // Reset everything so there are no run-away motors
+	::running = false;
     exit(-2);
   }
 }
 
 int main()
 {
-	setSensors();
 	signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
 	BP.detect();
 	BP.reset_all();
@@ -177,7 +178,5 @@ int main()
 
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 	BP.reset_all();
-
-	char richting;
 }
 
