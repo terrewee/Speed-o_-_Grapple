@@ -249,11 +249,6 @@ void followLine(int aantalKeerTeGaan){
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			if(stopVoorObject() == true){
-				resetMotors();
-				sleep(1);
-			}
-
 			if(::crossroad == aantalKeerTeGaan - 1){
 				lspd = lspd / 2;
 				rspd = rspd / 2;
