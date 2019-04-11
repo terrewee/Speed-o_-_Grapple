@@ -83,12 +83,15 @@ void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_C,-rspd);
 }
 
-void draaiRechts()
-{
+void draaiRechts(){
 	sensor_light_t Light3;
-	while(Light3.reflected < 2300)
-	{
-		moveForward(20, 5);
+	while(true){
+        if(BP.get_sensor(PORT_3, Light3) == 0){
+            if(Light3.reflected < 2300){
+                break;
+            }
+            moveForward(20, 5);
+        }
 	}
 	resetMotors();
 }
@@ -190,7 +193,7 @@ int main()
 	thread kruispunt (crossroaddetectie);
 
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
-//	draaiLinks();
+	draaiRechts();
 	BP.reset_all();
 }
 
