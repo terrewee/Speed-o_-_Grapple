@@ -41,6 +41,7 @@ void exit_signal_handler(int signo){
   }
 }
 
+
 //------------------------------------------CONNECTION-----------------------------------------------
 
 int ComPortNr = 6969;         //Port number for communication
@@ -705,7 +706,6 @@ int main(){
   }
   cout << endl << "Initialized" << endl;
 
-
 	//Reset the encoders
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
@@ -721,28 +721,7 @@ int main(){
 	//Use the encoder value from motor A to control motors B, C, and D
 	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
 	BP.set_motor_dps(PORT_C, EncoderA);
-	BP.set_motor_position(PORT_D, EncoderA);
-	
-	gridPoints GP;
-	GP.direction = 'n';
-	range obstakel;
-	vector<vector<bool>> grid = getGrid(GP);
-	string followedRoute;
-	bool destinationArrived = false;
-
-	getCoordinates(GP, grid);
-	moveToHomepoint(GP);
-	resetCurrentLocation(GP);
-
-	string NOSWList = manualControl(GP);
-
-	cout << NOSWList << " ";
-		 
-	followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
-	cout << "followed route" << endl;
-	//communicate(followedRoute);
-	driveBack(followedRoute, GP);
-	resetCurrentLocation(GP);
+	BP.set_motor_position(PORT_D, EncoderA);	
 	
 	int uChoice;
 	bool running = 1;
@@ -752,9 +731,14 @@ int main(){
     cout << "1: Send message" << endl;
     cout << "2: Set communication details" << endl;
     cout << "3: Check sensor" << endl;
+		cout << "4: Auto path." << endl;
+		cout << "5: Manual pathing." << endl;
 
     cin >> uChoice;
     switch(uChoice) {
+			case 0:
+				running = 0;
+				break;
       case 1:
         char message[256];
         cout << "Message: " << endl;
@@ -767,9 +751,18 @@ int main(){
       case 3:
         checkSensor();
         break;
-			case 0:
-				running = 0;
-				break;
+			case 4:
+				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
+				cout << "followed route" << endl;
+				//communicate(followedRoute);
+				driveBack(followedRoute, GP);
+				resetCurrentLocation(GP);
+			case 5:
+				getCoordinates(GP, grid);
+				moveToHomepoint(GP);
+				resetCurrentLocation(GP);
+				string NOSWList = manualControl(GP);
+				cout << NOSWList << " ";
     }
 
 	//moveForward();
