@@ -718,6 +718,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	cout << endl << "prevCoordinates:" << endl;
 	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
 	cout << endl << endl;
+
 }
 
 
@@ -790,6 +791,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 		}
 		
 	}
+	resetMotors();
 }
 
 void dockScout(gridPoints & GP){
