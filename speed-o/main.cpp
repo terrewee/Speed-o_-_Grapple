@@ -210,9 +210,13 @@ int main()
 
 	thread kruispunt (crossroaddetectie);
 
- 	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
+ 	followLine(3);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
+ 	cout << "Done with first follow" << endl
  	::crossroad = 0;
 	draaiRechts();
+	cout << "Done with draai" << endl;
+	followLine(2);
+	cout << "Done with second follow" << endl;
 	sleep(1);
 	BP.reset_all();
 	::running = false;
