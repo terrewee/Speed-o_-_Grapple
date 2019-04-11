@@ -193,9 +193,9 @@ int main()
 	thread kruispunt (crossroaddetectie);
 
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
-	draaiRechts();
+	//draaiRechts();
 	BP.reset_all();
 
-	kruispunt.join();
+	//kruispunt.join();
 }
 
