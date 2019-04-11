@@ -126,7 +126,6 @@ void followLine(int aantalKeerTeGaan)
 			if(stopVoorObject() == true)
 			{
 				resetMotors();
-				break;
 			}
 			if(::crossroad == aantalKeerTeGaan)
 			{
