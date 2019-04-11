@@ -680,7 +680,7 @@ int main(){
   for (int i = 0; i < 5; ++i){
     cout << ".";
     if (i == 3){
-      checkSensors();
+      checkSensor();
     }
     sleep(1);
   }
