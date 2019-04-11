@@ -18,32 +18,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/../../grapple/main.cpp">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="663">
-                    <caret line="432" selection-start-line="373" selection-end-line="432" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="476" column="140" selection-start-line="476" selection-start-column="140" selection-end-line="476" selection-end-column="140" />
+            <state relative-caret-position="117">
+              <caret line="272" column="5" lean-forward="true" selection-start-line="272" selection-start-column="5" selection-end-line="272" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -126,7 +107,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19139000" />
+    <option name="totallyTimeSpent" value="20315000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -176,8 +157,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="476" column="140" selection-start-line="476" selection-start-column="140" selection-end-line="476" selection-end-column="140" />
+        <state relative-caret-position="117">
+          <caret line="272" column="5" lean-forward="true" selection-start-line="272" selection-start-column="5" selection-end-line="272" selection-end-column="5" />
         </state>
       </provider>
     </entry>
