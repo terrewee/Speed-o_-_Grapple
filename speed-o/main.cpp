@@ -446,7 +446,7 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinatesVector, vector<int> queue, vector<vector<bool>> &grid){
 	
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
-	// cout << gridPoint.x << " " << gridPoint.y << " ; ";	
+	cout << gridPoint.x << " " << gridPoint.y << " ; ";	
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
 	optionA.y = gridPoint.y;
@@ -512,7 +512,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	vector<coordinates> route = {};
 	vector<int> queue = {};
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
-	unsigned int i = 0;
+	unsigned int i = 1;
 	
 	cout << "test2" << endl;
 
