@@ -748,6 +748,7 @@ int main(){
         checkSensor();
         break;
 			case 4:
+				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
 				//communicate(followedRoute);
