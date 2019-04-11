@@ -465,15 +465,15 @@ void navigation(vector<char> route) {
             sleep(1);
             if
                     ((route[i] == 'n' && route[i+1] == 'w') ||
-                     (route[i] == 'o' && route[i+1] == 'n') ||
-                     (route[i] == 's' && route[i+1] == 'o') ||
+                     (route[i] == 'e' && route[i+1] == 'n') ||
+                     (route[i] == 's' && route[i+1] == 'e') ||
                      (route[i] == 'w' && route[i+1] == 's')) {
                 drive('l');
                 drive('f');
             }
             else if
-                    ((route[i] == 'n' && route[i+1] == 'o') ||
-                     (route[i] == 'o' && route[i+1] == 's') ||
+                    ((route[i] == 'n' && route[i+1] == 'e') ||
+                     (route[i] == 'e' && route[i+1] == 's') ||
                      (route[i] == 's' && route[i+1] == 'w') ||
                      (route[i] == 'w' && route[i+1] == 'n')) {
                 drive('r');
@@ -481,9 +481,9 @@ void navigation(vector<char> route) {
             }
             else if
                     ((route[i] == 'n' && route[i+1] == 's') ||
-                     (route[i] == 'o' && route[i+1] == 'w') ||
+                     (route[i] == 'e' && route[i+1] == 'w') ||
                      (route[i] == 's' && route[i+1] == 'n') ||
-                     (route[i] == 'w' && route[i+1] == 'o')) {
+                     (route[i] == 'w' && route[i+1] == 'e')) {
                 drive('b');
                 drive('f');
             } else {  // als geen van de opties gepakt word gebeurt er iets abnormaals
