@@ -391,6 +391,18 @@ void turnRight(gridPoints & GP){
 
 //-------line intructions---------
 
+bool stopVoorObject(){
+	sensor_ultrasonic_t Ultrasonic1;
+	if(BP.get_sensor(PORT_1, Ultrasonic1) == 0)
+	{
+		if(Ultrasonic1.cm <= 20)
+		{
+			return true;
+		}
+		return false;
+	}
+}
+
 void followLine(int aantalKeerTeGaan){ // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
         sensor_light_t Light3;
 
@@ -886,23 +898,6 @@ void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
 		cout << endl;
 	}
 }
-
-
-
-
-
-bool stopVoorObject(){
-	sensor_ultrasonic_t Ultrasonic1;
-	if(BP.get_sensor(PORT_1, Ultrasonic1) == 0)
-	{
-		if(Ultrasonic1.cm <= 20)
-		{
-			return true;
-		}
-		return false;
-	}
-}
-
 
 //------------------------------------------MAIN-----------------------------------------------
 
