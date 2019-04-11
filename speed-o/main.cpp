@@ -123,12 +123,6 @@ void followLine(int aantalKeerTeGaan)
         {
 		while(true)
 		{
-			if(::crossroad == aantalKeerTeGaan)
-			{
-				resetMotors();
-				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
-				break;
-			}
 			lightvalue = Light3.reflected;
 			error = ((lightvalue-1600)/50)+30 - offset;
 
@@ -148,6 +142,12 @@ void followLine(int aantalKeerTeGaan)
 				moveForward(lspd,rspd);
 			}
 			lastError = error;
+			if(::crossroad == aantalKeerTeGaan)
+			{
+				resetMotors();
+				// gebruik draaiLinks en/of draaiRechts voor 90 graden draaien
+				break;
+			}
 		}
         }
 }
@@ -175,12 +175,9 @@ int main()
   	}
 	cout << endl << "Initialized" << endl;
 
-	sensor_light_t      Light3;
-
-
 	thread kruispunt (crossroaddetectie);
 
- 	followLine(2);	// 2 voor testje
+ 	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 	BP.reset_all();
 }
 
