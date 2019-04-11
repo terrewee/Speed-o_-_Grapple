@@ -530,13 +530,13 @@ int main() {
         cout << "|==================================================|" << endl;
 
         switch(uChoice) {
-            case 1: // wacht voor een message en print deze
+            case 1:{ // wacht voor een message en print deze
                 vector<char> testV = iServer();
                 for (char character : testV){
                   cout << character << ", ";
                 }
                 cout << endl << "done" << endl;
-                break;
+                break;}
             case 2: // stel portnummer in
                 SetComm();
                 break;
@@ -547,9 +547,9 @@ int main() {
             case 4: // Check the sensors
                 checkSensor();
                 break;
-            case 0: // functie om programma te stoppen
+            case 0:{ // functie om programma te stoppen
                 ::running = false;
-                break;
+                break;}
         }
     }
 }
