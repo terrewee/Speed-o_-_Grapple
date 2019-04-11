@@ -141,6 +141,7 @@ void followLine(int aantalKeerTeGaan)
 			if(stopVoorObject() == true)
 			{
 				resetMotors();
+				sleep(1);
 			}
 			else
 			{
@@ -180,5 +181,6 @@ int main()
 	thread kruispunt (crossroaddetectie);
 
  	followLine(2);	// 2 voor testje
+	BP.reset_all();
 }
 
