@@ -382,10 +382,7 @@ void navigation(vector<char> route) {
 
     //***************************************************************************************************************
 
-
-
-    //***************************************************************************************************************
-                            // functie voor object zien en vooral oppakken
+    // functies voor object oppakken
     brengNaarKantelPunt();
     klauwOpen();
     gelijdelijkDownLoop();
@@ -394,7 +391,6 @@ void navigation(vector<char> route) {
     klauwOmhoog();
     resetMotor();
 
-    //***************************************************************************************************************
     cout << "Picked up ze object, time to head back" << endl;
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
@@ -436,16 +432,14 @@ void navigation(vector<char> route) {
     resetMotor();
     cout << "Arrived home, dropping the object like its hot" << endl;
     sleep(1);
-    //***************************************************************************************************************
-                                                 //fucntie voor object droppen
+
+    //fucnties voor object droppen
     brengNaarKantelPunt();
     gelijdelijkDownLoop();
     klauwOpen();
     klauwOmhoog();
     klauwDicht();
     resetMotor();
-
-    //***************************************************************************************************************
 
     drive('b'); // orienteer jezelf goed voor de volgende missie
     resetMotor();
@@ -516,8 +510,8 @@ int main() {
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo) {
     if(signo == SIGINT){
-        resetMotor();
         ::running = false;
+        resetMotor();
         BP.reset_all(); // Reset everything so there are no run-away motors
         exit(-2);
     }
