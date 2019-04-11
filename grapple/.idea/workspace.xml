@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ced1eb3-5c4c-4434-a984-654a7b1da6ae" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -43,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="797">
-              <caret line="553" column="26" selection-start-line="553" selection-start-column="26" selection-end-line="553" selection-end-column="26" />
+            <state relative-caret-position="236">
+              <caret line="476" column="140" selection-start-line="476" selection-start-column="140" selection-end-line="476" selection-end-column="140" />
             </state>
           </provider>
         </entry>
@@ -122,12 +121,12 @@
       <option name="presentableId" value="Default" />
       <updated>1554889151450</updated>
       <workItem from="1554889152765" duration="18608000" />
-      <workItem from="1554982645298" duration="241000" />
+      <workItem from="1554982645298" duration="531000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18849000" />
+    <option name="totallyTimeSpent" value="19139000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -177,8 +176,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="797">
-          <caret line="553" column="26" selection-start-line="553" selection-start-column="26" selection-end-line="553" selection-end-column="26" />
+        <state relative-caret-position="236">
+          <caret line="476" column="140" selection-start-line="476" selection-start-column="140" selection-end-line="476" selection-end-column="140" />
         </state>
       </provider>
     </entry>
