@@ -19,7 +19,7 @@ BrickPi3 BP;
 
 bool battery = true;          //battery level function
 bool running = 1;
-int crossroad;
+int crossroad = 0;
 
 
 void batteryLevel(){
@@ -392,8 +392,7 @@ void followLine(int aantalKeerTeGaan){
 
     int lspd = 0;
     int rspd = 0;
-	while(::crossroad <= aantalKeerTeGaan)
-	{
+	while(::crossroad <= aantalKeerTeGaan){
 		if(BP.get_sensor(PORT_3, Light3) == 0){
             cout << "crossroad: " << ::crossroad << endl;
             //if(::crossroad == aantalKeerTeGaan - 1){
