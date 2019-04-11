@@ -239,6 +239,58 @@ vector<char> iServer() {
     return route;  //returned een vector<char> met de route (wss naar de Navigation() functie)
 }
 
+
+//---------------------------------------COLOR_RECOGNITION---------------------------------------------
+
+int whatIsInAColor () {
+    int color;
+    int colorchoice = -1;
+    cout << "Welke kleur heeft het object" << endl;
+    cout << "1 : Rood " << endl;
+    cout << "2 : Blauw " << endl;
+    cout << "3 : Groen " << endl;
+    cout << "4 : Zwart " << endl;
+    cout << "5 : Wit " << endl;
+    cin >> color;
+    cout << color;
+    if (color == 1)          { colorchoice = 5;}
+    else if (color == 2)     { colorchoice = 2;}
+    else if (color == 3)     { colorchoice = 3;}
+    else if (color == 4)     { colorchoice = 1;}
+    else if (color == 5)     { colorchoice = 6;}
+    return colorchoice;
+}
+
+
+bool colorNotCorrect() {
+    string answer;
+    cout << "Dit object heeft niet de door u opgegeven kleur. Wilt u het object alsnog oppakken?" << endl;
+    cout << "Ja of Nee: ";
+    cin >> answer;
+    if (answer == "Ja" ){
+        cout << "true" << endl;
+        return true;
+    }
+    else if (answer == "nee") {
+        cout << "false" << endl;
+        return false;
+    }
+}
+
+bool color_object (int colorchoice){
+    sensor_color_t Color2;
+    while(colorchoice == -1){
+        cout << "Er is geen kleur gegeven." << endl;
+        colorchoice = whatIsInAColor();
+    }
+    if (BP.get_sensor(PORT_2, Color2) == 0) {
+        cout << Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
+        if (Color1.color == colorchoice) { cout << return true << endl;}
+        else if (Color1.color != colorchoice) { return colorNotCorrect();}
+    }
+}
+
+
 //---------------------------------------DRIVING---------------------------------------------
 
 void fwd(const int lspd, const int rspd) {
@@ -337,52 +389,6 @@ void drive(char direction) {
     }
 }
 
-int whatIsInAColor () {
-  int color;
-  int colorchoice = -1;
-  cout << "Welke kleur heeft het object" << endl;
-  cout << "1 : Rood " << endl;
-  cout << "2 : Blauw " << endl;
-  cout << "3 : Groen " << endl;
-  cout << "4 : Zwart " << endl;
-  cout << "5 : Wit " << endl;
-  cin >> color;
-  cout << color;
-  if (color == 1)          { colorchoice = 5;}
-  else if (color == 2)     { colorchoice = 2;}
-  else if (color == 3)     { colorchoice = 3;}
-  else if (color == 4)     { colorchoice = 1;}
-  else if (color == 5)     { colorchoice = 6;}
-  return colorchoice;
-}
-
-
-bool colorNotCorrect() {
-  string answer;
-  cout << "Dit object heeft niet de door u opgegeven kleur. Wilt u het object alsnog oppakken?" << endl;
-  cout << "Ja of Nee: ";
-  cin >> answer;
-  if (answer == "Ja" ){
-      cout << "true" << endl;
-      return true;
-  }
-  else if (answer == "nee") {
-      cout << "false" << endl;
-      return false;
-  }
-}
-
-bool color_object (int colorchoice){
-  while(colorchoice == -1){
-    cout << "Er is geen kleur gegeven." << endl;
-    colorchoice = whatIsInAColor();
-  }
-  if (BP.get_sensor(PORT_2, Color1) == 0) {
-    cout << Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
-    if (Color1.color == colorchoice) { cout << return true << endl;}
-    else if (Color1.color != colorchoice) { return colorNotCorrect();}
-  }
-}
 
 void navigation(vector<char> route) {
     bool gotAObject = true;
@@ -499,6 +505,7 @@ void navigation(vector<char> route) {
 
 }
 
+
 //---------------------------------------MAIN---------------------------------------------
 
 int main() {
@@ -507,7 +514,7 @@ int main() {
     BP.reset_all();
     for (int i = 0; i < 5; ++i) {
       cout << ".";
-      if (i == 3) {
+      if (i == 1) {
         setSensors();
       }
       sleep(1);
@@ -522,18 +529,17 @@ int main() {
 
     int uChoice;
 
-    while (::running) {
+    while (running) {
         cout << "Kies een van deze functies: " << endl;
         cout << "0: Exit" << endl;                                              // functie om programma te stoppen
         cout << "1: Receive message" << endl;                                   // wacht voor een message en print deze
         cout << "2: Set communication details" << endl;                         // stel portnummer in
-        cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten,
-                                                                                // die worden daarna gebruikt om het opject op te pakken en terug te rijden
+        cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
         cout << "4: Check sensor" << endl;
         cout << "Uw keuze is: ";
 
         cin >> uChoice;
-        cout << "|==================================================|" << endl;
+        cout << endl << "|==================================================|" << endl << endl;
 
         switch(uChoice) {
             case 1:{ // wacht voor een message en print deze
