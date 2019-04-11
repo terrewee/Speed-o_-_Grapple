@@ -197,6 +197,7 @@ void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	//Set target coordinates
 	GP.targetCoordinates.x = GP.homeCoordinates.x + GP.targetRelCoordinates.x;
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
+	cout << "getcoord " << GP.homeCoordinates.x << "," << GP.homeCoordinates.y << endl;
 }
 
 //--------movement---------
@@ -324,6 +325,7 @@ void followLine(int aantalKeerTeGaan){
 void resetCurrentLocation(gridPoints &GP){
   GP.currentLocation.x = GP.homeCoordinates.x;
   GP.currentLocation.y = GP.homeCoordinates.y;
+	cout << "reset " << GP.homeCoordinates.x << "," << GP.homeCoordinates.y << endl;
 }
 
 //Updates GP.currentCoordinates according to distance moved and GP.direction.
