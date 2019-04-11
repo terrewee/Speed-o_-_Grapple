@@ -513,7 +513,11 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	vector<int> queue = {};
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
+	
 	cout << "test2" << endl;
+
+
+
 	while(!targetFound && i < (grid.size() * grid[0].size()) -1){
 		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
 		unsigned int queueSize = queue.size();
@@ -524,7 +528,10 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 			}
 		}
 		i++;
+		cout << "test3" << endl;
 	}
+
+
 
 	getRoute(route, prevCoordinatesVector, GP, grid);
 	cout << "route:" << endl;
