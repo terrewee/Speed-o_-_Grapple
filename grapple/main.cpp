@@ -312,21 +312,23 @@ void backUpFromObject(){
 
 void turnLeft() {
     fwd(-20, -20);
-    sleep(1);
+    sleep(3);
     resetMotor();
     sleep(0.5);
-    fwd(20, -60);
+    fwd(30, 10);
     sleep(7);
+    resetMotor();
 }
 
 
 void turnRight() {
     fwd(-20, -20);
-    sleep(1);
+    sleep(3);
     resetMotor();
     sleep(0.5);
-    fwd(-60, 20);
+    fwd(10, 30);
     sleep(7);
+    resetMotor();
 }
 
 
@@ -364,20 +366,10 @@ int moveForward() {
     error = ((lightvalue - 1850) / 55) + 30 - offset;
 
     Turn = error * Kp;
-//
-//    // als de Turnsnelheid meer dan 2 keer zo groot word dan de normale rijsnelheid,
-//    // gaat de robot alleen foccussen op draaien, zonder nog te rijden
-//    if (Turn > Tp){
-//      fwd(Tp, -1 * Tp);
-//    }
-//    else if (Turn < -1 * Tp){
-//      fwd(-1 * Tp, Tp);
-//    }
-//    else{
+
       lspd = Tp + Turn;
       rspd = Tp - Turn;
       fwd(lspd, rspd);
-//    }
   }
 }
 
@@ -442,6 +434,7 @@ void navigation(vector<char> route) {
         }
     }
 
+    resetMotor();
     cout << "Arrived at destination" << endl;
     sleep(1);
 
