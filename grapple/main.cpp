@@ -573,7 +573,7 @@ int main() {
                 checkSensor();
                 break;
             case 5: //test pls dont delete this time duur :D
-            {   /*vector<char> vec = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'};*/
+            {   vector<char> vec/* = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'}*/;
                 navigation(vec);
                 break;
             }
