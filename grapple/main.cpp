@@ -360,10 +360,14 @@ int whatIsInAColor () {
 bool colorNotCorrect() {
   string answer;
   cout << "Dit object heeft niet de door u opgegeven kleur. Wilt u het object alsnog oppakken?" << endl;
-  cout << "Ja of Nee" << endl;
+  cout << "Ja of Nee: ";
   cin >> answer;
-  if (answer == "Ja" )        {cout << return true << endl;}
-  else if (answer == "nee")   { cout << return false << endl;}
+  if (answer == "Ja" ){
+      cout << return true << endl;
+  }
+  else if (answer == "nee") {
+      cout << return false << endl;
+  }
 }
 
 bool color_object (int colorchoice){
@@ -372,9 +376,9 @@ bool color_object (int colorchoice){
     colorchoice = whatIsInAColor();
   }
   if (BP.get_sensor(PORT_2, ::Color1) == 0) {
-    cout << ::Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
-    if (::Color1.color == colorchoice) { cout << return true << endl;}
-    else if (::Color1.color != colorchoice) { return colorNotCorrect();}
+    cout << Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
+    if (Color1.color == colorchoice) { cout << return true << endl;}
+    else if (Color1.color != colorchoice) { return colorNotCorrect();}
   }
 }
 
