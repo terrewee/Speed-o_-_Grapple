@@ -31,7 +31,7 @@ void crossroaddetectie()
 	sensor_color_t      Color2;
 	sensor_color_t      Color4;
 	::crossroad = 0;
-	while (::running)
+	while (true)
 	{
 		if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
 		{
