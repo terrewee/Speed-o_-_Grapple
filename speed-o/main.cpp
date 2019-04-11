@@ -460,7 +460,7 @@ void updateLocation(gridPoints & GP, int distance){
 
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
-  followLine(distance);
+  //followLine(distance);
   updateLocation(GP, distance);
   cout << distance << endl;
 }
