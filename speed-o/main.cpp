@@ -178,21 +178,17 @@ void iClient(char message[256]){
   close(socketFD);
 }
 
-	void crossroaddetectie(){
-		sensor_color_t      Color2;
-		sensor_color_t      Color4;
-		::crossroad = 0;
-		while (::running){
-			if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
-			{
-				if (Color2.color == 1 || Color4.color == 1)
-				{
-					usleep(200000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
-					::crossroad++;	// increment globale variabele crossroads gezien
-				}
-			}
-		//sleep(0.5);
-	}
+bool crossroaddetectie2(){
+  sensor_color_t      Color2;
+  sensor_color_t      Color4;
+  while (::running){
+    if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0)){
+    	if (Color2.color == 1 || Color4.color == 1){
+        usleep(200000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
+        return true;
+      }
+    }
+  }
 }
 
 struct routeCount {
@@ -392,17 +388,11 @@ void followLine(int aantalKeerTeGaan){
 
     int lspd = 0;
     int rspd = 0;
-	// while(::crossroad <= aantalKeerTeGaan){	
-		if(BP.get_sensor(PORT_3, Light3) == 0){
-            // cout << "crossroad: " << ::crossroad << endl;
-            //if(::crossroad == aantalKeerTeGaan - 1){
-                //Tp = 10;
-                //Kp = 1;
-            //}
-            //else if(::crossroad == aantalKeerTeGaan){
-                //resetMotors();
-                //break;
-            //}
+    while(true){    
+        bool statusCrossroad = crossroaddetectie2();
+        if( statusCrossroad == false){
+            if(BP.get_sensor(PORT_3, Light3) == 0){
+            
 
             lightvalue = Light3.reflected;
             error = ((lightvalue-1700)/40)+30 - offset;
@@ -417,20 +407,18 @@ void followLine(int aantalKeerTeGaan){
                 resetMotors();
                 sleep(1);
             }
-
-            // if(::crossroad == aantalKeerTeGaan - 1){
-            //     lspd = lspd / 2;
-            //     rspd = rspd / 2;
-            // }
             
             moveForward(lspd,rspd);
             lastError = error;
             // cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
-						sleep(1);
-	    }
-    
-    resetMotors();
-    //break;
+                        sleep(1);
+            }
+        }
+        else{
+            break;
+            //ga naar kruispunt keuze.
+        }
+		}
 }
 
 //-------path instructions--------
