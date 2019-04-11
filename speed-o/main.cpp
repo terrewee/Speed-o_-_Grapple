@@ -41,6 +41,8 @@ struct routeCount {
 };
 
 range obstakel;
+int crossroad;
+
 void exit_signal_handler(int signo);
 
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
@@ -151,11 +153,9 @@ void turnMotorPowerDown(int &motorPower) {
 	}
 }
 
-void moveForward(){
-	int motorPower = 10;
-	turnMotorPowerUp(motorPower);
-	sleep(1);
-	turnMotorPowerDown(motorPower);
+void moveForward(int lspd, int rspd){
+	BP.set_motor_power(PORT_B,-lspd);
+	BP.set_motor_power(PORT_C,-rspd);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -172,6 +172,11 @@ void turnLeft(gridPoints & GP){
   else{
     GP.direction = 'n';
   }
+
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, 116);
+	BP.set_motor_position_relative(PORT_C, -116);
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
@@ -187,6 +192,57 @@ void turnRight(gridPoints & GP){
   }
   else{
     GP.direction = 's';
+  }
+
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, -116);
+	BP.set_motor_position_relative(PORT_C, 116);
+}
+
+void resetMotors(){
+	BP.set_motor_power(PORT_B, 0);
+	BP.set_motor_power(PORT_C, 0);
+}
+
+void followLine(int aantalKeerTeGaan){
+	sensor_light_t Light3;
+
+  int offset = 45;
+  int Tp = 40;
+  int Kp = 5;
+
+  int lastError = 0;
+  int Turn = 0;
+  int lightvalue = 0;
+  int error = 0;
+
+  int lspd = 0;
+  int rspd = 0;
+
+  if (BP.get_sensor(PORT_3, Light3) == 0){
+		while(true)
+		{
+			cout << "Kruispunt: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan)
+			{
+				resetMotors();
+				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
+				break;
+			}
+			lightvalue = Light3.reflected;
+			error = ((lightvalue-1600)/50)+30 - offset;
+
+			Turn = error * Kp;
+			Turn = Turn/3;
+
+			lspd = Tp + Turn;
+			rspd = Tp - Turn;
+
+			moveForward(lspd,rspd);
+
+			lastError = error;
+		}
   }
 }
 
@@ -225,13 +281,7 @@ routeCount initRouteCount(const string & myRoute) {
 
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints & GP, unsigned int distance){
-  unsigned int count = 0;
-
-  while(count < distance){
-    moveForward();
-    count++;
-  }
-
+  followLine(distance);
   updateLocation(GP, distance);
 }
 
@@ -478,7 +528,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			searchPath(directions, GP, grid);
 			obstructed = false;
 		}
-
+		
 		for(int i = 0; i < directions.size(); i++){
 			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
