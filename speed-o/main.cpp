@@ -31,7 +31,7 @@ void crossroaddetectie()
 	sensor_color_t      Color2;
 	sensor_color_t      Color4;
 	::crossroad = 0;
-	while (true)
+	while (::running)
 	{
 		if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
 		{
@@ -168,8 +168,8 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-    BP.reset_all();    // Reset everything so there are no run-away motors
 	::running = false;
+    BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
 }
@@ -193,7 +193,8 @@ int main()
 	thread kruispunt (crossroaddetectie);
 
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
-	//draaiRechts();
+	draaiRechts();
+	sleep(1);
 	BP.reset_all();
 
 	//kruispunt.join();
