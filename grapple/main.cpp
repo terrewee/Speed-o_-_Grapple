@@ -354,7 +354,7 @@ int moveForward() {
     if (BP.get_sensor(PORT_1, Light1) == 0) {
       lightvalue = Light1.reflected; // neem waarde van zwartwit sensor
       if (BP.get_sensor(PORT_3, Color3) == 0) {
-        if ((Color3.reflected_red > 350) && (lightvalue > 2700)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+        if ((Color3.reflected_red < 300) && (lightvalue > 2700)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
           cout << "hier is een kruispunt" << endl;
           return 0;
         }
