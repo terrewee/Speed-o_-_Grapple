@@ -374,31 +374,35 @@ bool stopVoorObject(){
 	}
 }
 
-void followLine(int aantalKeerTeGaan){ // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
-        sensor_light_t Light3;
+//Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
+void followLine(int aantalKeerTeGaan){
+    sensor_light_t Light3;
 
-        int offset = 45;
-        int Tp = 25;
-        int Kp = 2;
+    int offset = 45;
+    int Tp = 25;
+    int Kp = 2;
 
-        int lastError = 0;
-        int Turn = 0;
-        int lightvalue = 0;
-        int error = 0;
+    int lastError = 0;
+    int Turn = 0;
+    int lightvalue = 0;
+    int error = 0;
 
-        int lspd = 0;
-        int rspd = 0;
-	while(true){
+    int lspd = 0;
+    int rspd = 0;
+	while(true)
+	{
 		if(BP.get_sensor(PORT_3, Light3) == 0){
 			cout << "crossroad: " << ::crossroad << endl;
 			if(::crossroad == aantalKeerTeGaan - 1){
-				// Tp = 10;
-				// Kp = 1;
+				//Tp = 10;
+				//Kp = 1;
 			}
+
 			else if(::crossroad == aantalKeerTeGaan){
 				resetMotors();
 				break;
 			}
+
 			lightvalue = Light3.reflected;
 			error = ((lightvalue-1700)/40)+30 - offset;
 
@@ -408,19 +412,16 @@ void followLine(int aantalKeerTeGaan){ // aantalKeerTeGaan = aantal keer dat de 
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			if(stopVoorObject() == true){
-				resetMotors();
-				sleep(1);
-			}
 			if(::crossroad == aantalKeerTeGaan - 1){
 				lspd = lspd / 2;
 				rspd = rspd / 2;
 			}
+			
 			moveForward(lspd,rspd);
 			lastError = error;
 			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
 		}
-  }
+   }
 }
 
 //-------path instructions--------
@@ -450,13 +451,9 @@ void updateLocation(gridPoints & GP, int distance){
 
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
-  unsigned int count = 0;
-  while(count < distance){
-    moveForward(10, 10);
-    count++;
-  }
+  followLine(distance);
   updateLocation(GP, distance);
-	cout << distance << endl;
+  cout << distance << endl;
 }
 
 void moveToHomepoint(gridPoints GP){
