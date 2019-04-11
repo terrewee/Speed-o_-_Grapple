@@ -388,8 +388,6 @@ void followLine(int aantalKeerTeGaan){
   }
 }
 
-
-
 //-------path instructions--------
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
@@ -507,7 +505,6 @@ string manualControl(gridPoints &GP){
 	return message;
 }
 
-
 //------------------------------------------GRID-----------------------------------------------
 
 routeCount initRouteCount(const string & myRoute) {
@@ -532,7 +529,6 @@ void move(char direction, gridPoints & GP){
 coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & grid){
 	unsigned int columnAmount = grid.size();
 	unsigned int rowAmount = grid[0].size();
-	//unsigned int gridsize = rowAmount * columnAmount;
 	coordinates gridPointCoordinates;
 
 	if(number < rowAmount){
@@ -549,7 +545,6 @@ coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & 
 //Gets the number of a gridPoint from coordinates.
 int getGridPointNumber(coordinates & gridPoint, vector<vector<bool>> & grid){
 	unsigned int rowAmount = grid[0].size();
-	//unsigned int gridsize = rowAmount * columnAmount;
 	return gridPoint.x + (gridPoint.y * rowAmount);
 }
 
