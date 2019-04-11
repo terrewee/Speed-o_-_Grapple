@@ -43,7 +43,7 @@ void exit_signal_handler(int signo){
   }
 }
 
-void checkSensors(){
+void checkSensor(){
   BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
   BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
   BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
