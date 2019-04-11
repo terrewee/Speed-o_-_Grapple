@@ -445,9 +445,9 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 //Check bordering gridpoints and calls addToQueue if they are on grid.
 vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinatesVector, vector<int> queue, vector<vector<bool>> &grid){
 	
+	cout << gridPointNumber << endl;
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
 	cout << gridPoint.x << " " << gridPoint.y << " ; ";	
-	cout << gridPointNumber << endl;
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
 	optionA.y = gridPoint.y;
