@@ -312,7 +312,7 @@ void backUpFromObject(){
 
 void turnLeft() {
     fwd(-20, -20);
-    sleep(3);
+    sleep(2);
     resetMotor();
     sleep(0.5);
     fwd(30, 10);
@@ -323,7 +323,7 @@ void turnLeft() {
 
 void turnRight() {
     fwd(-20, -20);
-    sleep(3);
+    sleep(2);
     resetMotor();
     sleep(0.5);
     fwd(10, 30);
