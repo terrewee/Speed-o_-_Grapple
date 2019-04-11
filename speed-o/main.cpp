@@ -86,17 +86,25 @@ void moveForward(uint32_t lspd, uint32_t rspd){
 
 void draaiRechts(){
 	sensor_light_t Light3;
+	bool stillBlack = true;
 	while(true){
-		cout << "No line yet" << endl;
-        if(BP.get_sensor(PORT_3, Light3) == 0){
-            if(Light3.reflected < 2300){
-            	cout << "Gon break" << endl;
-                break;
-            }
-            cout << "Gon set 20, 5 " << endl;
-            moveForward(20, 5);
-        }
-        usleep(100000);
+		if (BP.get_sensor(PORT_3, Light3)) {
+			if (stillBlack) {
+				cout << "I havent seen grey yet." << endl;
+				if (Light3.reflected < 2375){
+					cout << "Finally off of black" << endl;
+					stillBlack = false;
+				}
+			} else {
+				cout << "I have seen grey." << endl;
+				if (Light3.reflected > 2425){
+					cout << "Black again" << endl;
+					break;
+				}
+			}
+			moveForward(20, 5);
+		}
+		usleep(100000);
 	}
 	cout << "Gon reset" << endl;
 	resetMotors();
