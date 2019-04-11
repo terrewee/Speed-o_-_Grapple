@@ -375,6 +375,7 @@ bool stopVoorObject(){
 
 //Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
 void followLine(int aantalKeerTeGaan){
+	cout << "entered followLine()" << endl;
     
     sensor_light_t Light3;
 
@@ -390,7 +391,8 @@ void followLine(int aantalKeerTeGaan){
     int lspd = 0;
     int rspd = 0;
     
-    while(true){    
+    while(true){
+				cout << "entered followLine() while loop" << endl;
         bool statusCrossroad = crossroaddetectie2();
         if( statusCrossroad == false){
             if(BP.get_sensor(PORT_3, Light3) == 0){
@@ -409,10 +411,12 @@ void followLine(int aantalKeerTeGaan){
             sleep(1);
         }
         else{
+						cout << "followLine() break;" << endl;
             break;
             //ga naar kruispunt keuze.
         }
     }
+		cout << "resetMotors" << endl;
     resetMotors();
     //break;
 }
@@ -445,9 +449,12 @@ void updateLocation(gridPoints & GP, int distance){
 
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
+	cout << "Pre-followLine()" << endl;
   followLine(distance);
+	cout << "Post-followLine()" << endl;
   updateLocation(GP, distance);
   cout << "moveForwardDistance: "<< distance << endl;
+	
 }
 
 void moveToHomepoint(gridPoints GP){
