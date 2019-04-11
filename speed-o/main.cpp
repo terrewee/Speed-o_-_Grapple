@@ -920,6 +920,8 @@ int main(){
 	bool destinationArrived = false;
 	getCoordinates(GP, grid);
 
+	threat kruispunt(crossroaddetectie);
+
   while(::running){
 
 		
@@ -960,13 +962,15 @@ int main(){
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
 				//iClient(followedRoute);
-			case 5:				
+				kruispunt.join();	
+			case 5:		
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				followedRoute = manualControl(GP);
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
 				iClient(message);
+				kruispunt.join();	
 			case 6:
 				// testFunctie(GP, grid);
 				resetCurrentLocation(GP);
