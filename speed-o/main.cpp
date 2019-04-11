@@ -963,6 +963,7 @@ int main(){
 				resetCurrentLocation(GP);
 				//iClient(followedRoute);
 				//kruispunt.join();	
+				break;
 			case 5:		
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
@@ -971,6 +972,7 @@ int main(){
 				cout << message << " ";
 				//iClient(message);
 				//kruispunt.join();	
+				break;
 			case 6:
 				// testFunctie(GP, grid);
 				resetCurrentLocation(GP);
@@ -980,6 +982,7 @@ int main(){
 				resetCurrentLocation(GP);
 				strcpy(message, followedRoute.c_str());
 				iClient(message);
+				break;
     }
 	}
 	//moveForward();
