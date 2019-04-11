@@ -147,7 +147,7 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
 	for (int i = 0; i < targetY + 5; i++) {
 		vector<bool> tempRow = {};
 		for (int j = 0; j < targetX + 5; j++) {
-			tempRow.push_back(1);
+			tempRow.push_back(true);
 		}
 		grid.push_back(tempRow);
 	}
@@ -169,7 +169,7 @@ vector<vector<bool>> getGrid(gridPoints & GP) {
 }
 
 //Sets all the coordinates for GP.homeCoordinates and GP.targetCoordinates based on GP.targetRelCoordinates.
-void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
+void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
 	//Set home coordinates
@@ -215,6 +215,7 @@ void turnMotorPowerDown(int &motorPower) {
 		motorPower -= 10;
 	}
 }
+
 void moveForward(gridPoints &GP){
 	int motorPower = 10;
 	turnMotorPowerUp(motorPower);
@@ -223,7 +224,7 @@ void moveForward(gridPoints &GP){
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
-void turnLeft(gridPoints &GP){
+void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
   }
@@ -236,10 +237,15 @@ void turnLeft(gridPoints &GP){
   else{
     GP.direction = 'n';
   }
+
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, 116);
+	BP.set_motor_position_relative(PORT_C, -116);
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
-void turnRight(gridPoints &GP){
+void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
   }
@@ -252,7 +258,60 @@ void turnRight(gridPoints &GP){
   else{
     GP.direction = 's';
   }
+
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, -116);
+	BP.set_motor_position_relative(PORT_C, 116);
 }
+
+void resetMotors(){
+	BP.set_motor_power(PORT_B, 0);
+	BP.set_motor_power(PORT_C, 0);
+}
+
+//-------line intructions---------
+
+void followLine(int aantalKeerTeGaan){
+	sensor_light_t Light3;
+
+  int offset = 45;
+  int Tp = 40;
+  int Kp = 5;
+
+  int lastError = 0;
+  int Turn = 0;
+  int lightvalue = 0;
+  int error = 0;
+
+  int lspd = 0;
+  int rspd = 0;
+
+  if (BP.get_sensor(PORT_3, Light3) == 0){
+		while(true){
+			cout << "Kruispunt: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan){
+				resetMotors();
+				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
+				break;
+			}
+			lightvalue = Light3.reflected;
+			error = ((lightvalue-1600)/50)+30 - offset;
+
+			Turn = error * Kp;
+			Turn = Turn/3;
+
+			lspd = Tp + Turn;
+			rspd = Tp - Turn;
+
+			moveForward(lspd,rspd);
+
+			lastError = error;
+		}
+  }
+}
+
+
 
 //-------path instructions--------
 
@@ -263,7 +322,7 @@ void resetCurrentLocation(gridPoints &GP){
 }
 
 //Updates GP.currentCoordinates according to distance moved and GP.direction.
-void updateLocation(gridPoints &GP, const unsigned int distance){
+void updateLocation(gridPoints & GP, int distance){
   if(GP.direction == 'n'){
     GP.currentLocation.y -= distance;
   }
@@ -288,8 +347,8 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
   updateLocation(GP, distance);
 }
 
-void moveToHomepoint(gridPoints &GP){
-	GP.direction = 'n';
+void moveToHomepoint(gridPoints GP){
+	GP.direction = 'n'
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
  	moveForwardDistance(GP, 1);
@@ -373,6 +432,19 @@ string manualControl(gridPoints &GP){
 
 //------------------------------------------GRID-----------------------------------------------
 
+routeCount initRouteCount(const string & myRoute) {
+  routeCount tStruct;
+  tStruct.direction.push_back(' ');
+  tStruct.amount.push_back(0);
+  int sIndex = 0;
+  for(char direction : myRoute){
+    if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
+    else if (tStruct.direction[sIndex] == ' ') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
+    else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
+  }
+  return tStruct;
+}
+
 void move(char direction, gridPoints & GP){
 	turn(direction, GP);
 	moveForwardDistance(GP, 1);
@@ -392,11 +464,8 @@ coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & 
 	else{
 		gridPointCoordinates.x = number % rowAmount;
 		gridPointCoordinates.y = number / rowAmount;
-
 	}
-
 	return gridPointCoordinates;
-	
 }
 
 //Gets the number of a gridPoint from coordinates.
@@ -445,9 +514,8 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 //Check bordering gridpoints and calls addToQueue if they are on grid.
 vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinatesVector, vector<int> queue, vector<vector<bool>> &grid){
 	
-	cout << gridPointNumber << endl;
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
-	cout << gridPoint.x << " " << gridPoint.y << " ; ";	
+	// cout << gridPoint.x << " " << gridPoint.y << " ; ";	
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
 	optionA.y = gridPoint.y;
@@ -514,10 +582,6 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	vector<int> queue = {};
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
 	unsigned int i = 1;
-	
-	cout << "test2" << endl;
-
-
 
 	while(!targetFound && i < (grid.size() * grid[0].size()) -1){
 		queue = updateQueue(queue[i], prevCoordinatesVector, queue, grid);
@@ -531,9 +595,6 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 		i++;
 	}
 
-
-
-	cout << "test3" << endl;
 	getRoute(route, prevCoordinatesVector, GP, grid);
 	cout << "route:" << endl;
 	for(unsigned int i = 0; i < route.size(); i++){
@@ -549,6 +610,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	cout << endl << endl;
 }
 
+
 void followRoute(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
 	string directions;
 	bool obstructed = false;
@@ -560,7 +622,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			searchPath(directions, GP, grid);
 			obstructed = false;
 		}
-		cout << "test1" << endl;
+		
 		for(int i = 0; i < directions.size(); i++){
 			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
