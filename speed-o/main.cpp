@@ -18,10 +18,11 @@ using namespace std;
 BrickPi3 BP;
 
 bool battery = true;          //battery level function
+bool running = 1;
 
-void batteryLevel(void){
+void batteryLevel(){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(true){
+  while(::running){
     if(BP.get_voltage_battery() <= 9.0){
       cout << "Battery be dead m8." << endl;
       ::battery = false;
@@ -36,11 +37,89 @@ void batteryLevel(void){
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
+		running = 0;
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
 }
 
+void setSensor(){
+  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
+  BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
+  BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+  BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
+
+void checkSensor() {
+  sensor_color_t        Color;
+  sensor_ultrasonic_t   Ultrasonic;
+  sensor_light_t        Light;
+  sensor_touch_t        Touch;
+
+  int portNr = 0;
+  uint8_t portValue = 0;
+  int sensorNr = 0;
+  int nTimes = 1;
+
+  cout << "Geef poort nummer (1-4): " << endl;
+  cin >> portNr;
+  cout << "Geef sensor type: " << endl;
+  cout << "1: Color" << endl;
+  cout << "2: Ultrasonic" << endl;
+  cout << "3: Light" << endl;
+  cout << "4: Touch" << endl;
+  cin >> sensorNr;
+  cout << "Hoe vaak checken: " << endl;
+  cin >> nTimes;
+
+  if(portNr == 1) portValue = 0x01;
+  else if (portNr == 2) portValue = 0x02;
+  else if (portNr == 3) portValue = 0x03;
+  else if (portNr == 4) portValue = 0x04;
+  else { cout << "Geen juiste keuze ontvangen.";}
+
+  switch(sensorNr) {
+    case 1:
+      for (int i = 0; i < nTimes; ++i) {
+        if(BP.get_sensor(portValue,Color) == 0) {
+          cout << " red : " << Color.reflected_red;
+          cout << " green : " << Color.reflected_green;
+          cout << " blue : " << Color.reflected_blue;
+          cout << " ambient : " << Color.ambient << endl;
+          cout << " color code : " << (int) Color.color << endl;
+        }
+        sleep(5);
+      }
+      break;
+    case 2:
+      cout << "Case 2" << endl;
+      for (int i = 0; i < nTimes; ++i) {
+        cout << "In de case 2 loop nr : " << i << endl;
+        if(BP.get_sensor(portValue,Ultrasonic) == 0) {
+          cout << Ultrasonic.cm << " cm" << endl;
+        }
+        sleep(5);
+      }
+      break;
+    case 3:
+      for (int i = 0; i < nTimes; ++i) {
+        if(BP.get_sensor(portValue,Light) == 0) {
+          cout << " ambient : " << Light.ambient << endl;
+          cout << " reflected : " << Light.reflected << endl;
+        }
+        sleep(5);
+      }
+      break;
+    case 4:
+      for (int i = 0; i < nTimes; ++i) {
+        if(BP.get_sensor(portValue,Touch) == 0) {
+          cout << "pressed : " << Touch.pressed << endl;
+        }
+        sleep(5);
+      }
+      break;
+  }
+}
 
 //------------------------------------------CONNECTION-----------------------------------------------
 
@@ -121,9 +200,14 @@ struct range {
   bool obstakelInRangeForward = false;
 };
 
+struct routeCount {
+  vector<char> direction = {};
+  vector<int> amount = {};
+};
+
+
 range obstakel;
-
-
+int crossroad;
 
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
 vector<vector<bool>> makeGrid(gridPoints GP) {
@@ -139,7 +223,7 @@ vector<vector<bool>> makeGrid(gridPoints GP) {
 	for (int i = 0; i < targetY + 5; i++) {
 		vector<bool> tempRow = {};
 		for (int j = 0; j < targetX + 5; j++) {
-			tempRow.push_back(1);
+			tempRow.push_back(true);
 		}
 		grid.push_back(tempRow);
 	}
@@ -161,7 +245,7 @@ vector<vector<bool>> getGrid(gridPoints & GP) {
 }
 
 //Sets all the coordinates for GP.homeCoordinates and GP.targetCoordinates based on GP.targetRelCoordinates.
-void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
+void getCoordinates(gridPoints & GP, vector<vector<bool>> & grid) {
 	int ySize = grid.size();
 	int xSize = grid[1].size();
 	//Set home coordinates
@@ -184,7 +268,10 @@ void getCoordinates(gridPoints &GP, vector<vector<bool>> &grid) {
 	//Set target coordinates
 	GP.targetCoordinates.x = GP.homeCoordinates.x + GP.targetRelCoordinates.x;
 	GP.targetCoordinates.y = GP.homeCoordinates.y + GP.targetRelCoordinates.y;
+	cout << "getcoord " << GP.homeCoordinates.x << "," << GP.homeCoordinates.y << endl;
 }
+
+//--------movement---------
 
 //Moves robot one grid unit forward, do NOT use this function to move the robot. moveForwardDistance() is made for that.
 void turnMotorPowerUp(int &motorPower) {
@@ -205,6 +292,7 @@ void turnMotorPowerDown(int &motorPower) {
 		motorPower -= 10;
 	}
 }
+
 void moveForward(gridPoints &GP){
 	int motorPower = 10;
 	turnMotorPowerUp(motorPower);
@@ -213,7 +301,7 @@ void moveForward(gridPoints &GP){
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
-void turnLeft(gridPoints &GP){
+void turnLeft(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'w';
   }
@@ -226,10 +314,15 @@ void turnLeft(gridPoints &GP){
   else{
     GP.direction = 'n';
   }
+
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, 116);
+	BP.set_motor_position_relative(PORT_C, -116);
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
-void turnRight(gridPoints &GP){
+void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
   }
@@ -242,16 +335,72 @@ void turnRight(gridPoints &GP){
   else{
     GP.direction = 's';
   }
+
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, -116);
+	BP.set_motor_position_relative(PORT_C, 116);
 }
+
+void resetMotors(){
+	BP.set_motor_power(PORT_B, 0);
+	BP.set_motor_power(PORT_C, 0);
+}
+
+//-------line intructions---------
+
+void followLine(int aantalKeerTeGaan){
+	sensor_light_t Light3;
+
+  int offset = 45;
+  int Tp = 40;
+  int Kp = 5;
+
+  int lastError = 0;
+  int Turn = 0;
+  int lightvalue = 0;
+  int error = 0;
+
+  int lspd = 0;
+  int rspd = 0;
+
+  if (BP.get_sensor(PORT_3, Light3) == 0){
+		while(true){
+			cout << "Kruispunt: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan){
+				resetMotors();
+				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
+				break;
+			}
+			lightvalue = Light3.reflected;
+			error = ((lightvalue-1600)/50)+30 - offset;
+
+			Turn = error * Kp;
+			Turn = Turn/3;
+
+			lspd = Tp + Turn;
+			rspd = Tp - Turn;
+
+			//moveForward(lspd,rspd);
+
+			lastError = error;
+		}
+  }
+}
+
+
+
+//-------path instructions--------
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
 void resetCurrentLocation(gridPoints &GP){
   GP.currentLocation.x = GP.homeCoordinates.x;
   GP.currentLocation.y = GP.homeCoordinates.y;
+	cout << "reset " << GP.homeCoordinates.x << "," << GP.homeCoordinates.y << endl;
 }
 
 //Updates GP.currentCoordinates according to distance moved and GP.direction.
-void updateLocation(gridPoints &GP, const unsigned int distance){
+void updateLocation(gridPoints & GP, int distance){
   if(GP.direction == 'n'){
     GP.currentLocation.y -= distance;
   }
@@ -269,46 +418,14 @@ void updateLocation(gridPoints &GP, const unsigned int distance){
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
   unsigned int count = 0;
-
-  int uChoice;
-	bool running = 1;
-  while(running){
-    cout << "Kies functie: " << endl;
-		cout << "0: Exit" << endl;
-    cout << "1: Send message" << endl;
-    cout << "2: Set communication details" << endl;
-    cout << "3: Check sensor" << endl;
-
-    cin >> uChoice;
-    switch(uChoice) {
-      case 1:
-        char message[256];
-        cout << "Message: " << endl;
-        cin >> message;
-        iClient(message);
-        break;
-      case 2:
-        SetComm();
-        break;
-      case 3:
-        checkSensor();
-        break;
-			case 0:
-				running = 0;
-				break;
-    }
-
-
-
   while(count < distance){
     moveForward(GP);
     count++;
   }
-
   updateLocation(GP, distance);
 }
 
-void moveToHomepoint(gridPoints &GP){
+void moveToHomepoint(gridPoints GP){
 	GP.direction = 'n';
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
@@ -393,6 +510,19 @@ string manualControl(gridPoints &GP){
 
 //------------------------------------------GRID-----------------------------------------------
 
+routeCount initRouteCount(const string & myRoute) {
+  routeCount tStruct;
+  tStruct.direction.push_back(' ');
+  tStruct.amount.push_back(0);
+  int sIndex = 0;
+  for(char direction : myRoute){
+    if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
+    else if (tStruct.direction[sIndex] == ' ') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
+    else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
+  }
+  return tStruct;
+}
+
 void move(char direction, gridPoints & GP){
 	turn(direction, GP);
 	moveForwardDistance(GP, 1);
@@ -412,11 +542,8 @@ coordinates getGridPointCoordinates(unsigned int number, vector<vector<bool>> & 
 	else{
 		gridPointCoordinates.x = number % rowAmount;
 		gridPointCoordinates.y = number / rowAmount;
-
 	}
-
 	return gridPointCoordinates;
-	
 }
 
 //Gets the number of a gridPoint from coordinates.
@@ -449,11 +576,12 @@ void addToQueue(coordinates & option, coordinates & gridPoint, vector<coordinate
 
 //Check if point is on the grid.
 bool checkInGrid(coordinates pathCheck, vector<vector<bool>> &grid){
-	if			(pathCheck.x < 0)									{return 0;}
-	else if	(pathCheck.x > grid[0].size()-1)	{return 0;}
-	else if	(pathCheck.y < 0)									{return 0;}
+	if		(pathCheck.x < 0)						{return 0;}
+	else if	(pathCheck.x > grid[0].size()-1)		{return 0;}
+	else if	(pathCheck.y < 0)						{return 0;}
 	else if	(pathCheck.y > grid.size()-1)			{return 0;}
-	else 																			{return 1;}
+	else if	(grid[pathCheck.y][pathCheck.x] == 0) 	{return 0;}
+	else 											{return 1;}
 }
 
 //Check if grid point is end point.
@@ -561,6 +689,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	cout << endl << endl;
 }
 
+
 void followRoute(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
 	string directions;
 	bool obstructed = false;
@@ -572,7 +701,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			searchPath(directions, GP, grid);
 			obstructed = false;
 		}
-
+		
 		for(int i = 0; i < directions.size(); i++){
 			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
@@ -690,6 +819,27 @@ void driveBack(string followedRoute, gridPoints & GP){
 	dockScout(GP);
 }
 
+
+
+
+//Prints grid for debugging and testing grid generation.
+void testFunctie(gridPoints GP, vector<vector<bool>> grid) {
+	for (unsigned int i = 0; i < grid.size(); i++) {
+		for (unsigned int j = 0; j < grid[i].size(); j++) {
+			if (GP.targetCoordinates.x == j && GP.targetCoordinates.y == i) {
+				cout << 'T' << ' ';
+			}
+			else if (GP.homeCoordinates.x == j && GP.homeCoordinates.y == i) {
+				cout << 'H' << ' ';
+			}
+			else {
+				cout << grid[i][j] << ' ';
+			}
+		}
+		cout << endl;
+	}
+}
+
 //------------------------------------------MAIN-----------------------------------------------
 
 int main(){
@@ -700,7 +850,7 @@ int main(){
   for (int i = 0; i < 5; ++i){
     cout << ".";
     if (i == 3){
-      setSensors();
+      setSensor();
     }
     sleep(1);
   }
@@ -716,16 +866,20 @@ int main(){
 	int32_t EncoderA = BP.get_motor_encoder(PORT_A);
 	int32_t EncoderB = BP.get_motor_encoder(PORT_B);
 	int32_t EncoderC = BP.get_motor_encoder(PORT_C);
-	int32_t EncoderD = BP.get_motor_encoder(PORT_D);
-
-	//Use the encoder value from motor A to control motors B, C, and D
-	BP.set_motor_power(PORT_B, EncoderA < 100 ? EncoderA > -100 ? EncoderA : -100 : 100);
-	BP.set_motor_dps(PORT_C, EncoderA);
-	BP.set_motor_position(PORT_D, EncoderA);	
+	int32_t EncoderD = BP.get_motor_encoder(PORT_D);	
 	
 	int uChoice;
-	bool running = 1;
-  while(running){
+	char message[256];
+
+	gridPoints GP;
+	GP.direction = 'n';
+	range obstakel;
+	vector<vector<bool>> grid = getGrid(GP);
+	string followedRoute;
+	bool destinationArrived = false;
+	getCoordinates(GP, grid);
+
+  while(::running){
     cout << "Kies functie: " << endl;
 		cout << "0: Exit" << endl;
     cout << "1: Send message" << endl;
@@ -735,12 +889,13 @@ int main(){
 		cout << "5: Manual pathing." << endl;
 
     cin >> uChoice;
+		cout << "|==================================================|" << endl;
+
     switch(uChoice) {
 			case 0:
-				running = 0;
+				::running = 0;
 				break;
       case 1:
-        char message[256];
         cout << "Message: " << endl;
         cin >> message;
         iClient(message);
@@ -752,19 +907,31 @@ int main(){
         checkSensor();
         break;
 			case 4:
+				// testFunctie(GP, grid);
+				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
-				//communicate(followedRoute);
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
-			case 5:
-				getCoordinates(GP, grid);
+				iClient(followedRoute);
+			case 5:				
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
-				string NOSWList = manualControl(GP);
-				cout << NOSWList << " ";
+				followedRoute = manualControl(GP);
+				strcpy(message, followedRoute.c_str());
+				cout << message << " ";
+				iClient(message);
+			case 6:
+				// testFunctie(GP, grid);
+				resetCurrentLocation(GP);
+				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
+				cout << "followed route" << endl;
+				driveBack(followedRoute, GP);
+				resetCurrentLocation(GP);
+				strcpy(message, followedRoute.c_str());
+				iClient(message);
     }
-
+	}
 	//moveForward();
 	cout << "exit(0)";
 	return 0;

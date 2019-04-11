@@ -419,7 +419,6 @@ void navigation(vector<char> route) {
     sleep(1);
 
     //***************************************************************************************************************
-<<<<<<< HEAD
     if (color_object(whatIsInAColor())) {
       cout << "Pak het op" << endl;
       brengNaarKantelPunt();
@@ -435,22 +434,6 @@ void navigation(vector<char> route) {
       gotAObject = false;
     }
     //***************************************************************************************************************
-=======
-                            //hier moet een functie van mathilde komen die zorgt van kleurherkenning van het object
-
-    //***************************************************************************************************************
-
-    // functies voor object oppakken
-    brengNaarKantelPunt();
-    klauwOpen();
-    gelijdelijkDownLoop();
-    klauwDicht();
-    sleep(1);
-    klauwOmhoog();
-    resetMotor();
-
-    cout << "Picked up ze object, time to head back" << endl;
->>>>>>> bcbaa0e02df6c8e87c85ce88286b602954aac4fd
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = (route.size() - 2); i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
@@ -489,12 +472,12 @@ void navigation(vector<char> route) {
     }
 
     resetMotor();
-    cout << "Arrived home, dropping the object like its hot" << endl;
-    sleep(1);
-<<<<<<< HEAD
+
     //***************************************************************************************************************
     //fucntie voor object droppen
     if (gotAObject) {
+      cout << "Arrived home, dropping the object like its hot" << endl;
+      sleep(1);
       brengNaarKantelPunt();
       gelijdelijkDownLoop();
       klauwOpen();
@@ -504,16 +487,6 @@ void navigation(vector<char> route) {
     }
     /* code */
     //***************************************************************************************************************
-=======
-
-    //fucnties voor object droppen
-    brengNaarKantelPunt();
-    gelijdelijkDownLoop();
-    klauwOpen();
-    klauwOmhoog();
-    klauwDicht();
-    resetMotor();
->>>>>>> bcbaa0e02df6c8e87c85ce88286b602954aac4fd
 
     drive('b'); // orienteer jezelf goed voor de volgende missie
     resetMotor();
@@ -548,17 +521,10 @@ int main() {
         cout << "0: Exit" << endl;                                              // functie om programma te stoppen
         cout << "1: Receive message" << endl;                                   // wacht voor een message en print deze
         cout << "2: Set communication details" << endl;                         // stel portnummer in
-<<<<<<< HEAD
         cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten,
                                                                                 // die worden daarna gebruikt om het opject op te pakken en terug te rijden
         cout << "4: Check sensor" << endl;
         cout << "Uw keuze is: ";
-=======
-        cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten, die worden daarna gebruikt om het opject op te pakken en terug te rijden
-        cout << "4: Drive the given route" << endl;                             // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
-        cout << "5: Check sensor" << endl;
-        cout << endl << "Uw keuze is: ";
->>>>>>> bcbaa0e02df6c8e87c85ce88286b602954aac4fd
 
         cin >> uChoice;
         cout << "|==================================================|" << endl;
