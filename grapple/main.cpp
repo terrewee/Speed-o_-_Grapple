@@ -315,7 +315,7 @@ void turnLeft() {
     sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(10, -10);
+    fwd(40, -80);
     sleep(7);
     resetMotor();
 }
@@ -326,7 +326,7 @@ void turnRight() {
     sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(-10, 10);
+    fwd(-80, 40);
     sleep(7);
     resetMotor();
 }
