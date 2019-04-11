@@ -4,7 +4,7 @@
 #include <signal.h>     // for catching exit signals
 #include <sys/types.h>  //voor gebruik syscall
 #include <sys/socket.h> //include voor het gebruik van sockets
-#include <netinet/in.h>
+#include <netinet/in.h> //staan de structs uit communication in
 #include <netdb.h>
 #include <string>
 #include <iostream>
@@ -18,7 +18,57 @@ BrickPi3 BP;
 int ComPortNr = 6969;         //Port number for communication
 char ComHostName[] = "dex2";  //Hostname for communication
 
-void exit_signal_handler(int signo);
+/*
+  Author:       Maaike
+  Description:  Client voor het ontvangen van coordinaten van de server pi.
+*/
+void communicationClient(){
+  int sockfd;
+  int newsockfd;
+  int portno;
+  int clilen;
+  int charNumber;
+  
+  struct sockaddr_in serv_addr;
+  struct hostent *server;
+
+  char buffer[256];
+  if (argc < 3) {
+    fprintf(stderr,"usage %s hostname port\n", argv[0]);
+    exit(0);
+  }
+
+  portno = atoi(argv[2]);
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd < 0) 
+    error("ERROR opening socket");
+    server = gethostbyname(argv[1]);
+  if (server == NULL) {
+    fprintf(stderr,"ERROR, no such host\n");
+    exit(0);
+  }
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+  bcopy((char *)server->h_addr, 
+        (char *)&serv_addr.sin_addr.s_addr,
+        server->h_length);
+  serv_addr.sin_port = htons(portno);
+  if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
+    error("ERROR connecting");
+  printf("Please enter the message: ");
+  bzero(buffer,256);
+  fgets(buffer,255,stdin);
+  n = write(sockfd,buffer,strlen(buffer));
+  if (n < 0) 
+    error("ERROR writing to socket");
+  bzero(buffer,256);
+  n = read(sockfd,buffer,255);
+  if (n < 0) 
+    error("ERROR reading from socket");
+  printf("%s\n",buffer);
+  close(sockfd);
+  return 0;
+}
 
 /*
   Author:       Duur
@@ -27,6 +77,25 @@ void exit_signal_handler(int signo);
 */
 void setSensors(){
   //BP.set_sensor_type();
+}
+
+/*
+  Author:       Maaike & Duur
+  Description:  Bateryscheck which changes the
+                global bool battery to false if battery is low
+*/
+void batteryLevel(void){
+  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
+  while(true){
+    if(BP.get_voltage_battery() <= 9.0){
+      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
+      ::battery = false;
+    }
+    else{
+      ::battery = true;
+    }
+    sleep(5);
+  }
 }
 
 /*
@@ -121,7 +190,7 @@ void batteryLevel(void){
   //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
   while(true){
     if(BP.get_voltage_battery() <= 9.0){
-      cout << "de batterij is dood. T_T" << endl;
+      cout << "Yeeter de yoot de batterij is dood. T_T" << endl;
       ::battery = false;
     }
     else{
