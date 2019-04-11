@@ -786,6 +786,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			else{
 				move(directions[i], GP);
 				followedRoute += directions[i];
+				resetMotors();
 
 				if(i == directions.size() - 1){
 					destinationArrived = true;
@@ -797,7 +798,6 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 		}
 		
 	}
-	resetMotors();
 }
 
 void dockScout(gridPoints & GP){
