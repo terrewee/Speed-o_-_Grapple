@@ -316,6 +316,7 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
+	sleep(1);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -337,6 +338,7 @@ void turnLeft(gridPoints & GP){
 	BP.get_motor_encoder(PORT_C);
 	BP.set_motor_position_relative(PORT_B, 116);
 	BP.set_motor_position_relative(PORT_C, -116);
+	sleep(1);
 }
 
 //Turns the rorbot to the left, and updates the value of GP.direction.
@@ -358,6 +360,7 @@ void turnRight(gridPoints & GP){
 	BP.get_motor_encoder(PORT_C);
 	BP.set_motor_position_relative(PORT_B, -116);
 	BP.set_motor_position_relative(PORT_C, 116);
+	sleep(1);
 }
 
 //-------line intructions---------
@@ -532,7 +535,6 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
-		thread kruispunt(crossroaddetectie);
 		if 			(answer == "w")		{moveForward(10,10);}
 		else if (answer == "a")		{turnLeft(GP); moveForward(10,10);}
 		else if (answer == "d")		{turnRight(GP); moveForward(10,10);}
@@ -918,6 +920,8 @@ int main(){
 	bool destinationArrived = false;
 	getCoordinates(GP, grid);
 
+	thread kruispunt(crossroaddetectie);
+
   while(::running){
 
 		
@@ -958,13 +962,15 @@ int main(){
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
 				//iClient(followedRoute);
-			case 5:				
+				kruispunt.join();	
+			case 5:		
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				followedRoute = manualControl(GP);
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
 				iClient(message);
+				kruispunt.join();	
 			case 6:
 				// testFunctie(GP, grid);
 				resetCurrentLocation(GP);
