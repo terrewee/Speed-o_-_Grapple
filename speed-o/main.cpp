@@ -888,6 +888,7 @@ int main(){
 		cout << "4: Auto path." << endl;
 		cout << "5: Manual pathing." << endl;
 
+		cout << "Uw keuze is: ";
     cin >> uChoice;
 		cout << "|==================================================|" << endl;
 
