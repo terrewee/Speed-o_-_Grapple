@@ -16,7 +16,6 @@
 
 using namespace std;
 
-
 //---------------------------------------ESSENTIALS---------------------------------------------
 
 BrickPi3 BP;                                                      // Initializing BP
@@ -338,7 +337,49 @@ void drive(char direction) {
     }
 }
 
+int whatIsInAColor () {
+  int color;
+  int colorchoice = -1;
+  cout << "Welke kleur heeft het object" << endl;
+  cout << "1 : Rood " << endl;
+  cout << "2 : Blauw " << endl;
+  cout << "3 : Groen " << endl;
+  cout << "4 : Zwart " << endl;
+  cout << "5 : Wit " << endl;
+  cin >> color;
+  cout << color;
+  if (color == 1)          { colorchoice = 5;}
+  else if (color == 2)     { colorchoice = 2;}
+  else if (color == 3)     { colorchoice = 3;}
+  else if (color == 4)     { colorchoice = 1;}
+  else if (color == 5)     { colorchoice = 6;}
+  return colorchoice;
+}
+
+
+bool colorNotCorrect() {
+  string answer;
+  cout << "Dit object heeft niet de door u opgegeven kleur. Wilt u het object alsnog oppakken?" << endl;
+  cout << "Ja of Nee" << endl;
+  cin >> answer;
+  if (answer == "Ja" )        {cout << return true << endl;}
+  else if (answer == "nee")   { cout << return false << endl;}
+}
+
+bool color_object (int colorchoice){
+  while(colorchoice == -1){
+    cout << "Er is geen kleur gegeven." << endl;
+    colorchoice = whatIsInAColor();
+  }
+  if (BP.get_sensor(PORT_2, ::Color1) == 0) {
+    cout << ::Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
+    if (::Color1.color == colorchoice) { cout << return true << endl;}
+    else if (::Color1.color != colorchoice) { return colorNotCorrect();}
+  }
+}
+
 void navigation(vector<char> route) {
+    bool gotAObject = true;
     route.insert(route.begin(), 1, 'n');    //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
         if (route[i] == route[i-1]) {
@@ -378,24 +419,21 @@ void navigation(vector<char> route) {
     sleep(1);
 
     //***************************************************************************************************************
-                            //hier moet een functie van mathilde komen die zorgt van kleurherkenning van het object
-
+    if (color_object(whatIsInAColor())) {
+      cout << "Pak het op" << endl;
+      brengNaarKantelPunt();
+      klauwOpen();
+      gelijdelijkDownLoop();
+      klauwDicht();
+      sleep(1);
+      klauwOmhoog();
+      resetMotor();
+      cout << "Picked up ze object, time to head back" << endl;
+    } else {
+      cout << "Pak het niet op ga terug" << endl;
+      gotAObject = false;
+    }
     //***************************************************************************************************************
-
-
-
-    //***************************************************************************************************************
-                            // functie voor object zien en vooral oppakken
-    brengNaarKantelPunt();
-    klauwOpen();
-    gelijdelijkDownLoop();
-    klauwDicht();
-    sleep(1);
-    klauwOmhoog();
-    resetMotor();
-
-    //***************************************************************************************************************
-    cout << "Picked up ze object, time to head back" << endl;
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = (route.size() - 2); i > 0; --i) { // rij terug naar het startpunt aan de hand van de route
@@ -408,7 +446,7 @@ void navigation(vector<char> route) {
                     ((route[i] == 'n' && route[i+1] == 'w') ||
                      (route[i] == 'o' && route[i+1] == 'n') ||
                      (route[i] == 's' && route[i+1] == 'o') ||
-                     (route[i] == 'w' && route[i+1] == 's')){
+                     (route[i] == 'w' && route[i+1] == 's')) {
                 drive('l');
                 drive('f');
             }
@@ -416,7 +454,7 @@ void navigation(vector<char> route) {
                     ((route[i] == 'n' && route[i+1] == 'o') ||
                      (route[i] == 'o' && route[i+1] == 's') ||
                      (route[i] == 's' && route[i+1] == 'w') ||
-                     (route[i] == 'w' && route[i+1] == 'n')){
+                     (route[i] == 'w' && route[i+1] == 'n')) {
                 drive('r');
                 drive('f');
             }
@@ -424,7 +462,7 @@ void navigation(vector<char> route) {
                     ((route[i] == 'n' && route[i+1] == 's') ||
                      (route[i] == 'o' && route[i+1] == 'w') ||
                      (route[i] == 's' && route[i+1] == 'n') ||
-                     (route[i] == 'w' && route[i+1] == 'o') ){
+                     (route[i] == 'w' && route[i+1] == 'o')) {
                 drive('b');
                 drive('f');
             } else {  // als geen van de opties gepakt word gebeurt er iets abnormaals
@@ -437,14 +475,16 @@ void navigation(vector<char> route) {
     cout << "Arrived home, dropping the object like its hot" << endl;
     sleep(1);
     //***************************************************************************************************************
-                                                 //fucntie voor object droppen
-    brengNaarKantelPunt();
-    gelijdelijkDownLoop();
-    klauwOpen();
-    klauwOmhoog();
-    klauwDicht();
-    resetMotor();
-
+    //fucntie voor object droppen
+    if (gotAObject) {
+      brengNaarKantelPunt();
+      gelijdelijkDownLoop();
+      klauwOpen();
+      klauwOmhoog();
+      klauwDicht();
+      resetMotor();
+    }
+    /* code */
     //***************************************************************************************************************
 
     drive('b'); // orienteer jezelf goed voor de volgende missie
@@ -476,21 +516,25 @@ int main() {
     int uChoice;
 
     while (::running) {
-        cout << endl << "Kies een van deze functies: " << endl;
+        cout << "Kies een van deze functies: " << endl;
         cout << "0: Exit" << endl;                                              // functie om programma te stoppen
         cout << "1: Receive message" << endl;                                   // wacht voor een message en print deze
         cout << "2: Set communication details" << endl;                         // stel portnummer in
         cout << "3: Wait for message (route) , then return the object" << endl; // Er wordt eerst gewacht op een bericht met de coordinaten,
                                                                                 // die worden daarna gebruikt om het opject op te pakken en terug te rijden
-        cout << "4: Drive the given route" << endl;                             // dit is een case die gebruikt wordt voor testing en demo's maar kan weg weg in eindproduct
-        cout << "5: Check sensor" << endl;
-        cout << endl << "Uw keuze is: ";
+        cout << "4: Check sensor" << endl;
+        cout << "Uw keuze is: ";
 
-        cin >> uChoice; cout << endl << endl;
+        cin >> uChoice;
+        cout << "|==================================================|" << endl;
 
         switch(uChoice) {
             case 1: // wacht voor een message en print deze
-                iServer();
+                vector<char> testV = iServer();
+                for (char character : testV){
+                  cout << character << ", ";
+                }
+                cout << endl << "done" << endl;
                 break;
             case 2: // stel portnummer in
                 SetComm();
@@ -499,11 +543,7 @@ int main() {
                     //die worden daarna gebruikt om het opject op te pakken en terug te rijden
                 navigation(iServer());
                 break;
-            case 4:  // dit is een case die gebruikt wordt voor testing en demo's maar dit kan weg in eindproduct
-                vector<char> vec = {'n', 'n', 'w', 'w', 's'};
-                navigation(vec);
-                break;
-            case 5: // Check the sensors
+            case 4: // Check the sensors
                 checkSensor();
                 break;
             case 0: // functie om programma te stoppen
