@@ -512,7 +512,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	vector<coordinates> route = {};
 	vector<int> queue = {};
 	queue = updateQueue(homeGridPointNumber, prevCoordinatesVector, queue, grid);
-	unsigned int i = 1;
+	unsigned int i = 0;
 	
 	cout << "test2" << endl;
 
@@ -713,6 +713,13 @@ int main(){
 	int uChoice;
 	char message[256];
 
+	gridPoints GP;
+	GP.direction = 'n';
+	range obstakel;
+	vector<vector<bool>> grid = getGrid(GP);
+	string followedRoute;
+	bool destinationArrived = false;
+
   while(::running){
     cout << "Kies functie: " << endl;
 		cout << "0: Exit" << endl;
@@ -741,22 +748,12 @@ int main(){
         checkSensor();
         break;
 			case 4:
-				gridPoints GP;
-				GP.direction = 'n';
-				range obstakel;
-				vector<vector<bool>> grid = getGrid(GP);
-				string followedRoute;
-				bool destinationArrived = false;
-
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
 				//communicate(followedRoute);
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
-			case 5:
-				gridPoints GP;
-				vector<vector<bool>> grid = getGrid(GP);
-				
+			case 5:				
 				getCoordinates(GP, grid);
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
