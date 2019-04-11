@@ -129,9 +129,14 @@ struct range {
   bool obstakelInRangeForward = false;
 };
 
+struct routeCount {
+  vector<char> direction = {};
+  vector<int> amount = {};
+};
+
+
 range obstakel;
-
-
+int crossroad;
 
 //Generates grid based on GP.targetRelCoordinates, padding levels can be adjusted with the + in the for loops.
 vector<vector<bool>> makeGrid(gridPoints GP) {
