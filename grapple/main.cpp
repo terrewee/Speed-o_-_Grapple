@@ -339,7 +339,7 @@ int moveForward() {
   sleep(0.5);
 
   int offset = 45;
-  int Tp = 20;
+  int Tp = 15;
 
   int Kp = 4;
 
