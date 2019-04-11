@@ -196,8 +196,6 @@ void iClient(char message[256]){
 				}
 			}
 		//sleep(0.5);
-		cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
-		cout << "Crossroad number: " << ::crossroad << endl;
 	}
 }
 
@@ -940,7 +938,7 @@ int main(){
 
   while(::running){
 
-		thread kruispunt (crossroaddetectie);
+		thread kruispunt(crossroaddetectie);
  		//followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 
     cout << "Kies functie: " << endl;
