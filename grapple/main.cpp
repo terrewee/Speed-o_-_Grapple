@@ -284,9 +284,14 @@ bool color_object (int colorchoice){
         colorchoice = whatIsInAColor();
     }
     if (BP.get_sensor(PORT_2, Color2) == 0) {
-        cout << Color1.color << " sensor ," << colorchoice << " color choice"<< endl;
-        if (Color1.color == colorchoice) { cout << return true << endl;}
-        else if (Color1.color != colorchoice) { return colorNotCorrect();}
+        cout << Color2.color << " sensor ," << colorchoice << " color choice"<< endl;
+        if (Color2.color == colorchoice) {
+            cout << "true" << endl;
+            return true;
+        }
+        else if (Color2.color != colorchoice) {
+            return colorNotCorrect();
+        }
     }
 }
 
