@@ -74,7 +74,7 @@ void draaiRechts()
 }
 
 void setSensors(){
-  BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
+	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
 	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
 	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
@@ -88,6 +88,19 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
+}
+
+bool stopVoorObject()
+{
+	sensor_ultrasonic_t Ultrasonic1;
+	if(BP.get_sensor(PORT_1, Ultrasonic1) == 0)
+	{
+		if(Ultrasonic1.cm <= 20)
+		{
+			return true;
+		}
+		return false;
+	}
 }
 
 void followLine(int aantalKeerTeGaan)
@@ -110,7 +123,10 @@ void followLine(int aantalKeerTeGaan)
         {
 		while(true)
 		{
-			cout << "Kruispunt: " << ::crossroad << endl;
+			if(stopVoorObject() == true)
+			{
+				break;
+			}
 			if(::crossroad == aantalKeerTeGaan)
 			{
 				resetMotors();
