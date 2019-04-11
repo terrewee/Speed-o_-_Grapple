@@ -319,8 +319,10 @@ void turnLeft() {
     sleep(0.5);
     fwd(20, -80);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
-        while (Light1.reflected < 2800) {
-            usleep(1000);
+        sleep(3);
+        while (Light1.reflected <= 2700) {
+            cout << 1 << endl;
+            usleep(10000);
         }
     }
     resetMotor();
@@ -335,8 +337,10 @@ void turnRight() {
     sleep(0.5);
     fwd(-80, 20);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
-        while (Light1.reflected < 2800) {
-            usleep(1000);
+        sleep(3);
+        cout << 1 << endl;
+        while (Light1.reflected <= 2700) {
+            usleep(10000);
         }
     }
     resetMotor();
@@ -569,7 +573,7 @@ int main() {
                 checkSensor();
                 break;
             case 5: //test pls dont delete this time duur :D
-            {   vector<char> vec = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'};
+            {   vector<char> vec/* = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'}*/;
                 navigation(vec);
                 break;
             }
