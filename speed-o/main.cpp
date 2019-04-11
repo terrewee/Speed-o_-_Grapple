@@ -18,6 +18,13 @@ void exit_signal_handler(int signo);
 
 int crossroad;
 
+void setSensors(){
+	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
+	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
+	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
+	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
+}
+
 void crossroaddetectie()
 {
 	sensor_color_t      Color2;
@@ -29,7 +36,7 @@ void crossroaddetectie()
 		{
 			if (Color2.color == 1 || Color4.color == 1)
 			{
-				usleep(100000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
+				usleep(200000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
 				::crossroad++;	// increment globale variabele crossroads gezien
 			}
 		}
@@ -73,13 +80,6 @@ void draaiRechts()
 	BP.set_motor_position_relative(PORT_C, 116);
 }
 
-void setSensors(){
-	BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
-	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
-	BP.set_sensor_type(PORT_3,SENSOR_TYPE_NXT_LIGHT_ON);
-	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
-}
-
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
 	BP.set_motor_power(PORT_C, 0);
@@ -105,11 +105,12 @@ bool stopVoorObject()
 
 void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
 {
+
         sensor_light_t Light3;
 
         int offset = 45;
-        int Tp = 40;
-        int Kp = 5;
+        int Tp = 25;
+        int Kp = 2;
 
         int lastError = 0;
         int Turn = 0;
@@ -118,37 +119,32 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 
         int lspd = 0;
         int rspd = 0;
-
-        if (BP.get_sensor(PORT_3, Light3) == 0)
-        {
 		while(true)
 		{
+			if(BP.get_sensor(PORT_3, Light3) == 0){
+			cout << "crossroad: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan)
+			{
+				resetMotors();
+				break;
+			}
 			lightvalue = Light3.reflected;
-			error = ((lightvalue-1600)/50)+30 - offset;
+			error = ((lightvalue-1700)/40)+30 - offset;
 
 			Turn = error * Kp;
-			Turn = Turn/3;
+			Turn = Turn/1;
 
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			if(stopVoorObject() == true)
+			/*if(stopVoorObject() == true)
 			{
 				resetMotors();
 				sleep(1);
-			}
-			else
-			{
-				moveForward(lspd,rspd);
-			}
+			}*/
+			moveForward(lspd,rspd);
 			lastError = error;
-			if(::crossroad == aantalKeerTeGaan)
-			{
-				resetMotors();
-				// gebruik draaiLinks en/of draaiRechts voor 90 graden draaien
-				::crossroad = 0;	// reset crossroad voor een volgende call v/d functie
-				break;
-			}
+			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
 		}
         }
 }
@@ -162,6 +158,7 @@ void exit_signal_handler(int signo){
 
 int main()
 {
+	setSensors();
 	signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
 	BP.detect();
 	BP.reset_all();
@@ -180,5 +177,7 @@ int main()
 
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 	BP.reset_all();
+
+	char richting;
 }
 
