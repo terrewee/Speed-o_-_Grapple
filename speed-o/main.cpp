@@ -39,23 +39,21 @@ void crossroaddetectie()
 	}
 }
 
-/*
 struct routeCount {
   vector<char> direction = {};
   vector<int> amount = {};
 };
 
 routeCount initRouteCount(const string & myRoute) {
-  routeCount tStruct = {.direction.push_back(''), .amount.push_back(0)};
+  struct routeCount tStruct = {.direction.push_back(' '), .amount.push_back(0)};
   int sIndex = 0;
-  for(char direction in myRoute){
+  for(char direction : myRoute){
     if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
-    else if (tStruct.direction[sIndex] == '') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
+    else if (tStruct.direction[sIndex] == ' ') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
     else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
   }
   return tStruct;
 }
-*/
 
 void draaiLinks()
 {
