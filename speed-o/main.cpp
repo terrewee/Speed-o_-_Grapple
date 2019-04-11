@@ -13,7 +13,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-//BrickPi3 BP;
+BrickPi3 BP;
 
 struct coordinates{
   int x;
