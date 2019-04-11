@@ -447,6 +447,7 @@ vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinate
 	
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
 	cout << gridPoint.x << " " << gridPoint.y << " ; ";	
+	cout << gridPointNumber << endl;
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
 	optionA.y = gridPoint.y;
