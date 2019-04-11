@@ -447,7 +447,7 @@ void updateLocation(gridPoints & GP, int distance){
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
   followLine(distance);
   updateLocation(GP, distance);
-  cout << distance << endl;
+  cout << "moveForwardDistance: "<< distance << endl;
 }
 
 void moveToHomepoint(gridPoints GP){
