@@ -535,7 +535,6 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
-		thread kruispunt(crossroaddetectie);
 		if 			(answer == "w")		{moveForward(10,10);}
 		else if (answer == "a")		{turnLeft(GP); moveForward(10,10);}
 		else if (answer == "d")		{turnRight(GP); moveForward(10,10);}
