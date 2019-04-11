@@ -138,21 +138,21 @@ void encodeMotorA(int32_t pos) {
 
 void brengNaarKantelPunt() {
   BP.set_motor_limits(PORT_A, 40, 0);
-  encodeMotorA(-50);
+  encodeMotorA(50);
 }
 
 void gelijdelijkDownLoop() {
-  int32_t encoder = -50;
-  while(encoder > -110) {
-    encodeMotorA(-5);
+  int32_t encoder = 50;
+  while(encoder > 110) {
+    encodeMotorA(5);
     usleep(500000);
-    encoder = encoder - 5;
+    encoder = encoder + 5;
   }
 }
 
 void klauwOmhoog() {
   BP.set_motor_limits(PORT_A, 50, 0);
-  encodeMotorA(130);  // zelfde als totale neerwaartse beweging
+  encodeMotorA(-130);  // zelfde als totale neerwaartse beweging
 }
 
 void klauwOpen() {
@@ -312,10 +312,10 @@ void backUpFromObject(){
 
 void turnLeft() {
     fwd(-20, -20);
-    sleep(3);
+    sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(30, 10);
+    fwd(10, -10);
     sleep(7);
     resetMotor();
 }
@@ -323,10 +323,10 @@ void turnLeft() {
 
 void turnRight() {
     fwd(-20, -20);
-    sleep(3);
+    sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(10, 30);
+    fwd(-10, 10);
     sleep(7);
     resetMotor();
 }
@@ -465,15 +465,15 @@ void navigation(vector<char> route) {
             sleep(1);
             if
                     ((route[i] == 'n' && route[i+1] == 'w') ||
-                     (route[i] == 'o' && route[i+1] == 'n') ||
-                     (route[i] == 's' && route[i+1] == 'o') ||
+                     (route[i] == 'e' && route[i+1] == 'n') ||
+                     (route[i] == 's' && route[i+1] == 'e') ||
                      (route[i] == 'w' && route[i+1] == 's')) {
                 drive('l');
                 drive('f');
             }
             else if
-                    ((route[i] == 'n' && route[i+1] == 'o') ||
-                     (route[i] == 'o' && route[i+1] == 's') ||
+                    ((route[i] == 'n' && route[i+1] == 'e') ||
+                     (route[i] == 'e' && route[i+1] == 's') ||
                      (route[i] == 's' && route[i+1] == 'w') ||
                      (route[i] == 'w' && route[i+1] == 'n')) {
                 drive('r');
@@ -481,9 +481,9 @@ void navigation(vector<char> route) {
             }
             else if
                     ((route[i] == 'n' && route[i+1] == 's') ||
-                     (route[i] == 'o' && route[i+1] == 'w') ||
+                     (route[i] == 'e' && route[i+1] == 'w') ||
                      (route[i] == 's' && route[i+1] == 'n') ||
-                     (route[i] == 'w' && route[i+1] == 'o')) {
+                     (route[i] == 'w' && route[i+1] == 'e')) {
                 drive('b');
                 drive('f');
             } else {  // als geen van de opties gepakt word gebeurt er iets abnormaals
