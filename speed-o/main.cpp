@@ -538,10 +538,10 @@ string manualControl(gridPoints &GP){
 		if 			(answer == "w")		{moveForward(20,20);}
 		else if (answer == "a")		{turnLeft(GP); moveForward(20,20);}
 		else if (answer == "d")		{turnRight(GP); moveForward(20,20);}
-		else if (answer == "esc")	{break;}
+		else if (answer == "quit")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
-		if(crossroad == 1){resetMotors();}
+		//if(crossroad == 1){resetMotors();}
 		orientationList.push_back(GP.direction);
 		cout << GP.direction << endl << endl;
 	}
