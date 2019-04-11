@@ -552,6 +552,7 @@ routeCount initRouteCount(const string & myRoute) {
 void move(char direction, gridPoints & GP){
 	turn(direction, GP);
 	moveForwardDistance(GP, 1);
+	cout << "move" << endl;
 }
 
 //Gets the coordinates of a gridPoint from its number.
