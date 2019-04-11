@@ -713,13 +713,6 @@ int main(){
 	int uChoice;
 	char message[256];
 
-	gridPoints GP;
-	GP.direction = 'n';
-	range obstakel;
-	vector<vector<bool>> grid = getGrid(GP);
-	string followedRoute;
-	bool destinationArrived = false;
-
   while(::running){
     cout << "Kies functie: " << endl;
 		cout << "0: Exit" << endl;
