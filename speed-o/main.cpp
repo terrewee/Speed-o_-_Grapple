@@ -123,10 +123,6 @@ void followLine(int aantalKeerTeGaan)
         {
 		while(true)
 		{
-			if(stopVoorObject() == true)
-			{
-				resetMotors();
-			}
 			if(::crossroad == aantalKeerTeGaan)
 			{
 				resetMotors();
@@ -142,8 +138,14 @@ void followLine(int aantalKeerTeGaan)
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			moveForward(lspd,rspd);
-
+			if(stopVoorObject() == true)
+			{
+				resetMotors();
+			}
+			else
+			{
+				moveForward(lspd,rspd);
+			}
 			lastError = error;
 		}
         }
