@@ -38,6 +38,7 @@ void crossroaddetectie()
 	}
 }
 
+/*	// compileer en test je shit voor je het laat staan :))) - Joram
 struct routeCount {
   vector<char> direction = {};
   vector<int> amount = {};
@@ -53,6 +54,7 @@ routeCount initRouteCount(const string & myRoute) {
   }
   return tStruct;
 }
+*/
 
 void draaiLinks()
 {
@@ -159,6 +161,6 @@ int main()
 
 	thread kruispunt (crossroaddetectie);
 
- 	followLine();
+ 	followLine(2);	// 2 voor testje
 }
 
