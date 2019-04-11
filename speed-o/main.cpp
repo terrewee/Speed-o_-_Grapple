@@ -375,6 +375,7 @@ bool stopVoorObject(){
 
 //Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
 void followLine(int aantalKeerTeGaan){
+    
     sensor_light_t Light3;
 
     int offset = 45;
@@ -388,8 +389,11 @@ void followLine(int aantalKeerTeGaan){
 
     int lspd = 0;
     int rspd = 0;
-
-	if(BP.get_sensor(PORT_3, Light3) == 0){
+    
+    while(true){    
+        bool statusCrossroad = crossroaddetectie2();
+        if( statusCrossroad == false){
+            if(BP.get_sensor(PORT_3, Light3) == 0){
             
             lightvalue = Light3.reflected;
             error = ((lightvalue-1700)/40)+30 - offset;
@@ -400,21 +404,17 @@ void followLine(int aantalKeerTeGaan){
             lspd = Tp + Turn;
             rspd = Tp - Turn;
             
-            
+            moveForward(lspd,rspd);
             lastError = error;
-            // cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
-                        sleep(1);
-		
-		moveForward(lspd,rspd);
-	}
-	
-    while(true){    
-        bool statusCrossroad = crossroaddetectie2();
-        if(statusCrossroad){
-            resetMotors;
-						break;
-				}
-		}
+            sleep(1);
+        }
+        else{
+            break;
+            //ga naar kruispunt keuze.
+        }
+    }
+    resetMotors();
+    //break;
 }
 
 //-------path instructions--------
