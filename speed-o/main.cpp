@@ -205,45 +205,59 @@ void resetMotors(){
 	BP.set_motor_power(PORT_C, 0);
 }
 
+// aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
 void followLine(int aantalKeerTeGaan){
-	sensor_light_t Light3;
+    sensor_light_t Light3;
 
-  int offset = 45;
-  int Tp = 40;
-  int Kp = 5;
+    int offset = 45;
+    int Tp = 25;
+    int Kp = 2;
 
-  int lastError = 0;
-  int Turn = 0;
-  int lightvalue = 0;
-  int error = 0;
+    int lastError = 0;
+    int Turn = 0;
+    int lightvalue = 0;
+    int error = 0;
 
-  int lspd = 0;
-  int rspd = 0;
+    int lspd = 0;
+    int rspd = 0;
+	while(true)
+	{
+		if(BP.get_sensor(PORT_3, Light3) == 0){
+			cout << "crossroad: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan - 1){
+				//Tp = 10;
+				//Kp = 1;
+			}
 
-  if (BP.get_sensor(PORT_3, Light3) == 0){
-		while(true)
-		{
-			cout << "Kruispunt: " << ::crossroad << endl;
-			if(::crossroad == aantalKeerTeGaan)
-			{
+			else if(::crossroad == aantalKeerTeGaan){
 				resetMotors();
-				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
 				break;
 			}
+
 			lightvalue = Light3.reflected;
-			error = ((lightvalue-1600)/50)+30 - offset;
+			error = ((lightvalue-1700)/40)+30 - offset;
 
 			Turn = error * Kp;
-			Turn = Turn/3;
+			Turn = Turn/1;
 
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			moveForward(lspd,rspd);
+			if(stopVoorObject() == true){
+				resetMotors();
+				sleep(1);
+			}
 
+			if(::crossroad == aantalKeerTeGaan - 1){
+				lspd = lspd / 2;
+				rspd = rspd / 2;
+			}
+			
+			moveForward(lspd,rspd);
 			lastError = error;
+			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
 		}
-  }
+   }
 }
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
