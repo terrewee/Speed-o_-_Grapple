@@ -79,7 +79,7 @@ void resetMotors(){
 	BP.set_motor_power(PORT_C, 0);
 }
 
-void moveForward(uint32_t lspd, uint32_t rspd){
+void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
 }
@@ -102,12 +102,14 @@ void draaiRechts(){
 					break;
 				}
 			}
+			cout << "Turning" << endl;
 			moveForward(20, 5);
 		}
 		usleep(100000);
 	}
 	cout << "Gon reset" << endl;
 	resetMotors();
+	::crossroad = 0;
 }
 
 bool stopVoorObject()
