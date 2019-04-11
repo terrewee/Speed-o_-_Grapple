@@ -969,7 +969,7 @@ int main(){
 				followedRoute = manualControl(GP);
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
-				iClient(message);
+				//iClient(message);
 				kruispunt.join();	
 			case 6:
 				// testFunctie(GP, grid);
