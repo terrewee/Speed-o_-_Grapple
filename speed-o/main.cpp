@@ -17,18 +17,25 @@ void exit_signal_handler(int signo);
 
 int crossroad;
 
-void crossroaddetectie(){
-  sensor_color_t      Color2;
-  sensor_color_t      Color4;
-  ::crossroad = 0;
-  while (true){
-    if((BP.get_sensor(PORT_2, Color2) == 0)&&(BP.get_sensor(PORT_4, Color4) == 0)){
-      if (Color2.color == 1 || Color4.color == 1){ sleep(0.01); ::crossroad++;}//sleep zodat hij niet hetzelfde kruispunt 2 keer registreert
-    }
-  //sleep(0.5);
-  cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
-  cout << "Crossroad number: " << ::crossroad << endl;
-  }
+void crossroaddetectie()
+{
+	sensor_color_t      Color2;
+	sensor_color_t      Color4;
+	::crossroad = 0;
+	while (true)
+	{
+		if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
+		{
+			if (Color2.color == 1 || Color4.color == 1)
+			{
+				usleep(100000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
+				::crossroad++;	// increment globale variabele crossroads gezien
+			}
+		}
+		//sleep(0.5);
+		cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
+		cout << "Crossroad number: " << ::crossroad << endl;
+	}
 }
 
 struct routeCount {
@@ -47,82 +54,21 @@ routeCount initRouteCount(const string & myRoute) {
   return tStruct;
 }
 
-//Turns the robot to the right, and updates the value of GP.direction.
-void turnLeft(int lpos, int rpos){	// zet gridpoints GP er weer in
-  int32_t EncoderB = BP.get_motor_encoder(PORT_B);
-  int32_t EncoderC = BP.get_motor_encoder(PORT_C);
-/*
-  if(GP.direction == 'n'){
-    GP.direction = 'w';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-  else if(GP.direction == 'w'){
-    GP.direction = 's';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-  else if(GP.direction == 's'){
-    GP.direction = 'e';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-  else{
-    GP.direction = 'n';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-*/
-	BP.set_motor_position_relative(PORT_B, lpos);
-	BP.set_motor_position_relative(PORT_C, rpos);
+void draaiLinks()
+{
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, 116);
+	BP.set_motor_position_relative(PORT_C, -116);
 }
 
-//Turns the rorbot to the left, and updates the value of GP.direction.
-void turnRight(int lpos, int rpos){	// zet gridpoints GP er weer in
-  int32_t EncoderB = BP.get_motor_encoder(PORT_B);
-  int32_t EncoderC = BP.get_motor_encoder(PORT_C);
-/*
-  if(GP.direction == 'n'){
-    GP.direction = 'e';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-  else if(GP.direction == 'e'){
-    GP.direction = 's';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-  else if(GP.direction == 's'){
-    GP.direction = 'w';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-  else{
-    GP.direction = 'n';
-		BP.set_motor_position_relative(PORT_B, lpos);
-		BP.set_motor_position_relative(PORT_C, rpos);
-		sleep(1);
-		resetMotorsAB();
-  }
-*/
-	BP.set_motor_position_relative(PORT_B, lpos);
-	BP.set_motor_position_relative(PORT_C, rpos);
+void draaiRechts()
+{
+	BP.get_motor_encoder(PORT_B);
+	BP.get_motor_encoder(PORT_C);
+	BP.set_motor_position_relative(PORT_B, -116);
+	BP.set_motor_position_relative(PORT_C, 116);
 }
-
 
 void setSensors(){
   BP.set_sensor_type(PORT_1,SENSOR_TYPE_NXT_ULTRASONIC);
@@ -141,8 +87,9 @@ void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_C,-rspd);
 }
 
-void followLine()
+void followLine(int aantalKeerTeGaan)
 {
+	int kruispunt;
         sensor_light_t Light3;
 
         int offset = 45;
@@ -159,19 +106,28 @@ void followLine()
 
         if (BP.get_sensor(PORT_3, Light3) == 0)
         {
-          lightvalue = Light3.reflected;
-//	cout << "Lichtwaarde: " << lightvalue << endl;
-          error = ((lightvalue-1600)/50)+30 - offset;
+		while(true)
+		{
+			kruispunt == ::crossroad;
+			if(kruispunt == aantalKeerTeGaan)
+			{
+				resetMotors();
+				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
+				break;
+			}
+			lightvalue = Light3.reflected;
+			error = ((lightvalue-1600)/50)+30 - offset;
 
-          Turn = error * Kp;
-          Turn = Turn/3;
+			Turn = error * Kp;
+			Turn = Turn/3;
 
-          lspd = Tp + Turn;
-          rspd = Tp - Turn;
+			lspd = Tp + Turn;
+			rspd = Tp - Turn;
 
-          moveForward(lspd,rspd);
+			moveForward(lspd,rspd);
 
-          lastError = error;
+			lastError = error;
+		}
         }
 }
 
@@ -182,36 +138,27 @@ void exit_signal_handler(int signo){
   }
 }
 
-int main(){
-  signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
-  BP.detect();
-  BP.reset_all();
-  for (int i = 0; i < 5; ++i){
-    cout << ".";
-    if (i == 3){
-      setSensors();
-    }
-    sleep(1);
-  }
-  cout << endl << "Initialized" << endl;
+int main()
+{
+	signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
+	BP.detect();
+	BP.reset_all();
+	for (int i = 0; i < 5; ++i)
+	{
+		cout << ".";
+		if (i == 3)
+		{
+			setSensors();
+		}
+    		sleep(1);
+  	}
+	cout << endl << "Initialized" << endl;
 
-  sensor_light_t      Light3;
+	sensor_light_t      Light3;
 
 
-  thread kruispunt (crossroaddetectie);
+	thread kruispunt (crossroaddetectie);
 
- 	while(true){
-/*		int lpos;
-		int rpos;
-		cout << "lpos: ";
-		cin >> lpos;
-		cout << "rpos: ";
-		cin >> rpos;
-		turnRight(lpos, rpos);
-*/
-//		if(BP.get_sensor(PORT_3, Light3) == 0){cout << "Ligt value: " <<  (int)Light3.reflected << endl; sleep(2);}
-		followLine();
-
-	}
+ 	followLine();
 }
 
