@@ -392,9 +392,9 @@ void followLine(int aantalKeerTeGaan){
 
     int lspd = 0;
     int rspd = 0;
-	while(::crossroad <= aantalKeerTeGaan){
+	// while(::crossroad <= aantalKeerTeGaan){	
 		if(BP.get_sensor(PORT_3, Light3) == 0){
-            cout << "crossroad: " << ::crossroad << endl;
+            // cout << "crossroad: " << ::crossroad << endl;
             //if(::crossroad == aantalKeerTeGaan - 1){
                 //Tp = 10;
                 //Kp = 1;
@@ -418,16 +418,17 @@ void followLine(int aantalKeerTeGaan){
                 sleep(1);
             }
 
-            if(::crossroad == aantalKeerTeGaan - 1){
-                lspd = lspd / 2;
-                rspd = rspd / 2;
-            }
+            // if(::crossroad == aantalKeerTeGaan - 1){
+            //     lspd = lspd / 2;
+            //     rspd = rspd / 2;
+            // }
             
             moveForward(lspd,rspd);
             lastError = error;
-            cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
+            // cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
+						sleep(1);
 	    }
-    }
+    
     resetMotors();
     //break;
 }
