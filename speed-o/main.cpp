@@ -416,6 +416,7 @@ void followLine(int aantalKeerTeGaan){
     resetMotors();
     //break;
 }
+}
 
 //-------path instructions--------
 
