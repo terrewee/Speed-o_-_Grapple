@@ -310,6 +310,7 @@ void backUpFromObject(){
     resetMotor();
 }
 
+
 void turnLeft() {
     sensor_light_t Light1;
     fwd(-20, -20);
@@ -458,7 +459,9 @@ void navigation(vector<char> route) {
       sleep(1);
       klauwOmhoog();
       resetMotor();
-      cout << "Picked up ze object, time to head back" << endl;
+        gelijdelijkDownLoop();
+        resetMotor();
+        cout << "Picked up ze object, time to head back" << endl;
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
@@ -503,22 +506,6 @@ void navigation(vector<char> route) {
     }
 
     resetMotor();
-
-    //***************************************************************************************************************
-    //fucntie voor object droppen
-    if (gotAObject) {
-      cout << "Arrived home, dropping the object like its hot" << endl;
-      sleep(1);
-      brengNaarKantelPunt();
-      gelijdelijkDownLoop();
-      klauwOpen();
-      klauwOmhoog();
-      klauwDicht();
-      resetMotor();
-    }
-    /* code */
-    //***************************************************************************************************************
-
     drive('b'); // orienteer jezelf goed voor de volgende missie
     resetMotor();
 }
