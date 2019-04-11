@@ -45,6 +45,7 @@ void crossroaddetectie()
 		//cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
 		//cout << "Crossroad number: " << ::crossroad << endl;
 	}
+	cout << "Im gon stop now" << endl;
 }
 
 struct routeCount {
@@ -78,7 +79,7 @@ void resetMotors(){
 	BP.set_motor_power(PORT_C, 0);
 }
 
-void moveForward(int lspd, int rspd){
+void moveForward(uint32_t lspd, uint32_t rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
 }
@@ -86,13 +87,18 @@ void moveForward(int lspd, int rspd){
 void draaiRechts(){
 	sensor_light_t Light3;
 	while(true){
+		cout << "No line yet" << endl;
         if(BP.get_sensor(PORT_3, Light3) == 0){
             if(Light3.reflected < 2300){
+            	cout << "Gon break" << endl;
                 break;
             }
+            cout << "Gon set 20, 5 " << endl;
             moveForward(20, 5);
         }
+        usleep(100000);
 	}
+	cout << "Gon reset" << endl;
 	resetMotors();
 }
 
@@ -199,6 +205,7 @@ int main()
 	draaiRechts();
 	sleep(1);
 	BP.reset_all();
+	::running = false;
 	kruispunt.join();
 	return 0;
 }
