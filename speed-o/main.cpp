@@ -748,12 +748,22 @@ int main(){
         checkSensor();
         break;
 			case 4:
+				gridPoints GP;
+				GP.direction = 'n';
+				range obstakel;
+				vector<vector<bool>> grid = getGrid(GP);
+				string followedRoute;
+				bool destinationArrived = false;
+
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
 				//communicate(followedRoute);
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
 			case 5:
+				gridPoints GP;
+				vector<vector<bool>> grid = getGrid(GP);
+				
 				getCoordinates(GP, grid);
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
