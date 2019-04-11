@@ -73,14 +73,6 @@ void draaiLinks()
 	BP.set_motor_position_relative(PORT_C, -116);
 }
 
-void draaiRechts()
-{
-	BP.get_motor_encoder(PORT_B);
-	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, -116);
-	BP.set_motor_position_relative(PORT_C, 116);
-}
-
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
 	BP.set_motor_power(PORT_C, 0);
@@ -89,6 +81,16 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
+}
+
+void draaiRechts()
+{
+	sensor_light_t Light3;
+	while(Light3.reflected < 2300)
+	{
+		moveForward(20, 5);
+	}
+	resetMotors();
 }
 
 bool stopVoorObject()
@@ -124,7 +126,12 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 		{
 			if(BP.get_sensor(PORT_3, Light3) == 0){
 			cout << "crossroad: " << ::crossroad << endl;
-			if(::crossroad == aantalKeerTeGaan)
+			if(::crossroad == aantalKeerTeGaan - 1)
+			{
+//				Tp = 10;
+//				Kp = 1;
+			}
+			else if(::crossroad == aantalKeerTeGaan)
 			{
 				resetMotors();
 				break;
@@ -142,6 +149,12 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 			{
 				resetMotors();
 				sleep(1);
+			}
+
+			if(::crossroad == aantalKeerTeGaan - 1)
+			{
+				lspd = lspd / 2;
+				rspd = rspd / 2;
 			}
 			moveForward(lspd,rspd);
 			lastError = error;
@@ -177,6 +190,7 @@ int main()
 	thread kruispunt (crossroaddetectie);
 
  	followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
+//	draaiLinks();
 	BP.reset_all();
 }
 
