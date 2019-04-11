@@ -388,12 +388,9 @@ void followLine(int aantalKeerTeGaan){
 
     int lspd = 0;
     int rspd = 0;
-    while(true){    
-        bool statusCrossroad = crossroaddetectie2();
-        if( statusCrossroad == false){
-            if(BP.get_sensor(PORT_3, Light3) == 0){
-            
 
+	if(BP.get_sensor(PORT_3, Light3) == 0){
+            
             lightvalue = Light3.reflected;
             error = ((lightvalue-1700)/40)+30 - offset;
 
@@ -402,22 +399,21 @@ void followLine(int aantalKeerTeGaan){
 
             lspd = Tp + Turn;
             rspd = Tp - Turn;
-
-            if(stopVoorObject() == true){
-                resetMotors();
-                sleep(1);
-            }
             
-            moveForward(lspd,rspd);
+            
             lastError = error;
             // cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
                         sleep(1);
-            }
-        }
-        else{
-            break;
-            //ga naar kruispunt keuze.
-        }
+		
+		moveForward(lspd,rspd);
+	}
+	
+    while(true){    
+        bool statusCrossroad = crossroaddetectie2();
+        if(statusCrossroad){
+            resetMotors;
+						break;
+				}
 		}
 }
 
