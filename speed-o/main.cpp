@@ -200,32 +200,6 @@ struct routeCount {
   vector<int> amount = {};
 };
 
-void resetMotors(){
-	BP.set_motor_power(PORT_B, 0);
-	BP.set_motor_power(PORT_C, 0);
-}
-
-void moveForward(int lspd, int rspd){
-	BP.set_motor_power(PORT_B,-lspd);
-	BP.set_motor_power(PORT_C,-rspd);
-}
-
-void draaiLinks(){
-	BP.get_motor_encoder(PORT_B);
-	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, 116);
-	BP.set_motor_position_relative(PORT_C, -116);
-}
-
-void draaiRechts()
-{
-	sensor_light_t Light3;
-	while(Light3.reflected < 2300)
-	{
-		moveForward(20, 5);
-	}
-	resetMotors();
-}
 
 //------------------------------------------MANUAL CONTROLS-----------------------------------------------
 
@@ -334,11 +308,14 @@ void turnMotorPowerDown(int &motorPower) {
 	}
 }
 
-void moveForward(gridPoints &GP){
-	int motorPower = 10;
-	turnMotorPowerUp(motorPower);
-	sleep(1);
-	turnMotorPowerDown(motorPower);
+void resetMotors(){
+	BP.set_motor_power(PORT_B, 0);
+	BP.set_motor_power(PORT_C, 0);
+}
+
+void moveForward(int lspd, int rspd){
+	BP.set_motor_power(PORT_B,-lspd);
+	BP.set_motor_power(PORT_C,-rspd);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -472,13 +449,14 @@ void updateLocation(gridPoints & GP, int distance){
 }
 
 //Moves robot a set distance forward and calls updateLocation().
-void moveForwardDistance(gridPoints & GP, unsigned int distance){
-  int count = 0;
+void moveForwardDistance(gridPoints &GP, unsigned int distance){
+  unsigned int count = 0;
   while(count < distance){
-    moveForward();
+    moveForward(10, 10);
     count++;
   }
   updateLocation(GP, distance);
+	cout << distance << endl;
 }
 
 void moveToHomepoint(gridPoints GP){
@@ -551,9 +529,9 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
-		if 			(answer == "w")		{moveForward(GP);}
-		else if (answer == "a")		{turnLeft(GP); moveForward(GP);}
-		else if (answer == "d")		{turnRight(GP); moveForward(GP);}
+		if 			(answer == "w")		{moveForward(10,10);}
+		else if (answer == "a")		{turnLeft(GP); moveForward(10,10);}
+		else if (answer == "d")		{turnRight(GP); moveForward(10,10);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 		orientationList.push_back(GP.direction);
