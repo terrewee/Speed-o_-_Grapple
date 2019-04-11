@@ -31,7 +31,7 @@ void crossroaddetectie()
 	sensor_color_t      Color2;
 	sensor_color_t      Color4;
 	::crossroad = 0;
-	while (::running)
+	while (true)
 	{
 		if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
 		{
@@ -125,20 +125,20 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 
         int lspd = 0;
         int rspd = 0;
-		while(true)
+		while(::crossroad <= aantalKeerTeGaan)
 		{
 			if(BP.get_sensor(PORT_3, Light3) == 0){
 			cout << "crossroad: " << ::crossroad << endl;
-			if(::crossroad == aantalKeerTeGaan - 1)
-			{
-//				Tp = 10;
-//				Kp = 1;
-			}
-			else if(::crossroad == aantalKeerTeGaan)
-			{
-				resetMotors();
-				break;
-			}
+// 			if(::crossroad == aantalKeerTeGaan - 1)
+// 			{
+// //				Tp = 10;
+// //				Kp = 1;
+// 			}
+// 			else if(::crossroad == aantalKeerTeGaan)
+// 			{
+// 				resetMotors();
+// 				break;
+// 			}
 			lightvalue = Light3.reflected;
 			error = ((lightvalue-1700)/40)+30 - offset;
 
@@ -164,11 +164,13 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
 		}
         }
+        resetMotors();
+// 				break;
 }
 
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-	::running = false;
+	//::running= false;
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
