@@ -316,7 +316,7 @@ void turnLeft() {
     sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(20, -40);
+    fwd(40, -80);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         while (Light1.reflected > 2600) {
             usleep(1000);
@@ -332,7 +332,7 @@ void turnRight() {
     sleep(1);
     resetMotor();
     sleep(0.5);
-    fwd(-40, 20);
+    fwd(-80, 40);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         while (Light1.reflected > 2600) {
             usleep(1000);
