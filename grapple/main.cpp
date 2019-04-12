@@ -124,7 +124,7 @@ void encodeMotorB(int32_t pos) {
 
 void terugVanKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(-40);
+    encodeMotorB(-50);
     resetMotor();
     sleep(1);
 }
@@ -132,7 +132,7 @@ void terugVanKantelPunt() {
 
 void brengNaarKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(60);
+    encodeMotorB(70);
     sleep(1);
 }
 
