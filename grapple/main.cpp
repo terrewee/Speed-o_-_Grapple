@@ -356,9 +356,9 @@ int moveForward() {
     sleep(1);
 
     int offset = 45;
-    int Tp = 15;
+    int Tp = 25;
 
-    int Kp = 3;
+    int Kp = 4;
 
     int Turn = 0;
     int lightvalue = 0;
