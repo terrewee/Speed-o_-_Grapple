@@ -269,7 +269,6 @@ void turnMotorPowerUp(int &motorPower) {
 	while (motorPower < snelheid) {
 		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_B, motorPower);
-		usleep(0.5);
 		motorPower += 1;
 
 	}
@@ -291,7 +290,6 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
-	sleep(2);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -456,12 +454,8 @@ void updateLocation(gridPoints & GP, int distance){
 
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
-	cout << "Pre-followLine()" << endl;
   followLine(distance);
-	cout << "Post-followLine()" << endl;
   updateLocation(GP, distance);
-  cout << "moveForwardDistance: "<< distance << endl;
-
 }
 
 //Moves to homepoint with line assistance.
