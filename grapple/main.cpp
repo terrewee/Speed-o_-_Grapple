@@ -337,18 +337,20 @@ void moveForward(int lspd, int rspd){
   sleep(1);
 }
 
-void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
-{
-    sensor_light_t Light3;
-    sensor_color_t Color2;
-    sensor_color_t Color4;
-    sensor_ultrasonic_t Ultrasonic1;
+
+int moveForward() {
+    //Aan de hand van pid controller
+    sensor_light_t Light1;
+    sensor_color_t Color3;
+
+    fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
+    sleep(1);
 
     int offset = 45;
-    int Tp = 25;
-    int Kp = 2;
+    int Tp = 15;
 
-    int lastError = 0;
+    int Kp = 4;
+
     int Turn = 0;
     int lightvalue = 0;
     int error = 0;
@@ -356,64 +358,33 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
     int lspd = 0;
     int rspd = 0;
 
-    int lastColor2 = 0;
-    int lastColor4 = 0;
-    int crossroads = 0;
-
-    while(true) {
-        if (BP.get_sensor(PORT_2, Color2) == 0 && BP.get_sensor(PORT_4, Color4) == 0) {
-            cout << "I am in check" << endl;
-            if (Color2.color == 1 || Color4.color == 1 ) {
-             cout << "Got a crossroads" << endl;
-             crossroads++;
-             usleep(200000);
-            }
-        }
-        cout << crossroads << " Crossroads" << endl;
-        if(BP.get_sensor(PORT_3, Light3) == 0) {
-            if(crossroads == aantalKeerTeGaan) {
-                crossroads = 0;
-                resetMotor();
-                break;
-            }
-            lightvalue = Light3.reflected;
-            error = ((lightvalue-1700)/40)+30 - offset;
-
-            Turn = error * Kp;
-            Turn = Turn/1;
-
-            lspd = Tp + Turn;
-            rspd = Tp - Turn;
-
-            if (BP.get_sensor(PORT_1,Ultrasonic1) == 0) {
-                if(Ultrasonic1.cm < 20){
-                    resetMotor();
-                    sleep(1);
-                    continue;
-                }else if(Ultrasonic1.cm < 40){
-                    lspd = lspd / 2;
-                    rspd = rspd / 2;
+    while (running) {
+        if (BP.get_sensor(PORT_1, Light1) == 0) {
+            lightvalue = Light1.reflected; // neem waarde van zwartwit sensor
+            if (BP.get_sensor(PORT_3, Color3) == 0) {
+                if ((Color3.reflected_red < 300) && (lightvalue > 2700)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
+                    cout << "hier is een kruispunt" << endl;
+                    return 0;
                 }
             }
-
-            if(crossroads == aantalKeerTeGaan - 1) {
-                lspd = lspd / 2;
-                rspd = rspd / 2;
-            }
-            moveForward(lspd,rspd);
-            lastError = error;
-            cout << "Crossroad " << crossroads << endl;
-            cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
         }
+
+        error = ((lightvalue - 1850) / 55) + 30 - offset;
+
+        Turn = error * Kp;
+
+        lspd = Tp + Turn;
+        rspd = Tp - Turn;
+        fwd(lspd, rspd);
     }
-    resetMotor();
 }
+
 
 void drive(char direction) {
     if (direction == 'f') {
         //ga 1 grid plek
         //moveForward();
-        followLine(1);
+        followLine();
     }
     else if (direction == 'r') {
         //ga 90 graden links
@@ -434,6 +405,7 @@ void drive(char direction) {
 
 
 void navigation(vector<char> route) {
+    te
     bool gotAObject = true;
     route.insert(route.begin(), 1, 'n');    //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
@@ -442,28 +414,28 @@ void navigation(vector<char> route) {
         } else {
             resetMotor();
             if
-                    ((route[i] == 'n' && route[i-1] == 'w') ||
-                     (route[i] == 'o' && route[i-1] == 'n') ||
-                     (route[i] == 's' && route[i-1] == 'o') ||
-                     (route[i] == 'w' && route[i-1] == 's')) {
-                drive('r');
-                drive('f');
-            }
-            else if
-                    ((route[i] == 'n' && route[i-1] == 'o') ||
-                     (route[i] == 'o' && route[i-1] == 's') ||
-                     (route[i] == 's' && route[i-1] == 'w') ||
-                     (route[i] == 'w' && route[i-1] == 'n')) {
-                drive('l');
-                drive('f');
-            }
-            else if
-                    ((route[i] == 'n' && route[i-1] == 's') ||
-                     (route[i] == 'o' && route[i-1] == 'w') ||
-                     (route[i] == 's' && route[i-1] == 'n') ||
-                     (route[i] == 'w' && route[i-1] == 'o')) {
-                drive('b');
-                drive('f');
+                        ((route[i] == 'n' && route[i-1] == 'w') ||
+                         (route[i] == 'e' && route[i-1] == 'n') ||
+                         (route[i] == 's' && route[i-1] == 'e') ||
+                         (route[i] == 'w' && route[i-1] == 's')) {
+                    drive('r');
+                    drive('f');
+                }
+                else if
+                        ((route[i] == 'n' && route[i-1] == 'e') ||
+                         (route[i] == 'e' && route[i-1] == 's') ||
+                         (route[i] == 's' && route[i-1] == 'w') ||
+                         (route[i] == 'w' && route[i-1] == 'n')) {
+                    drive('l');
+                    drive('f');
+                }
+                else if
+                        ((route[i] == 'n' && route[i-1] == 's') ||
+                         (route[i] == 'e' && route[i-1] == 'w') ||
+                         (route[i] == 's' && route[i-1] == 'n') ||
+                         (route[i] == 'w' && route[i-1] == 'e')) {
+                    drive('b');
+                    drive('f');
             } else { // als geen van de opties gepakt word gebeurt er iets abnormaals
                 cout << "help, er gebeurt iets geks: " << route[i] << route[i-1] << endl;
             }
@@ -477,14 +449,15 @@ void navigation(vector<char> route) {
     //***************************************************************************************************************
     if (color_object(whatIsInAColor())) {
       cout << "Pak het op" << endl;
-      brengNaarKantelPunt();
+        backUpFromObject()
+        brengNaarKantelPunt();
       klauwOpen();
       gelijdelijkDownLoop();
       klauwDicht();
       sleep(1);
       klauwOmhoog();
       resetMotor();
-        gelijdelijkDownLoop();
+        brengNaarKantelPunt();
         resetMotor();
         cout << "Picked up ze object, time to head back" << endl;
     }
