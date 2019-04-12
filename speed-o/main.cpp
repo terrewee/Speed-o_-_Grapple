@@ -157,18 +157,18 @@ void iClient(char message[256]){
   close(socketFD);
 }
 
-bool crossroaddetectie2(){
-  sensor_color_t      Color2;
-  sensor_color_t      Color4;
-  while (::running){
-    if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0)){
-    	if (Color2.color == 1 || Color4.color == 1){
-        usleep(200000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
-        return true;
-      }
-    }
-  }
-}
+// bool crossroaddetectie2(){
+//   sensor_color_t      Color2;
+//   sensor_color_t      Color4;
+//   while (::running){
+//     if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0)){
+//     	if (Color2.color == 1 || Color4.color == 1){
+//         usleep(200000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
+//         return true;
+//       }
+//     }
+//   }
+// }
 
 struct routeCount {
   vector<char> direction = {};
