@@ -344,7 +344,8 @@ void turnLeft() {
         int lightvalue;
         while (true) {
             lightvalue = Light1.reflected;
-            if (lightvalue > 2700){
+            cout << lightvalue << endl;
+            if (lightvalue >= 2800){
                 break;
             }
         }
@@ -365,7 +366,8 @@ void turnRight() {
         int lightvalue;
         while (true) {
             lightvalue = Light1.reflected;
-            if (lightvalue > 2700){
+            cout << lightvalue << endl;
+            if (lightvalue >= 2800){
                 break;
             }
         }
@@ -405,7 +407,7 @@ int moveForward() {
             }
         }
 
-        error = ((lightvalue - 1850) / 55) + 30 - offset;
+        error = ((lightvalue - 2100) / 40) + 30 - offset;
 
         Turn = error * Kp;
 
