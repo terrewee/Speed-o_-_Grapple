@@ -469,13 +469,13 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
 void moveToHomepoint(gridPoints GP){
 	GP.direction = 'n';
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
-	move('e');
+	move('e', GP);
 	if(GP.targetCoordinates.y == 0){
-		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
-		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
+		if		 (GP.targetCoordinates.x > 0){turn('e', GP);}
+		else if(GP.targetCoordinates.x < 0){turn('w', GP);}
 	}
 	else if(GP.targetCoordinates.y > 0){turn('s', GP);}
-	else if(GP.targetCoordinates.y < 0){turn('s', GP);}
+	else if(GP.targetCoordinates.y < 0){turn('n', GP);}
 }
 
 //Moves to homepoint without line assistance.
@@ -485,8 +485,8 @@ void moveToHomepointVirtual(gridPoints GP){
 	turn('e', GP);
  	moveForward(29,25);
 	if(GP.targetCoordinates.y == 0){
-		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
-		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
+		if		 (GP.targetCoordinates.x > 0){turn('e', GP);}
+		else if(GP.targetCoordinates.x < 0){turn('w', GP);}
 	}
 	else if(GP.targetCoordinates.y > 0){turn('s', GP);}
 	else if(GP.targetCoordinates.y < 0){turn('n', GP);}
