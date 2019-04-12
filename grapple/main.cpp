@@ -157,7 +157,7 @@ void gelijdelijkDownLoop() {
         usleep(500000);
         encoder = encoder - 10;
     }
-    while(encoder > -160) {
+    while(encoder > -170) {
         encodeMotorB(5);
         usleep(500000);
         encoder = encoder - 5;
@@ -338,7 +338,7 @@ void turnLeft() {
     resetMotor();
     sleep(0.5);
     fwd(30, 8);
-    sleep(5);
+    sleep(4);
     resetMotor();
 }
 
@@ -350,7 +350,7 @@ void turnRight() {
     resetMotor();
     sleep(0.5);
     fwd(8, 30);
-    sleep(5);
+    sleep(4);
     resetMotor();
 }
 
@@ -469,10 +469,10 @@ void navigation(vector<char> route) {
         klauwOpen();
         gelijdelijkDownLoop();
         klauwDicht();
-        sleep(1);
+        sleep(0.2);
         klauwOmhoog();
         resetMotor();
-        gelijdelijkDownLoop();
+        brengNaarKantelPunt();
         resetMotor();
         cout << "Picked up ze object, time to head back" << endl;
     }
