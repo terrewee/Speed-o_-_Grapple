@@ -13,7 +13,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-BrickPi3 BP;
+//BrickPi3 BP;
 
 struct coordinates{
   int x;
@@ -154,8 +154,8 @@ void turnMotorPowerDown(int &motorPower) {
 }
 
 void moveForward(int lspd, int rspd){
-	//BP.set_motor_power(PORT_B,-lspd);
-	//BP.set_motor_power(PORT_C,-rspd);
+	BP.set_motor_power(PORT_B,-lspd);
+	BP.set_motor_power(PORT_C,-rspd);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
