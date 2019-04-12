@@ -311,8 +311,8 @@ void turnLeft(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, -130);
-	BP.set_motor_position_relative(PORT_C, 130);
+	BP.set_motor_position_relative(PORT_B, -90);
+	BP.set_motor_position_relative(PORT_C, 90);
 	sleep(1);
 }
 
@@ -333,8 +333,8 @@ void turnRight(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, 130);
-	BP.set_motor_position_relative(PORT_C, -130);
+	BP.set_motor_position_relative(PORT_B, 90);
+	BP.set_motor_position_relative(PORT_C, -90);
 	sleep(1);
 }
 
