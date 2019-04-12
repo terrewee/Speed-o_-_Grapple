@@ -537,7 +537,6 @@ int main() {
     BP.set_motor_limits(PORT_C, 50, 0);
 
     resetMotor();
-    thread checkBattery(batteryLevel);
 
     int uChoice;
 
@@ -579,22 +578,22 @@ int main() {
                 break;
             }
             case 6:
-                cour << "brengNaarKantelPunt" << endl;
+                cout << "brengNaarKantelPunt" << endl;
                 brengNaarKantelPunt();
-                cour << "klauwOpen" << endl;
+                cout << "klauwOpen" << endl;
                 klauwOpen();
-                cour << "gelijdelijkDownLoop" << endl;
+                cout << "gelijdelijkDownLoop" << endl;
                 gelijdelijkDownLoop();
-                cour << "klauwDicht" << endl;
+                cout << "klauwDicht" << endl;
                 klauwDicht();
                 sleep(1);
-                cour << "klauwOmhoog" << endl;
+                cout << "klauwOmhoog" << endl;
                 klauwOmhoog();
-                cour << " resetMotor" << endl;
+                cout << " resetMotor" << endl;
                 resetMotor();
-                cour << "gelijdelijkDownLoop" << endl;
+                cout << "gelijdelijkDownLoop" << endl;
                 gelijdelijkDownLoop();
-                cour << "resetMotor" << endl;
+                cout << "resetMotor" << endl;
                 resetMotor();
             case 0:{ // functie om programma te stoppen
                 ::running = false;
