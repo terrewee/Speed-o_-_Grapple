@@ -434,6 +434,7 @@ void drive(char direction) {
 
 
 void navigation(vector<char> route) {
+    te
     bool gotAObject = true;
     route.insert(route.begin(), 1, 'n');    //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
@@ -477,14 +478,15 @@ void navigation(vector<char> route) {
     //***************************************************************************************************************
     if (color_object(whatIsInAColor())) {
       cout << "Pak het op" << endl;
-      brengNaarKantelPunt();
+        backUpFromObject()
+        brengNaarKantelPunt();
       klauwOpen();
       gelijdelijkDownLoop();
       klauwDicht();
       sleep(1);
       klauwOmhoog();
       resetMotor();
-        gelijdelijkDownLoop();
+        brengNaarKantelPunt();
         resetMotor();
         cout << "Picked up ze object, time to head back" << endl;
     }
