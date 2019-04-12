@@ -316,8 +316,8 @@ void fwd(const int lspd, const int rspd) {
 
 
 void backUpFromObject(){
-    fwd(-10, -10);
-    sleep(3);
+    fwd(-25, -25);
+    sleep(2);
     resetMotor();
 }
 
@@ -460,6 +460,8 @@ void navigation(vector<char> route) {
     if (color_object(whatIsInAColor())) {
         cout << "Pak het op" << endl;
         backUpFromObject();
+        resetMotor();
+        sleep(1);
         brengNaarKantelPunt();
         klauwOpen();
         gelijdelijkDownLoop();
@@ -576,9 +578,31 @@ int main() {
                 checkSensor();
                 break;
             case 5: //test pls dont delete this time duur :D
-            {   vector<char> vec/* = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'}*/;
+            {   vector<char> vec = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'};
                 navigation(vec);
                 break;
+            }
+            case 6: {
+                // pick up object
+                if (color_object(whatIsInAColor())) {
+                    cout << "Pak het op" << endl;
+                    backUpFromObject();
+                    resetMotor();
+                    sleep(1);
+                    brengNaarKantelPunt();
+                    klauwOpen();
+                    gelijdelijkDownLoop();
+                    klauwDicht();
+                    sleep(0.2);
+                    klauwOmhoog();
+                    resetMotor();
+                    brengNaarKantelPunt();
+                    resetMotor();
+                    cout << "Picked up ze object, time to head back" << endl;
+                } else {
+                    cout << "Pak het niet op ga terug" << endl;
+                    gotAObject = false;
+                }
             }
             case 0:{ // functie om programma te stoppen
                 runProgram = false;
