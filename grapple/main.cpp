@@ -593,11 +593,11 @@ int main() {
                 sleep(1);
                 cout << "klauwOmhoog" << endl;
                 klauwOmhoog();
-                sleep(1);
-                cout << "gelijdelijkDownLoop" << endl;
-                gelijdelijkDownLoop();
-                cout << " resetMotor" << endl;
                 resetMotor();
+                sleep(1);
+                cout << "brengNaarKantelPunt" << endl;
+                brengNaarKantelPunt();
+                cout << " resetMotor" << endl;
             case 0:{ // functie om programma te stoppen
                 ::running = false;
                 break;}
