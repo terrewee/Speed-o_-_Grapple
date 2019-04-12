@@ -291,7 +291,6 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
-	sleep(1);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -311,8 +310,8 @@ void turnLeft(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, -116);
-	BP.set_motor_position_relative(PORT_C, 116);
+	BP.set_motor_position_relative(PORT_B, -110);
+	BP.set_motor_position_relative(PORT_C, 110);
 	sleep(1);
 }
 
@@ -333,8 +332,8 @@ void turnRight(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, 116);
-	BP.set_motor_position_relative(PORT_C, -116);
+	BP.set_motor_position_relative(PORT_B, 110);
+	BP.set_motor_position_relative(PORT_C, -110);
 	sleep(1);
 }
 
@@ -350,6 +349,7 @@ bool stopVoorObject(){
 		}
 		return false;
 	}
+  return false;
 }
 
 //Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
@@ -971,6 +971,7 @@ int main(){
   }
   cout << endl << "Initialized" << endl;
 
+
 	//Reset the encoders
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
@@ -1068,5 +1069,6 @@ int main(){
     }
 	}
 	cout << "exit(0)";
+  BP.reset_all();
 	return 0;
 }
