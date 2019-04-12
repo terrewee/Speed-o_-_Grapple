@@ -308,6 +308,7 @@ bool color_object (int colorchoice){
 
 //---------------------------------------DRIVING---------------------------------------------
 
+
 void fwd(const int lspd, const int rspd) {
     BP.set_motor_power(PORT_A, lspd);
     BP.set_motor_power(PORT_C, rspd);
@@ -316,7 +317,7 @@ void fwd(const int lspd, const int rspd) {
 
 void backUpFromObject(){
     fwd(-10, -10);
-    sleep(1);
+    sleep(3);
     resetMotor();
 }
 
@@ -324,17 +325,11 @@ void backUpFromObject(){
 void turnLeft() {
     sensor_light_t Light1;
     fwd(-20, -20);
-    sleep(1);
+    sleep(2);
     resetMotor();
     sleep(0.5);
-    fwd(20, -80);
-    if (BP.get_sensor(PORT_1, Light1) == 0) {
-        sleep(3);
-        while (Light1.reflected <= 2700) {
-            cout << 1 << endl;
-            usleep(10000);
-        }
-    }
+    fwd(30, 8);
+    sleep(4);
     resetMotor();
 }
 
@@ -342,25 +337,12 @@ void turnLeft() {
 void turnRight() {
     sensor_light_t Light1;
     fwd(-20, -20);
-    sleep(1);
+    sleep(2);
     resetMotor();
     sleep(0.5);
-    fwd(-80, 20);
-    if (BP.get_sensor(PORT_1, Light1) == 0) {
-        sleep(3);
-        cout << 1 << endl;
-        while (Light1.reflected <= 2700) {
-            usleep(10000);
-        }
-    }
+    fwd(8, 30);
+    sleep(4);
     resetMotor();
-}
-
-
-void moveForward(int lspd, int rspd){
-  BP.set_motor_power(PORT_B,-lspd);
-  BP.set_motor_power(PORT_C,-rspd);
-  sleep(1);
 }
 
 
@@ -375,7 +357,7 @@ int moveForward() {
     int offset = 45;
     int Tp = 15;
 
-    int Kp = 4;
+    int Kp = 3;
 
     int Turn = 0;
     int lightvalue = 0;
@@ -395,7 +377,7 @@ int moveForward() {
             }
         }
 
-        error = ((lightvalue - 1850) / 55) + 30 - offset;
+        error = ((lightvalue - 2100) / 40) + 30 - offset;
 
         Turn = error * Kp;
 
@@ -404,6 +386,7 @@ int moveForward() {
         fwd(lspd, rspd);
     }
 }
+
 
 
 void drive(char direction) {
@@ -472,20 +455,21 @@ void navigation(vector<char> route) {
     cout << "Arrived at destination" << endl;
     sleep(1);
     
-        //***************************************************************************************************************
-        if (color_object(whatIsInAColor())) {
-            cout << "Pak het op" << endl;
-            backUpFromObject();
-            brengNaarKantelPunt();
-            klauwOpen();
-            gelijdelijkDownLoop();
-            klauwDicht();
-            sleep(0.2);
-            klauwOmhoog();
-            resetMotor();
-            brengNaarKantelPunt();
-            resetMotor();
-            cout << "Picked up ze object, time to head back" << endl;
+    //***************************************************************************************************************
+                    // pick up object
+    if (color_object(whatIsInAColor())) {
+        cout << "Pak het op" << endl;
+        backUpFromObject();
+        brengNaarKantelPunt();
+        klauwOpen();
+        gelijdelijkDownLoop();
+        klauwDicht();
+        sleep(0.2);
+        klauwOmhoog();
+        resetMotor();
+        brengNaarKantelPunt();
+        resetMotor();
+        cout << "Picked up ze object, time to head back" << endl;
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
@@ -530,8 +514,6 @@ void navigation(vector<char> route) {
     }
 
     resetMotor();
-    drive('b'); // orienteer jezelf goed voor de volgende missie
-    resetMotor();
 }
 
 
@@ -555,7 +537,7 @@ int main() {
 
     bool runProgram = true;
 
-    BP.set_motor_limits(PORT_B, 50, 0);
+    BP.set_motor_limits(PORT_A, 50, 0);
     BP.set_motor_limits(PORT_C, 50, 0);
 
     resetMotor();
