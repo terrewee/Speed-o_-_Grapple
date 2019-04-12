@@ -124,7 +124,7 @@ void encodeMotorB(int32_t pos) {
 
 void terugVanKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(-40);
+    encodeMotorB(-50);
     resetMotor();
     sleep(1);
 }
@@ -132,7 +132,7 @@ void terugVanKantelPunt() {
 
 void brengNaarKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(60);
+    encodeMotorB(70);
     sleep(1);
 }
 
@@ -317,7 +317,7 @@ void fwd(const int lspd, const int rspd) {
 
 
 void backUpFromObject(){
-    fwd(-25, -25);
+    fwd(-15, -15);
     sleep(2);
     resetMotor();
 }
@@ -356,9 +356,9 @@ int moveForward() {
     sleep(1);
 
     int offset = 45;
-    int Tp = 15;
+    int Tp = 25;
 
-    int Kp = 3;
+    int Kp = 4;
 
     int Turn = 0;
     int lightvalue = 0;
@@ -470,12 +470,14 @@ void navigation(vector<char> route) {
         resetMotor();
         brengNaarKantelPunt();
         resetMotor();
+        drive('b');
+        resetMotor();
         cout << "Picked up ze object, time to head back" << endl;
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
     }
-    
+
     //***************************************************************************************************************
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
@@ -490,7 +492,7 @@ void navigation(vector<char> route) {
                      (route[i] == 'e' && route[i+1] == 'n') ||
                      (route[i] == 's' && route[i+1] == 'e') ||
                      (route[i] == 'w' && route[i+1] == 's')) {
-                drive('l');
+                drive('r');
                 drive('f');
             }
             else if
@@ -498,7 +500,7 @@ void navigation(vector<char> route) {
                      (route[i] == 'e' && route[i+1] == 's') ||
                      (route[i] == 's' && route[i+1] == 'w') ||
                      (route[i] == 'w' && route[i+1] == 'n')) {
-                drive('r');
+                drive('l');
                 drive('f');
             }
             else if
@@ -577,7 +579,7 @@ int main() {
                 checkSensor();
                 break;
             case 5: //test pls dont delete this time duur :D
-            {   vector<char> vec = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'};
+            {   vector<char> vec = {'n', 'n', 'e', 'e', 'n', 'n' ,'w', 's'};
                 navigation(vec);
                 break;
             }
