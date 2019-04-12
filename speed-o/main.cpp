@@ -860,7 +860,7 @@ void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridP
 			}
 			else{
 				followedRoute += directions[i];
-				turn(direction[i], GP);
+				turn(directions[i], GP);
 				moveForward(20,20);
 				resetMotors();
 
