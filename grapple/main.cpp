@@ -593,7 +593,7 @@ int main() {
                 sleep(1);
                 cout << "klauwOmhoog" << endl;
                 klauwOmhoog();
-                sleep(1)
+                sleep(1);
                 cout << "gelijdelijkDownLoop" << endl;
                 gelijdelijkDownLoop();
                 cout << " resetMotor" << endl;
