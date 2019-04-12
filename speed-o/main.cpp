@@ -1065,8 +1065,11 @@ int main(){
 				followRouteVirtual(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
 				driveBack(followedRoute, GP);
+				cout << "driving back" << endl;
 				resetCurrentLocation(GP);
+				cout << "Location reset" << endl;
 				//iClient(followedRoute);
+				runProgram = 0;
 				break;
     }
 	}
