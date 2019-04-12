@@ -291,6 +291,7 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
+	sleep(2);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -533,8 +534,8 @@ string manualControl(gridPoints &GP){
 	while(true){
 		cin >> answer;
 		if 			(answer == "w")		{followLine(1);}
-		else if (answer == "a")		{moveForward(10,10); sleep(0.2); turnLeft(GP); followLine(1);}
-		else if (answer == "d")		{moveForward(10,10); sleep(0.2); turnRight(GP); followLine(1);}
+		else if (answer == "a")		{moveForward(10,10); sleep(0.2); resetMotors(); turnLeft(GP); followLine(1);}
+		else if (answer == "d")		{moveForward(10,10); sleep(0.2); resetMotors(); turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
@@ -861,7 +862,7 @@ void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridP
 			else{
 				followedRoute += directions[i];
 				turn(directions[i], GP);
-				moveForward(20,20);
+				moveForward(25,25);
 				resetMotors();
 
 				if(i == directions.size() - 1){
