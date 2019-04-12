@@ -291,6 +291,7 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
+	sleep(2);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -861,7 +862,7 @@ void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridP
 			else{
 				followedRoute += directions[i];
 				turn(directions[i], GP);
-				moveForward(20,20);
+				moveForward(25,25);
 				resetMotors();
 
 				if(i == directions.size() - 1){
