@@ -579,14 +579,22 @@ int main() {
                 break;
             }
             case 6:
+                cour << "brengNaarKantelPunt" << endl;
                 brengNaarKantelPunt();
+                cour << "klauwOpen" << endl;
                 klauwOpen();
+                cour << "gelijdelijkDownLoop" << endl;
                 gelijdelijkDownLoop();
+                cour << "klauwDicht" << endl;
                 klauwDicht();
                 sleep(1);
+                cour << "klauwOmhoog" << endl;
                 klauwOmhoog();
+                cour << " resetMotor" << endl;
                 resetMotor();
+                cour << "gelijdelijkDownLoop" << endl;
                 gelijdelijkDownLoop();
+                cour << "resetMotor" << endl;
                 resetMotor();
             case 0:{ // functie om programma te stoppen
                 ::running = false;
