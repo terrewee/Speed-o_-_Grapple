@@ -339,7 +339,7 @@ void turnLeft() {
     sleep(0.5);
     fwd(50, -100);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
-        sleep(3);
+        sleep(1);
         int lightvalue;
         while (true) {
             lightvalue = Light1.reflected;
@@ -361,7 +361,7 @@ void turnRight() {
     sleep(0.5);
     fwd(-100, 50);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
-        sleep(3);
+        sleep(1);
         int lightvalue;
         while (true) {
             lightvalue = Light1.reflected;
