@@ -381,7 +381,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
     while(true) {
         if (BP.get_sensor(PORT_2, Color2) == 0 && BP.get_sensor(PORT_4, Color4) == 0) {
             cout << "I am in check" << endl;
-            if (Color2.color == 1 || Color4.color == 1 ) {
+            if (Color2.color <= 2 || Color4.color <= 2 ) {
              cout << "Got a crossroads" << endl;
              crossroads++;
              usleep(200000);
@@ -396,6 +396,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             }
             lightvalue = Light3.reflected;
             error = ((lightvalue-1700)/40)+30 - offset;
+						cout << "error: " << error << endl;
 
             Turn = error * Kp;
             Turn = Turn;
