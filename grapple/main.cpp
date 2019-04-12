@@ -136,6 +136,14 @@ void encodeMotorB(int32_t pos) {
     BP.set_motor_position_relative(PORT_B, -pos);
 }
 
+void terugVanKantelPunt() {
+    BP.set_motor_limits(PORT_B, 40, 0);
+    encodeMotorB(-40);
+    resetMotor();
+    sleep(1);
+}
+
+
 void brengNaarKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
     encodeMotorB(60);
@@ -158,8 +166,11 @@ void gelijdelijkDownLoop() {
 
 void klauwOmhoog() {
     BP.set_motor_limits(PORT_B, 80, 0);
-    encodeMotorB(-150);  // zelfde als totale neerwaartse beweging
-    sleep(2);
+    encodeMotorB(-100);  // zelfde als totale neerwaartse beweging
+    sleep(1);
+    BP.set_motor_limits(PORT_B, 30, 0);
+    encodeMotorB(-50);  // zelfde als totale neerwaartse beweging
+    sleep(1);
 }
 
 void klauwOpen() {
