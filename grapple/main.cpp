@@ -337,18 +337,13 @@ void turnLeft() {
     sleep(2);
     resetMotor();
     sleep(0.5);
-    fwd(100, -100);
+    fwd(50, -100);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         sleep(3);
-        cout << 1 << endl;
         int lightvalue;
         while (true) {
             lightvalue = Light1.reflected;
-            cout << 2 << endl;
-
             if (lightvalue > 2700){
-                cout << 3 << endl;
-
                 break;
             }
             usleep(10000);
@@ -364,18 +359,13 @@ void turnRight() {
     sleep(2);
     resetMotor();
     sleep(0.5);
-    fwd(-100, 100);
+    fwd(-100, 50);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         sleep(3);
-        cout << 1 << endl;
         int lightvalue;
         while (true) {
             lightvalue = Light1.reflected;
-            cout << 2 << endl;
-
             if (lightvalue > 2700){
-                cout << 3 << endl;
-
                 break;
             }
             usleep(10000);
