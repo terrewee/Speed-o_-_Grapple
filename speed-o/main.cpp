@@ -8,7 +8,6 @@
 #include <netdb.h>
 #include <string>
 #include <iostream>
-#include <thread>
 #include <vector>
 
 using namespace std;
@@ -17,29 +16,9 @@ using namespace std;
 
 BrickPi3 BP;
 
-bool battery = true;          //battery level function
-bool running = 1;
-int crossroad = 0;
-
-
-void batteryLevel(){
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(::running){
-    if(BP.get_voltage_battery() <= 9.0){
-      cout << "Battery be dead m8." << endl;
-      ::battery = false;
-    }
-    else{
-      ::battery = true;
-    }
-    sleep(5);
-	}
-}
-
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-		running = 0;
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
@@ -374,10 +353,13 @@ bool stopVoorObject(){
 }
 
 //Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
-void followLine(int aantalKeerTeGaan){
-	cout << "entered followLine()" << endl;
-    
+
+void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
+{
     sensor_light_t Light3;
+    sensor_color_t Color2;
+    sensor_color_t Color4;
+    sensor_ultrasonic_t Ultrasonic1;
 
     int offset = 45;
     int Tp = 25;
@@ -390,13 +372,27 @@ void followLine(int aantalKeerTeGaan){
 
     int lspd = 0;
     int rspd = 0;
-    
-    while(true){
-				cout << "entered followLine() while loop" << endl;
-        bool statusCrossroad = crossroaddetectie2();
-        if( statusCrossroad == false){
-            if(BP.get_sensor(PORT_3, Light3) == 0){
-            
+
+    int lastColor2 = 0;
+    int lastColor4 = 0;
+    int crossroads = 0;
+
+    while(true) {
+        if (BP.get_sensor(PORT_2, Color2) == 0 && BP.get_sensor(PORT_4, Color4) == 0) {
+            cout << "I am in check" << endl;
+            if (Color2.color == 1 || Color4.color == 1 ) {
+             cout << "Got a crossroads" << endl;
+             crossroads++;
+             usleep(300000);
+            }
+        }
+        cout << crossroads << " Crossroads" << endl;
+        if(BP.get_sensor(PORT_3, Light3) == 0) {
+            if(crossroads == aantalKeerTeGaan) {
+                crossroads = 0;
+                resetMotors();
+                break;
+            }
             lightvalue = Light3.reflected;
             error = ((lightvalue-1700)/40)+30 - offset;
 
@@ -405,21 +401,29 @@ void followLine(int aantalKeerTeGaan){
 
             lspd = Tp + Turn;
             rspd = Tp - Turn;
-            
+
+            if (BP.get_sensor(PORT_1,Ultrasonic1) == 0) {
+                if(Ultrasonic1.cm < 20){
+                    resetMotors();
+                    sleep(1);
+                    continue;
+                }else if(Ultrasonic1.cm < 40){
+                    lspd = lspd / 2;
+                    rspd = rspd / 2;
+                }
+            }
+
+            if(crossroads == aantalKeerTeGaan - 1) {
+                lspd = lspd / 2;
+                rspd = rspd / 2;
+            }
             moveForward(lspd,rspd);
             lastError = error;
-            sleep(1);
-        }
-        else{
-						cout << "followLine() break;" << endl;
-            break;
-            //ga naar kruispunt keuze.
+            cout << "Crossroad " << crossroads << endl;
+            cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
         }
     }
-		cout << "resetMotors" << endl;
     resetMotors();
-    //break;
-}
 }
 
 //-------path instructions--------
@@ -454,7 +458,7 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
 	cout << "Post-followLine()" << endl;
   updateLocation(GP, distance);
   cout << "moveForwardDistance: "<< distance << endl;
-	
+
 }
 
 void moveToHomepoint(gridPoints GP){
@@ -537,7 +541,7 @@ string manualControl(gridPoints &GP){
 		orientationList.push_back(GP.direction);
 		cout << GP.direction << endl << endl;
 	}
-	string message(orientationList.begin(), orientationList.end()); 
+	string message(orientationList.begin(), orientationList.end());
 	return message;
 }
 
@@ -557,7 +561,7 @@ routeCount initRouteCount(const string & myRoute) {
 }
 
 void move(char direction, gridPoints & GP){
-	
+
 	turn(direction, GP);
 	cout << "move() >> turn()" << endl;
 	moveForwardDistance(GP, 1);
@@ -626,9 +630,9 @@ bool checkIfTarget(coordinates targetCheck, gridPoints GP){
 
 //Check bordering gridpoints and calls addToQueue if they are on grid.
 vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinatesVector, vector<int> queue, vector<vector<bool>> &grid){
-	
+
 	coordinates gridPoint = getGridPointCoordinates(gridPointNumber, grid);
-	// cout << gridPoint.x << " " << gridPoint.y << " ; ";	
+	// cout << gridPoint.x << " " << gridPoint.y << " ; ";
 	coordinates optionA;
 	optionA.x = gridPoint.x - 1;
 	optionA.y = gridPoint.y;
@@ -638,7 +642,7 @@ vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinate
 	optionB.x = gridPoint.x;
 	optionB.y = gridPoint.y - 1;
 	if(checkInGrid(optionB, grid) == 1){addToQueue(optionB, gridPoint, prevCoordinatesVector, grid, queue);}
-	
+
 	coordinates optionC;
 	optionC.x = gridPoint.x + 1;
 	optionC.y = gridPoint.y;
@@ -656,7 +660,7 @@ vector<int> updateQueue(int gridPointNumber, vector<coordinates> &prevCoordinate
 void getRoute(vector<coordinates> & route, vector<coordinates> & prevCoordinatesVector, gridPoints & GP, vector<vector<bool>> & grid){
 	unsigned int i = 1;
 	route.push_back(GP.targetCoordinates);
-	
+
 	while(true){
 		unsigned int nextPointNumber = getGridPointNumber(route[i - 1], grid);
 		coordinates nextPointCoordinates = prevCoordinatesVector[nextPointNumber];
@@ -719,7 +723,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	cout << endl << "Directions:" << endl;
 	cout << directions;
 	cout << endl << "prevCoordinates:" << endl;
-	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}	
+	for(size_t i = 0; i < prevCoordinatesVector.size(); i++){cout << prevCoordinatesVector[i].x << "," << prevCoordinatesVector[i].y << " ";}
 	cout << endl << endl;
 
 }
@@ -736,11 +740,11 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			searchPath(directions, GP, grid);
 			obstructed = false;
 		}
-		
+
 		for(int i = 0; i < directions.size(); i++){
 			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
-			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
+			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){
 				if(GP.direction == 'n'){
 					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
 					if(obstacles.obstakelInRangeLeft){
@@ -793,7 +797,7 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			cout << i << "  " << directions[i] << ":";
 			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 		}
-		
+
 	}
 }
 
@@ -902,8 +906,8 @@ int main(){
 	int32_t EncoderA = BP.get_motor_encoder(PORT_A);
 	int32_t EncoderB = BP.get_motor_encoder(PORT_B);
 	int32_t EncoderC = BP.get_motor_encoder(PORT_C);
-	int32_t EncoderD = BP.get_motor_encoder(PORT_D);	
-	
+	int32_t EncoderD = BP.get_motor_encoder(PORT_D);
+
 	int uChoice;
 	char message[256];
 
@@ -913,13 +917,12 @@ int main(){
 	vector<vector<bool>> grid = getGrid(GP);
 	string followedRoute;
 	bool destinationArrived = false;
+  bool runProgram = true;
 	getCoordinates(GP, grid);
 
-	//thread kruispunt(crossroaddetectie);
+  while(runProgram){
 
-  while(::running){
 
-		
  		//followLine(2);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
 
     cout << "Kies functie: " << endl;
@@ -933,10 +936,10 @@ int main(){
 		cout << "Uw keuze is: ";
     cin >> uChoice;
 		cout << "|==================================================|" << endl;
-		
+
     switch(uChoice) {
 			case 0:
-				::running = 0;
+        runProgram = false;
 				break;
       case 1:
         cout << "Message: " << endl;
@@ -957,16 +960,14 @@ int main(){
 				driveBack(followedRoute, GP);
 				resetCurrentLocation(GP);
 				//iClient(followedRoute);
-				//kruispunt.join();	
 				break;
-			case 5:		
+			case 5:
 				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				followedRoute = manualControl(GP);
 				strcpy(message, followedRoute.c_str());
 				cout << message << " ";
 				//iClient(message);
-				//kruispunt.join();	
 				break;
 			case 6:
 				// testFunctie(GP, grid);
@@ -980,7 +981,6 @@ int main(){
 				break;
     }
 	}
-	//moveForward();
 	cout << "exit(0)";
 	return 0;
 }
