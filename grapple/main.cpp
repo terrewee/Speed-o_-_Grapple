@@ -334,15 +334,21 @@ void backUpFromObject(){
 void turnLeft() {
     sensor_light_t Light1;
     fwd(-20, -20);
-    sleep(1);
+    sleep(2);
     resetMotor();
     sleep(0.5);
     fwd(100, -100);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         sleep(3);
+        cout << 1 << endl;
+        int lightvalue;
         while (true) {
-            int lightvalue = Light1.reflected;
+            lightvalue = Light1.reflected;
+            cout << 2 << endl;
+
             if (lightvalue > 2700){
+                cout << 3 << endl;
+
                 break;
             }
             usleep(10000);
@@ -355,16 +361,21 @@ void turnLeft() {
 void turnRight() {
     sensor_light_t Light1;
     fwd(-20, -20);
-    sleep(1);
+    sleep(2);
     resetMotor();
     sleep(0.5);
     fwd(-100, 100);
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         sleep(3);
         cout << 1 << endl;
+        int lightvalue;
         while (true) {
-            int lightvalue = Light1.reflected;
+            lightvalue = Light1.reflected;
+            cout << 2 << endl;
+
             if (lightvalue > 2700){
+                cout << 3 << endl;
+
                 break;
             }
             usleep(10000);
