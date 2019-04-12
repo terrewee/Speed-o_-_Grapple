@@ -269,7 +269,6 @@ void turnMotorPowerUp(int &motorPower) {
 	while (motorPower < snelheid) {
 		BP.set_motor_power(PORT_A, motorPower);
 		BP.set_motor_power(PORT_B, motorPower);
-		usleep(0.5);
 		motorPower += 1;
 
 	}
@@ -291,7 +290,6 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
-	sleep(2);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
@@ -384,7 +382,6 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             if (Color2.color <= 2 || Color4.color <= 2 ) {
              cout << "Got a crossroads" << endl;
              crossroads++;
-             usleep(200000);
             }
         }
         cout << crossroads << " Crossroads" << endl;
@@ -457,12 +454,8 @@ void updateLocation(gridPoints & GP, int distance){
 
 //Moves robot a set distance forward and calls updateLocation().
 void moveForwardDistance(gridPoints &GP, unsigned int distance){
-	cout << "Pre-followLine()" << endl;
   followLine(distance);
-	cout << "Post-followLine()" << endl;
   updateLocation(GP, distance);
-  cout << "moveForwardDistance: "<< distance << endl;
-
 }
 
 //Moves to homepoint with line assistance.
@@ -550,9 +543,9 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
-		if 			(answer == "w")		{followLine(1);}
-		else if (answer == "a")		{turnLeft(GP); followLine(1);}
-		else if (answer == "d")		{turnRight(GP); followLine(1);}
+		if 			(answer == "w")		{moveForward(15,15); usleep(300000); resetMotors(); followLine(1);}
+		else if (answer == "a")		{moveForward(15,15); usleep(200000); resetMotors(); turnLeft(GP); followLine(1);}
+		else if (answer == "d")		{moveForward(15,15); usleep(200000); resetMotors(); turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
