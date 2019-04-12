@@ -594,10 +594,6 @@ int main() {
                 klauwOmhoog();
                 cout << " resetMotor" << endl;
                 resetMotor();
-                cout << "gelijdelijkDownLoop" << endl;
-                gelijdelijkDownLoop();
-                cout << "resetMotor" << endl;
-                resetMotor();
             case 0:{ // functie om programma te stoppen
                 ::running = false;
                 break;}
