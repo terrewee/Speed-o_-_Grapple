@@ -464,11 +464,26 @@ void moveForwardDistance(gridPoints &GP, unsigned int distance){
 
 }
 
+//Moves to homepoint with line assistance.
 void moveToHomepoint(gridPoints GP){
 	GP.direction = 'n';
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
  	moveForwardDistance(GP, 1);
+	if(GP.targetCoordinates.y == 0){
+		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
+		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
+	}
+	else if(GP.targetCoordinates.y > 0){turnRight(GP);}
+	else if(GP.targetCoordinates.y < 0){turnLeft(GP);}
+}
+
+//Moves to homepoint without line assistance.
+void moveToHomepointVirtual(gridPoints GP){
+	GP.direction = 'n';
+	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
+	turnLeft(GP);
+ 	moveForward(25,25);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
@@ -1035,6 +1050,7 @@ int main(){
         break;
 			case 4:
 				// testFunctie(GP, grid);
+				moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
@@ -1062,6 +1078,7 @@ int main(){
 				break;
 			case 7:
 				// testFunctie(GP, grid);
+				moveToHomepointVirtual(GP);
 				resetCurrentLocation(GP);
 				followRouteVirtual(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
