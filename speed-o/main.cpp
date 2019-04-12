@@ -309,7 +309,7 @@ void turnLeft(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, -60);
+	BP.set_motor_position_relative(PORT_B, -110);
 	BP.set_motor_position_relative(PORT_C, 110);
 	sleep(1);
 }
@@ -332,7 +332,7 @@ void turnRight(gridPoints & GP){
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
 	BP.set_motor_position_relative(PORT_B, 110);
-	BP.set_motor_position_relative(PORT_C, -60);
+	BP.set_motor_position_relative(PORT_C, -110);
 	sleep(1);
 }
 
@@ -544,8 +544,8 @@ string manualControl(gridPoints &GP){
 	while(true){
 		cin >> answer;
 		if 			(answer == "w")		{moveForward(15,15); usleep(300000); resetMotors(); followLine(1);}
-		else if (answer == "a")		{moveForward(15,15); usleep(400000); turnLeft(GP); followLine(1);}
-		else if (answer == "d")		{moveForward(15,15); usleep(400000);  turnRight(GP); followLine(1);}
+		else if (answer == "a")		{moveForward(15,15); usleep(500000); turnLeft(GP); followLine(1);}
+		else if (answer == "d")		{moveForward(15,15); usleep(500000);  turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
