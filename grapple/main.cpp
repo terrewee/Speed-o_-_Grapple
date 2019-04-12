@@ -442,28 +442,28 @@ void navigation(vector<char> route) {
         } else {
             resetMotor();
             if
-                    ((route[i] == 'n' && route[i-1] == 'w') ||
-                     (route[i] == 'o' && route[i-1] == 'n') ||
-                     (route[i] == 's' && route[i-1] == 'o') ||
-                     (route[i] == 'w' && route[i-1] == 's')) {
-                drive('r');
-                drive('f');
-            }
-            else if
-                    ((route[i] == 'n' && route[i-1] == 'o') ||
-                     (route[i] == 'o' && route[i-1] == 's') ||
-                     (route[i] == 's' && route[i-1] == 'w') ||
-                     (route[i] == 'w' && route[i-1] == 'n')) {
-                drive('l');
-                drive('f');
-            }
-            else if
-                    ((route[i] == 'n' && route[i-1] == 's') ||
-                     (route[i] == 'o' && route[i-1] == 'w') ||
-                     (route[i] == 's' && route[i-1] == 'n') ||
-                     (route[i] == 'w' && route[i-1] == 'o')) {
-                drive('b');
-                drive('f');
+                        ((route[i] == 'n' && route[i-1] == 'w') ||
+                         (route[i] == 'e' && route[i-1] == 'n') ||
+                         (route[i] == 's' && route[i-1] == 'e') ||
+                         (route[i] == 'w' && route[i-1] == 's')) {
+                    drive('r');
+                    drive('f');
+                }
+                else if
+                        ((route[i] == 'n' && route[i-1] == 'e') ||
+                         (route[i] == 'e' && route[i-1] == 's') ||
+                         (route[i] == 's' && route[i-1] == 'w') ||
+                         (route[i] == 'w' && route[i-1] == 'n')) {
+                    drive('l');
+                    drive('f');
+                }
+                else if
+                        ((route[i] == 'n' && route[i-1] == 's') ||
+                         (route[i] == 'e' && route[i-1] == 'w') ||
+                         (route[i] == 's' && route[i-1] == 'n') ||
+                         (route[i] == 'w' && route[i-1] == 'e')) {
+                    drive('b');
+                    drive('f');
             } else { // als geen van de opties gepakt word gebeurt er iets abnormaals
                 cout << "help, er gebeurt iets geks: " << route[i] << route[i-1] << endl;
             }

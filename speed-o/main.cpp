@@ -888,8 +888,16 @@ void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridP
 	}
 }
 
+//Docks scout with line assistance.
 void dockScout(gridPoints & GP){
 	move('e', GP);
+	turn('n', GP);
+}
+
+//Docks scout without line assistance.
+void dockScoutVirtual(gridPoints & GP){
+	turn('e', GP);
+	moveForward(25,25);
 	turn('n', GP);
 }
 
@@ -944,6 +952,64 @@ void driveBack(string followedRoute, gridPoints & GP){
 	}
 
 	dockScout(GP);
+}
+
+//Driveback without line assistance.
+void driveBackVirtual(string followedRoute, gridPoints & GP){
+	char tempChar;
+	for(unsigned int i = 0; i < followedRoute.size() / 2; i++){
+		tempChar = followedRoute[followedRoute.size() - (i + 1)];
+		followedRoute[followedRoute.size() - (i + 1)] = followedRoute[i];
+		followedRoute[i] = tempChar;
+	}
+	for(unsigned int k = 0; k < followedRoute.size(); k++){
+		if(followedRoute[k] == 'n'){
+			followedRoute[k] = 's';
+		}
+		else if(followedRoute[k] == 'e'){
+			followedRoute[k] = 'w';
+		}
+		else if(followedRoute[k] == 's'){
+			followedRoute[k] = 'n';
+		}
+		else if(followedRoute[k] == 'w'){
+			followedRoute[k] = 'e';
+		}
+	}
+
+	//debugging
+	cout << "route back:" << endl;
+	for(unsigned int i = 0; i < followedRoute.size(); i++){
+		cout << followedRoute[i];
+	}
+	cout<< endl;
+
+	for(unsigned int j = 0; j < followedRoute.size(); j++){
+		cout << j << "  " << followedRoute[j] << ":";
+		cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
+
+		if(followedRoute[j] == 'n'){
+			turn('n', GP);
+			moveForward(25,25);
+		}
+		else if(followedRoute[j] == 'e'){
+			turn('e', GP);
+			moveForward(25,25);
+		}
+		else if(followedRoute[j] == 's'){
+			turn('s', GP);
+			moveForward(25,25);
+		}
+		else if(followedRoute[j] == 'w'){
+			turn('w', GP);
+			moveForward(25,25);
+		}
+
+		cout << j << "  " << followedRoute[j] << ":";
+		cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
+	}
+
+	dockScoutVirtual(GP);
 }
 
 
@@ -1076,7 +1142,7 @@ int main(){
 				resetCurrentLocation(GP);
 				followRouteVirtual(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
-				driveBack(followedRoute, GP);
+				driveBackVirtual(followedRoute, GP);
 				cout << "driving back" << endl;
 				resetCurrentLocation(GP);
 				cout << "Location reset" << endl;
