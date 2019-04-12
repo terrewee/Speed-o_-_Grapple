@@ -61,7 +61,7 @@ int main(){
 
     if(BP.get_sensor(PORT_2, Color2) == 0){
 		cout << "Color sensor (S2): detected  " << (int) Color2.color;
-		cout << " red" << setw(4) << Color2.reflected_red;
+		cout << " color" << setw(4) << Color2.color;
 		cout << " green" << setw(4) << Color2.reflected_green;
 		cout << " blue" << setw(4) << Color2.reflected_blue;
 		cout << " ambient" << setw(4) << Color2.ambient << endl;
