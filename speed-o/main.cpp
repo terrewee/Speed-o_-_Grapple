@@ -15,13 +15,12 @@ using std::endl;
 
 BrickPi3 BP;
 
-//Contains int x and in y.
 struct coordinates{
   int x;
   int y;
 };
 
-//contains targetCoordinates, targetRelCoordinates, homeCoordinates, currentLocation and direction.
+//contains information on all needed grid coordinates, and facing direction of robot.
 struct gridPoints{
   coordinates targetCoordinates;
   coordinates targetRelCoordinates;
@@ -30,14 +29,12 @@ struct gridPoints{
   char direction;
 };
 
-//contains bool obstakelInRangeLeft, bool obstakelInRangeRight, bool obstakelInRangeForward, for object detection with ultrasonar.
 struct range {
   bool obstakelInRangeLeft = false;
   bool obstakelInRangeRight = false;
   bool obstakelInRangeForward = false;
 };
 
-//contains vector<char> direction, vector<int> amount, for shortening directioninstructions.
 struct routeCount {
   vector<char> direction = {};
   vector<int> amount = {};
@@ -148,7 +145,6 @@ void turnMotorPowerUp(int &motorPower) {
 	}
 }
 
-//Turns motor power down.
 void turnMotorPowerDown(int &motorPower) {
 	while (motorPower > 10) {
 		//BP.set_motor_power(PORT_A, motorPower+1);
@@ -157,7 +153,6 @@ void turnMotorPowerDown(int &motorPower) {
 	}
 }
 
-//Moves robot forwards.
 void moveForward(int lspd, int rspd){
 	//BP.set_motor_power(PORT_B,-lspd);
 	//BP.set_motor_power(PORT_C,-rspd);
@@ -184,7 +179,7 @@ void turnLeft(gridPoints & GP){
 	BP.set_motor_position_relative(PORT_C, -116);
 }
 
-//Turns the robot to the left, and updates the value of GP.direction.
+//Turns the rorbot to the left, and updates the value of GP.direction.
 void turnRight(gridPoints & GP){
   if(GP.direction == 'n'){
     GP.direction = 'e';
@@ -205,65 +200,50 @@ void turnRight(gridPoints & GP){
 	BP.set_motor_position_relative(PORT_C, 116);
 }
 
-//Resets motors.
 void resetMotors(){
 	BP.set_motor_power(PORT_B, 0);
 	BP.set_motor_power(PORT_C, 0);
 }
 
-//Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
 void followLine(int aantalKeerTeGaan){
-    sensor_light_t Light3;
+	sensor_light_t Light3;
 
-    int offset = 45;
-    int Tp = 25;
-    int Kp = 2;
+  int offset = 45;
+  int Tp = 40;
+  int Kp = 5;
 
-    int lastError = 0;
-    int Turn = 0;
-    int lightvalue = 0;
-    int error = 0;
+  int lastError = 0;
+  int Turn = 0;
+  int lightvalue = 0;
+  int error = 0;
 
-    int lspd = 0;
-    int rspd = 0;
-	while(true)
-	{
-		if(BP.get_sensor(PORT_3, Light3) == 0){
-			cout << "crossroad: " << ::crossroad << endl;
-			if(::crossroad == aantalKeerTeGaan - 1){
-				//Tp = 10;
-				//Kp = 1;
-			}
+  int lspd = 0;
+  int rspd = 0;
 
-			else if(::crossroad == aantalKeerTeGaan){
+  if (BP.get_sensor(PORT_3, Light3) == 0){
+		while(true)
+		{
+			cout << "Kruispunt: " << ::crossroad << endl;
+			if(::crossroad == aantalKeerTeGaan)
+			{
 				resetMotors();
+				cout << "Dit is waar input nodig is voor een bocht.";		// gebruik draaiLinks en/of draaiRechts voor 90 graden bochten
 				break;
 			}
-
 			lightvalue = Light3.reflected;
-			error = ((lightvalue-1700)/40)+30 - offset;
+			error = ((lightvalue-1600)/50)+30 - offset;
 
 			Turn = error * Kp;
-			Turn = Turn/1;
+			Turn = Turn/3;
 
 			lspd = Tp + Turn;
 			rspd = Tp - Turn;
 
-			if(stopVoorObject() == true){
-				resetMotors();
-				sleep(1);
-			}
-
-			if(::crossroad == aantalKeerTeGaan - 1){
-				lspd = lspd / 2;
-				rspd = rspd / 2;
-			}
-			
 			moveForward(lspd,rspd);
+
 			lastError = error;
-			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
 		}
-   }
+  }
 }
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
@@ -308,7 +288,6 @@ void moveForwardDistance(gridPoints & GP, unsigned int distance){
   updateLocation(GP, distance);
 }
 
-//Moves scout to homepoint.
 void moveToHomepoint(gridPoints GP){
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turnLeft(GP);
@@ -373,7 +352,6 @@ void turn(char direction, gridPoints & GP) {
 	}
 }
 
-//Moves robot 1 unit towards given direction.
 void move(char direction, gridPoints & GP){
 	turn(direction, GP);
 	moveForwardDistance(GP, 1);
@@ -412,7 +390,6 @@ void updatePrevCoordinates(coordinates & currentCoordinates, coordinates & prevC
 	prevCoordinatesVector[getGridPointNumber(currentCoordinates, grid)] = prevCoordinates;
 }
 
-//Checks if gridPointNumber is already in queue before deciding to add it to the queue and calls updatePrevCoordinates.
 void addToQueue(coordinates & option, coordinates & gridPoint, vector<coordinates> & prevCoordinatesVector, vector<vector<bool>> & grid, vector<int> & queue){
 	bool optionFound = false;
 	int gridPointNumber = getGridPointNumber(option, grid);
@@ -543,7 +520,6 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 	cout << endl << endl;
 }
 
-//Drives robot according to shortest path found.
 void followRoute(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
 	string directions;
 	bool obstructed = false;
@@ -615,13 +591,11 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 	}
 }
 
-//Docks scout back next to homepoint.
 void dockScout(gridPoints & GP){
 	move('e', GP);
 	turn('n', GP);
 }
 
-//Drives robot back to homepoint from target.
 void driveBack(string followedRoute, gridPoints & GP){
 	char tempChar;
 	for(unsigned int i = 0; i < followedRoute.size() / 2; i++){
