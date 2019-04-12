@@ -341,7 +341,7 @@ void turnLeft() {
     if (BP.get_sensor(PORT_1, Light1) == 0) {
         sleep(3);
         while (Light1.reflected <= 2700) {
-            cout << 1 << endl;
+            cout << Light1.reflected << endl;
             usleep(10000);
         }
     }
@@ -360,6 +360,7 @@ void turnRight() {
         sleep(3);
         cout << 1 << endl;
         while (Light1.reflected <= 2700) {
+            cout << Light1.reflected << endl;
             usleep(10000);
         }
     }
