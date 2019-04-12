@@ -384,7 +384,6 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             if (Color2.color <= 2 || Color4.color <= 2 ) {
              cout << "Got a crossroads" << endl;
              crossroads++;
-             usleep(200000);
             }
         }
         cout << crossroads << " Crossroads" << endl;
