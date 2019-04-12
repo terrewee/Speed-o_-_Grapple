@@ -8,16 +8,12 @@
 #include <netdb.h>
 #include <string>
 #include <iostream>
-#include <thread>
 #include <vector>
 
 using namespace std;
 
 BrickPi3 BP;
 void exit_signal_handler(int signo);
-
-bool running = true;
-int crossroad;
 
 void setSensors(){
 	BP.set_sensor_type(PORT_2,SENSOR_TYPE_NXT_COLOR_FULL);
@@ -26,27 +22,6 @@ void setSensors(){
 	BP.set_sensor_type(PORT_4,SENSOR_TYPE_NXT_COLOR_FULL);
 }
 
-void crossroaddetectie()
-{
-	sensor_color_t      Color2;
-	sensor_color_t      Color4;
-	::crossroad = 0;
-	while (::running)
-	{
-		if((BP.get_sensor(PORT_2, Color2) == 0) && (BP.get_sensor(PORT_4, Color4) == 0))
-		{
-			if (Color2.color == 1 || Color4.color == 1)
-			{
-				usleep(200000); // sleep van 100 ms zodat hetzelfde kruispunt niet tweemaal wordt geregistreerd
-				::crossroad++;	// increment globale variabele crossroads gezien
-			}
-		}
-		//sleep(0.5);
-		//cout << "2: " << (int) Color2.color << " 4: " << (int) Color4.color << endl;
-		//cout << "Crossroad number: " << ::crossroad << endl;
-	}
-	cout << "Im gon stop now" << endl;
-}
 
 struct routeCount {
   vector<char> direction = {};
@@ -58,7 +33,7 @@ routeCount initRouteCount(const string & myRoute) {
   tStruct.direction.push_back(' ');
   tStruct.amount.push_back(0);
   int sIndex = 0;
-  for(char direction : myRoute){
+  for(char direction : myRoute) {
     if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
     else if (tStruct.direction[sIndex] == ' ') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
     else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
@@ -66,127 +41,118 @@ routeCount initRouteCount(const string & myRoute) {
   return tStruct;
 }
 
-void draaiLinks()
-{
-	BP.get_motor_encoder(PORT_B);
-	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, 116);
-	BP.set_motor_position_relative(PORT_C, -116);
+void draaiLinks() {
+	BP.set_motor_position_relative(PORT_B, -120);
+	BP.set_motor_position_relative(PORT_C, 120);
+	sleep(2);
 }
 
-void resetMotors(){
+void resetMotors() {
 	BP.set_motor_power(PORT_B, 0);
 	BP.set_motor_power(PORT_C, 0);
 }
 
-void moveForward(int lspd, int rspd){
+void moveForward(int lspd, int rspd) {
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
 }
 
-void draaiRechts(){
-	sensor_light_t Light3;
-	bool stillBlack = true;
-	while(true){
-		if (BP.get_sensor(PORT_3, Light3) == 0) {
-			if (stillBlack) {
-				cout << "I havent seen grey yet." << endl;
-				if (Light3.reflected < 2375){
-					cout << "Finally off of black" << endl;
-					stillBlack = false;
-				}
-			} else {
-				cout << "I have seen grey." << endl;
-				if (Light3.reflected > 2425){
-					cout << "Black again" << endl;
-					break;
-				}
-			}
-			cout << "Turning" << endl;
-			moveForward(5,20);
-		}
-		usleep(100000);
-	}
-	cout << "Gon reset" << endl;
-	resetMotors();
-	::crossroad = 0;
+void draaiRechts() {
+	BP.set_motor_position_relative(PORT_B, 90);
+	BP.set_motor_position_relative(PORT_C, -90);
+	sleep(2);
 }
 
-bool stopVoorObject()
-{
+bool stopVoorObject() {
 	sensor_ultrasonic_t Ultrasonic1;
-	if(BP.get_sensor(PORT_1, Ultrasonic1) == 0)
-	{
-		if(Ultrasonic1.cm <= 20)
-		{
+	if(BP.get_sensor(PORT_1, Ultrasonic1) == 0) {
+		if(Ultrasonic1.cm <= 20) {
 			return true;
 		}
 		return false;
 	}
+	return false;
+                // if(stopVoorObject() == true)
+                // {
+                //  resetMotors();
+                //  sleep(1);
+                // }
 }
 
 void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
 {
+    sensor_light_t Light3;
+    sensor_color_t Color2;
+    sensor_color_t Color4;
+    sensor_ultrasonic_t Ultrasonic1;
 
-        sensor_light_t Light3;
+    int offset = 45;
+    int Tp = 25;
+    int Kp = 2;
 
-        int offset = 45;
-        int Tp = 25;
-        int Kp = 2;
+    int lastError = 0;
+    int Turn = 0;
+    int lightvalue = 0;
+    int error = 0;
 
-        int lastError = 0;
-        int Turn = 0;
-        int lightvalue = 0;
-        int error = 0;
+    int lspd = 0;
+    int rspd = 0;
 
-        int lspd = 0;
-        int rspd = 0;
-		while(::crossroad < aantalKeerTeGaan)
-		{
-			if(BP.get_sensor(PORT_3, Light3) == 0){
-			cout << "crossroad: " << ::crossroad << endl;
-// 			if(::crossroad == aantalKeerTeGaan - 1)
-// 			{
-// //				Tp = 10;
-// //				Kp = 1;
-// 			}
-// 			else if(::crossroad == aantalKeerTeGaan)
-// 			{
-// 				resetMotors();
-// 				break;
-// 			}
-			lightvalue = Light3.reflected;
-			error = ((lightvalue-1700)/40)+30 - offset;
+    int lastColor2 = 0;
+    int lastColor4 = 0;
+    int crossroads = 0;
 
-			Turn = error * Kp;
-			Turn = Turn/1;
+    while(true) {
+        if (BP.get_sensor(PORT_2, Color2) == 0 && BP.get_sensor(PORT_4, Color4) == 0) {
+            cout << "I am in check" << endl;
+            if (Color2.color == 1 || Color4.color == 1 ) {
+             cout << "Got a crossroads" << endl;
+             crossroads++;
+             usleep(300000);
+            }
+        }
+        cout << crossroads << " Crossroads" << endl;
+        if(BP.get_sensor(PORT_3, Light3) == 0) {
+            if(crossroads == aantalKeerTeGaan) {
+                crossroads = 0;
+                resetMotors();
+                break;
+            }
+            lightvalue = Light3.reflected;
+            error = ((lightvalue-1700)/40)+30 - offset;
 
-			lspd = Tp + Turn;
-			rspd = Tp - Turn;
+            Turn = error * Kp;
+            Turn = Turn/1;
 
-			if(stopVoorObject() == true)
-			{
-				resetMotors();
-				sleep(1);
-			}
+            lspd = Tp + Turn;
+            rspd = Tp - Turn;
 
-			if(::crossroad == aantalKeerTeGaan - 1)
-			{
-				lspd = lspd / 2;
-				rspd = rspd / 2;
-			}
-			moveForward(lspd,rspd);
-			lastError = error;
-			cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
-		}
+            if (BP.get_sensor(PORT_1,Ultrasonic1) == 0) {
+                if(Ultrasonic1.cm < 20){
+                    resetMotors();
+                    sleep(1);
+                    continue;
+                }else if(Ultrasonic1.cm < 40){
+                    lspd = lspd / 2;
+                    rspd = rspd / 2;
+                }
+            }
+
+            if(crossroads == aantalKeerTeGaan - 1) {
+                lspd = lspd / 2;
+                rspd = rspd / 2;
+            }
+            moveForward(lspd,rspd);
+            lastError = error;
+            cout << "Crossroad " << crossroads << endl;
+            cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
+        }
     }
     resetMotors();
-// 				break;
 }
 
 void exit_signal_handler(int signo){
   if(signo == SIGINT){
-	::running = false;
     BP.reset_all();    // Reset everything so there are no run-away motors
     exit(-2);
   }
@@ -197,30 +163,22 @@ int main()
 	signal(SIGINT, exit_signal_handler); // register the exit function for Ctrl+C
 	BP.detect();
 	BP.reset_all();
-	for (int i = 0; i < 5; ++i)
-	{
+	for (int i = 0; i < 5; ++i) {
 		cout << ".";
-		if (i == 3)
-		{
+		if (i == 3) {
 			setSensors();
 		}
     		sleep(1);
   	}
 	cout << endl << "Initialized" << endl;
 
-	thread kruispunt (crossroaddetectie);
+	BP.set_motor_limits(PORT_B,50,0);
+	BP.set_motor_limits(PORT_C,50,0);
 
- 	followLine(3);	// 2 voor testje -- pas dit dus aan met de mee te geven parameter
- 	cout << "Done with first follow" << endl
- 	::crossroad = 0;
-	draaiRechts();
-	cout << "Done with draai" << endl;
 	followLine(2);
-	cout << "Done with second follow" << endl;
-	sleep(1);
+
 	BP.reset_all();
-	::running = false;
-	kruispunt.join();
 	return 0;
 }
+
 
