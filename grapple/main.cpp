@@ -317,7 +317,7 @@ void fwd(const int lspd, const int rspd) {
 
 
 void backUpFromObject(){
-    fwd(-25, -25);
+    fwd(-15, -15);
     sleep(2);
     resetMotor();
 }
@@ -470,12 +470,14 @@ void navigation(vector<char> route) {
         resetMotor();
         brengNaarKantelPunt();
         resetMotor();
+        drive('b');
+        resetMotor();
         cout << "Picked up ze object, time to head back" << endl;
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
     }
-    
+
     //***************************************************************************************************************
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
