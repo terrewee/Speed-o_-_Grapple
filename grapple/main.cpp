@@ -134,20 +134,20 @@ void batteryLevel() {
 
 void encodeMotorB(int32_t pos) {
     BP.set_motor_position_relative(PORT_B, -pos);
-    sleep(1);
 }
 
 void brengNaarKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
     encodeMotorB(50);
+    sleep(1);
 }
 
 void gelijdelijkDownLoop() {
-    int32_t encoder = 50;
-    while(encoder > 110) {
+    int32_t encoder = -50;
+    while(encoder > -110) {
         encodeMotorB(5);
         usleep(500000);
-        encoder = encoder + 5;
+        encoder = encoder - 5;
     }
 }
 
