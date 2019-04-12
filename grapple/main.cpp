@@ -158,7 +158,7 @@ void gelijdelijkDownLoop() {
 
 void klauwOmhoog() {
     BP.set_motor_limits(PORT_B, 80, 0);
-    encodeMotorB(-130);  // zelfde als totale neerwaartse beweging
+    encodeMotorB(-150);  // zelfde als totale neerwaartse beweging
     sleep(2);
 }
 
@@ -598,11 +598,11 @@ int main() {
                 sleep(1);
                 cout << "klauwOmhoog" << endl;
                 klauwOmhoog();
+                cout << " resetMotor" << endl;
                 resetMotor();
                 sleep(1);
                 cout << "brengNaarKantelPunt" << endl;
                 brengNaarKantelPunt();
-                cout << " resetMotor" << endl;
             case 0:{ // functie om programma te stoppen
                 ::running = false;
                 break;}
