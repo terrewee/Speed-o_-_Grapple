@@ -383,7 +383,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             if (Color2.color == 1 || Color4.color == 1 ) {
              cout << "Got a crossroads" << endl;
              crossroads++;
-             usleep(300000);
+             usleep(200000);
             }
         }
         cout << crossroads << " Crossroads" << endl;
@@ -397,7 +397,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             error = ((lightvalue-1700)/40)+30 - offset;
 
             Turn = error * Kp;
-            Turn = Turn/1;
+            Turn = Turn;
 
             lspd = Tp + Turn;
             rspd = Tp - Turn;
