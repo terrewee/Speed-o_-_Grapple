@@ -154,6 +154,7 @@ void gelijdelijkDownLoop() {
 void klauwOmhoog() {
     BP.set_motor_limits(PORT_B, 80, 0);
     encodeMotorB(160);  // zelfde als totale neerwaartse beweging
+    sleep(2);
 }
 
 void klauwOpen() {
