@@ -11,7 +11,6 @@
 #include <sys/socket.h>   // include voor het gebruik van sockets
 #include <netinet/in.h>   // include voor het gebruik van sockets
 #include <netdb.h>        // include voor het gebruik van sockets
-#include <thread>         // include voor het gebruik van threads
 #include <sstream>        // for converting char256 to vector
 
 using namespace std;
@@ -19,8 +18,6 @@ using namespace std;
 //---------------------------------------ESSENTIALS---------------------------------------------
 
 BrickPi3 BP;                                                      // Initializing BP
-bool battery = true;                                              // Bool for the battery level function
-bool running = true;                                              // Bool for turning off the program including threads
 
 void exit_signal_handler(int signo);                              // For initializing the Ctrl + C exit handler
 
@@ -114,19 +111,6 @@ void checkSensor() {
         sleep(5);
       }
       break;
-  }
-}
-
-void batteryLevel() {
-  //printf("Battery voltage : %.3f\n", BP.get_voltage_battery());
-  while(::running) {
-    if(BP.get_voltage_battery() <= 9.0) {
-      cout << "De batterij is leeg. T_T" << endl;
-      ::battery = false;
-    } else {
-      ::battery = true;
-    }
-    sleep(5);
   }
 }
 
@@ -347,52 +331,89 @@ void turnRight() {
 }
 
 
-int moveForward() {
-  //Aan de hand van pid controller
-  sensor_light_t Light1;
-  sensor_color_t Color3;
+void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
+{
+    sensor_light_t Light3;
+    sensor_color_t Color2;
+    sensor_color_t Color4;
+    sensor_ultrasonic_t Ultrasonic1;
 
-  fwd(20, 20); // zorg dat de sensor over de lijn komt zodat hij deze niet voor een ander kruispunt aanziet.
-  sleep(1);
+    int offset = 45;
+    int Tp = 25;
+    int Kp = 2;
 
-  int offset = 45;
-  int Tp = 15;
+    int lastError = 0;
+    int Turn = 0;
+    int lightvalue = 0;
+    int error = 0;
 
-  int Kp = 4;
+    int lspd = 0;
+    int rspd = 0;
 
-  int Turn = 0;
-  int lightvalue = 0;
-  int error = 0;
+    int lastColor2 = 0;
+    int lastColor4 = 0;
+    int crossroads = 0;
 
-  int lspd = 0;
-  int rspd = 0;
-
-  while (running) {
-    if (BP.get_sensor(PORT_1, Light1) == 0) {
-      lightvalue = Light1.reflected; // neem waarde van zwartwit sensor
-      if (BP.get_sensor(PORT_3, Color3) == 0) {
-        if ((Color3.reflected_red < 300) && (lightvalue > 2700)) { // als de zwartwit sensor en de kleur sensor zwart zijn is er een kruispunt
-          cout << "hier is een kruispunt" << endl;
-          return 0;
+    while(true) {
+        if (BP.get_sensor(PORT_2, Color2) == 0 && BP.get_sensor(PORT_4, Color4) == 0) {
+            cout << "I am in check" << endl;
+            if (Color2.color == 1 || Color4.color == 1 ) {
+             cout << "Got a crossroads" << endl;
+             crossroads++;
+             usleep(300000);
+            }
         }
-      }
+        cout << crossroads << " Crossroads" << endl;
+        if(BP.get_sensor(PORT_3, Light3) == 0) {
+            if(crossroads == aantalKeerTeGaan) {
+                crossroads = 0;
+                resetMotors();
+                break;
+            }
+            lightvalue = Light3.reflected;
+            error = ((lightvalue-1700)/40)+30 - offset;
+
+            Turn = error * Kp;
+            Turn = Turn/1;
+
+            lspd = Tp + Turn;
+            rspd = Tp - Turn;
+
+            if (BP.get_sensor(PORT_1,Ultrasonic1) == 0) {
+                if(Ultrasonic1.cm < 20){
+                    resetMotors();
+                    sleep(1);
+                    continue;
+                }else if(Ultrasonic1.cm < 40){
+                    lspd = lspd / 2;
+                    rspd = rspd / 2;
+                }
+            }
+
+            if(crossroads == aantalKeerTeGaan - 1) {
+                lspd = lspd / 2;
+                rspd = rspd / 2;
+            }
+            moveForward(lspd,rspd);
+            lastError = error;
+            cout << "Crossroad " << crossroads << endl;
+            cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
+        }
     }
-
-    error = ((lightvalue - 1850) / 55) + 30 - offset;
-
-    Turn = error * Kp;
-
-      lspd = Tp + Turn;
-      rspd = Tp - Turn;
-      fwd(lspd, rspd);
-  }
+    resetMotors();
 }
 
+void moveForward(int lspd, int rspd){
+  BP.set_motor_power(PORT_B,-lspd);
+  BP.set_motor_power(PORT_C,-rspd);
+  sleep(1);
+}
 
 void drive(char direction) {
     if (direction == 'f') {
         //ga 1 grid plek
-        moveForward();
+        //moveForward();
+        followLine(1);
     }
     else if (direction == 'r') {
         //ga 90 graden links
