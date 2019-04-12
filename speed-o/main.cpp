@@ -426,6 +426,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
     resetMotors();
 }
 
+
 //-------path instructions--------
 
 //Sets GP.currentCoordinates to GP.homeCoordinates (homepoint coordinates.)
@@ -532,8 +533,8 @@ string manualControl(gridPoints &GP){
 	while(true){
 		cin >> answer;
 		if 			(answer == "w")		{followLine(1);}
-		else if (answer == "a")		{turnLeft(GP); followLine(1);;}
-		else if (answer == "d")		{turnRight(GP); followLine(1);}
+		else if (answer == "a")		{moveForward(10,10); sleep(0.2); turnLeft(GP); followLine(1);}
+		else if (answer == "d")		{moveForward(10,10); sleep(0.2); turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
@@ -728,7 +729,7 @@ void searchPath(string & directions, gridPoints & GP, vector<vector<bool>> & gri
 
 }
 
-
+//Follows route with line assistance.
 void followRoute(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
 	string directions;
 	bool obstructed = false;
@@ -787,6 +788,80 @@ void followRoute(string & followedRoute, bool & destinationArrived, gridPoints &
 			else{
 				move(directions[i], GP);
 				followedRoute += directions[i];
+				resetMotors();
+
+				if(i == directions.size() - 1){
+					destinationArrived = true;
+				}
+			}
+
+			cout << i << "  " << directions[i] << ":";
+			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
+		}
+
+	}
+}
+
+//FollowRoute() without line assisted driving.
+void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridPoints & GP, vector<vector<bool>> grid, range & obstacles){
+	string directions;
+	bool obstructed = false;
+
+	searchPath(directions, GP, grid);
+
+	while(!destinationArrived){
+		if(obstructed){
+			searchPath(directions, GP, grid);
+			obstructed = false;
+		}
+
+		for(int i = 0; i < directions.size(); i++){
+			cout << i << "  " << directions[i] << ":";
+			cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
+			if(obstacles.obstakelInRangeForward && directions[i] == GP.direction){
+				if(GP.direction == 'n'){
+					grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
+					}
+				}
+				else if(GP.direction == 'e'){
+					grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
+					}
+				}
+				else if(GP.direction == 's'){
+					grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x + 1][GP.currentLocation.y] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
+					}
+				}
+				else if(GP.direction == 'w'){
+					grid[GP.currentLocation.x - 1][GP.currentLocation.y] = 0;
+					if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x][GP.currentLocation.y + 1] = 0;
+					}
+					else if(obstacles.obstakelInRangeLeft){
+						grid[GP.currentLocation.x][GP.currentLocation.y - 1] = 0;
+					}
+				}
+
+				obstructed = true;
+			}
+			else{
+				followedRoute += directions[i];
+				turn(directions[i], GP);
+				moveForward(20,20);
 				resetMotors();
 
 				if(i == directions.size() - 1){
@@ -933,6 +1008,8 @@ int main(){
     cout << "3: Check sensor" << endl;
 		cout << "4: Auto path." << endl;
 		cout << "5: Manual pathing." << endl;
+		cout << "6: Auto path with message" << endl;
+		cout << "7: Auto path virtual grid" << endl;
 
 		cout << "Uw keuze is: ";
     cin >> uChoice;
@@ -979,6 +1056,15 @@ int main(){
 				resetCurrentLocation(GP);
 				strcpy(message, followedRoute.c_str());
 				iClient(message);
+				break;
+			case 7:
+				// testFunctie(GP, grid);
+				resetCurrentLocation(GP);
+				followRouteVirtual(followedRoute, destinationArrived, GP, grid, obstakel);
+				cout << "followed route" << endl;
+				driveBack(followedRoute, GP);
+				resetCurrentLocation(GP);
+				//iClient(followedRoute);
 				break;
     }
 	}
