@@ -116,61 +116,38 @@ void checkSensor() {
 
 //---------------------------------------ARM---------------------------------------------
 
-void encodeMotorB(int32_t pos) {
-    BP.set_motor_position_relative(PORT_B, -pos);
+void encodeMotorA(int32_t pos) {
+  BP.set_motor_position_relative(PORT_A, pos);
 }
-
-void terugVanKantelPunt() {
-    BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(-40);
-    resetMotor();
-    sleep(1);
-}
-
 
 void brengNaarKantelPunt() {
-    BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(60);
-    sleep(1);
+  BP.set_motor_limits(PORT_A, 40, 0);
+  encodeMotorA(50);
 }
 
 void gelijdelijkDownLoop() {
-    int32_t encoder = -60;
-    while(encoder > -100) {
-        encodeMotorB(10);
-        usleep(500000);
-        encoder = encoder - 10;
-    }
-    while(encoder > -160) {
-        encodeMotorB(5);
-        usleep(500000);
-        encoder = encoder - 5;
-    }
+  int32_t encoder = 50;
+  while(encoder > 110) {
+    encodeMotorA(5);
+    usleep(500000);
+    encoder = encoder + 5;
+  }
 }
 
 void klauwOmhoog() {
-    BP.set_motor_limits(PORT_B, 80, 0);
-    encodeMotorB(-100);  // zelfde als totale neerwaartse beweging
-    sleep(1);
-    BP.set_motor_limits(PORT_B, 30, 0);
-    encodeMotorB(-50);  // zelfde als totale neerwaartse beweging
-    sleep(1);
-    resetMotor();
-    sleep(1);
+  BP.set_motor_limits(PORT_A, 50, 0);
+  encodeMotorA(-130);  // zelfde als totale neerwaartse beweging
 }
 
 void klauwOpen() {
-    BP.set_motor_limits(PORT_D, 60, 0);
-    BP.set_motor_position_relative(PORT_D, -180);
-    sleep(1);
+  BP.set_motor_limits(PORT_D, 60, 0);
+  BP.set_motor_position_relative(PORT_D, -180);
 }
 
 void klauwDicht() {
-    BP.set_motor_limits(PORT_D, 60, 0);
-    BP.set_motor_position_relative(PORT_D, 180);
-    sleep(1);
+  BP.set_motor_limits(PORT_D, 60, 0);
+  BP.set_motor_position_relative(PORT_D, 180);
 }
-
 
 //---------------------------------------COMMUNICATION---------------------------------------------
 
@@ -354,6 +331,12 @@ void turnRight() {
 }
 
 
+void moveForward(int lspd, int rspd){
+  BP.set_motor_power(PORT_B,-lspd);
+  BP.set_motor_power(PORT_C,-rspd);
+  sleep(1);
+}
+
 void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet
 {
     sensor_light_t Light3;
@@ -383,14 +366,14 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             if (Color2.color == 1 || Color4.color == 1 ) {
              cout << "Got a crossroads" << endl;
              crossroads++;
-             usleep(300000);
+             usleep(200000);
             }
         }
         cout << crossroads << " Crossroads" << endl;
         if(BP.get_sensor(PORT_3, Light3) == 0) {
             if(crossroads == aantalKeerTeGaan) {
                 crossroads = 0;
-                resetMotors();
+                resetMotor();
                 break;
             }
             lightvalue = Light3.reflected;
@@ -404,7 +387,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 
             if (BP.get_sensor(PORT_1,Ultrasonic1) == 0) {
                 if(Ultrasonic1.cm < 20){
-                    resetMotors();
+                    resetMotor();
                     sleep(1);
                     continue;
                 }else if(Ultrasonic1.cm < 40){
@@ -423,13 +406,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
             cout << "lspd: " << lspd << endl << "rspd: " << rspd << endl;
         }
     }
-    resetMotors();
-}
-
-void moveForward(int lspd, int rspd){
-  BP.set_motor_power(PORT_B,-lspd);
-  BP.set_motor_power(PORT_C,-rspd);
-  sleep(1);
+    resetMotor();
 }
 
 void drive(char direction) {
@@ -504,9 +481,11 @@ void navigation(vector<char> route) {
       klauwOpen();
       gelijdelijkDownLoop();
       klauwDicht();
-      sleep(0.2);
+      sleep(1);
       klauwOmhoog();
-        brengNaarKantelPunt();
+      resetMotor();
+        gelijdelijkDownLoop();
+        resetMotor();
         cout << "Picked up ze object, time to head back" << endl;
     }
     else {
@@ -575,6 +554,8 @@ int main() {
     }
     cout << endl << "Initialized" << endl;
 
+    bool runProgram = true;
+
     BP.set_motor_limits(PORT_B, 50, 0);
     BP.set_motor_limits(PORT_C, 50, 0);
 
@@ -582,7 +563,7 @@ int main() {
 
     int uChoice;
 
-    while (running) {
+    while (runProgram) {
         cout << "Kies een van deze functies: " << endl;
         cout << "0: Exit" << endl;                                              // functie om programma te stoppen
         cout << "1: Receive message" << endl;                                   // wacht voor een message en print deze
@@ -619,8 +600,9 @@ int main() {
                 break;
             }
             case 0:{ // functie om programma te stoppen
-                ::running = false;
-                break;}
+                runProgram = false;
+                break;
+              }
         }
     }
 }
@@ -628,7 +610,6 @@ int main() {
 // Signal handler that will be called when Ctrl+C is pressed to stop the program
 void exit_signal_handler(int signo) {
     if(signo == SIGINT){
-        ::running = false;
         resetMotor();
         BP.reset_all(); // Reset everything so there are no run-away motors
         exit(-2);
