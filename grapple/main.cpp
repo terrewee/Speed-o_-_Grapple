@@ -492,7 +492,7 @@ void navigation(vector<char> route) {
                      (route[i] == 'e' && route[i+1] == 'n') ||
                      (route[i] == 's' && route[i+1] == 'e') ||
                      (route[i] == 'w' && route[i+1] == 's')) {
-                drive('l');
+                drive('r');
                 drive('f');
             }
             else if
@@ -500,7 +500,7 @@ void navigation(vector<char> route) {
                      (route[i] == 'e' && route[i+1] == 's') ||
                      (route[i] == 's' && route[i+1] == 'w') ||
                      (route[i] == 'w' && route[i+1] == 'n')) {
-                drive('r');
+                drive('l');
                 drive('f');
             }
             else if
