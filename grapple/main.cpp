@@ -144,6 +144,10 @@ void brengNaarKantelPunt() {
 
 void gelijdelijkDownLoop() {
     int32_t encoder = -60;
+    while(encoder > -100) {
+        encodeMotorB(10);
+        usleep(500000);
+        encoder = encoder - 10;
     while(encoder > -160) {
         encodeMotorB(5);
         usleep(500000);
