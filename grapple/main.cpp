@@ -116,38 +116,64 @@ void checkSensor() {
 
 //---------------------------------------ARM---------------------------------------------
 
-void encodeMotorA(int32_t pos) {
-  BP.set_motor_position_relative(PORT_A, pos);
+void encodeMotorB(int32_t pos) {
+    BP.set_motor_position_relative(PORT_B, -pos);
 }
+
+
+void terugVanKantelPunt() {
+    BP.set_motor_limits(PORT_B, 40, 0);
+    encodeMotorB(-40);
+    resetMotor();
+    sleep(1);
+}
+
 
 void brengNaarKantelPunt() {
-  BP.set_motor_limits(PORT_A, 40, 0);
-  encodeMotorA(50);
+    BP.set_motor_limits(PORT_B, 40, 0);
+    encodeMotorB(60);
+    sleep(1);
 }
+
 
 void gelijdelijkDownLoop() {
-  int32_t encoder = 50;
-  while(encoder > 110) {
-    encodeMotorA(5);
-    usleep(500000);
-    encoder = encoder + 5;
-  }
+    int32_t encoder = -60;
+    while(encoder > -100) {
+        encodeMotorB(10);
+        usleep(500000);
+        encoder = encoder - 10;
+    }
+    while(encoder > -170) {
+        encodeMotorB(5);
+        usleep(500000);
+        encoder = encoder - 5;
+    }
 }
+
 
 void klauwOmhoog() {
-  BP.set_motor_limits(PORT_A, 50, 0);
-  encodeMotorA(-130);  // zelfde als totale neerwaartse beweging
+    BP.set_motor_limits(PORT_B, 80, 0);
+    encodeMotorB(-100);  // zelfde als totale neerwaartse beweging
+    sleep(1);
+    BP.set_motor_limits(PORT_B, 30, 0);
+    encodeMotorB(-50);  // zelfde als totale neerwaartse beweging
+    sleep(1);
 }
+
 
 void klauwOpen() {
-  BP.set_motor_limits(PORT_D, 60, 0);
-  BP.set_motor_position_relative(PORT_D, -180);
+    BP.set_motor_limits(PORT_D, 60, 0);
+    BP.set_motor_position_relative(PORT_D, -180);
+    sleep(1);
 }
 
+
 void klauwDicht() {
-  BP.set_motor_limits(PORT_D, 60, 0);
-  BP.set_motor_position_relative(PORT_D, 180);
+    BP.set_motor_limits(PORT_D, 60, 0);
+    BP.set_motor_position_relative(PORT_D, 180);
+    sleep(1);
 }
+
 
 //---------------------------------------COMMUNICATION---------------------------------------------
 
