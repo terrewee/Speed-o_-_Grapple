@@ -14,6 +14,7 @@
 #include <sstream>        // for converting char256 to vector
 
 using namespace std;
+bool running = true;
 
 //---------------------------------------ESSENTIALS---------------------------------------------
 
@@ -392,8 +393,7 @@ int moveForward() {
 void drive(char direction) {
     if (direction == 'f') {
         //ga 1 grid plek
-        //moveForward();
-        followLine();
+        moveForward();
     }
     else if (direction == 'r') {
         //ga 90 graden links
@@ -414,7 +414,6 @@ void drive(char direction) {
 
 
 void navigation(vector<char> route) {
-    te
     bool gotAObject = true;
     route.insert(route.begin(), 1, 'n');    //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
@@ -475,8 +474,8 @@ void navigation(vector<char> route) {
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
-      gotAObject = false;
     }
+    
     //***************************************************************************************************************
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
@@ -601,7 +600,6 @@ int main() {
                     cout << "Picked up ze object, time to head back" << endl;
                 } else {
                     cout << "Pak het niet op ga terug" << endl;
-                    gotAObject = false;
                 }
             }
             case 0:{ // functie om programma te stoppen
