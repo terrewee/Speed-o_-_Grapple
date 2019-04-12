@@ -364,7 +364,7 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
 
     int offset = 45;
     int Tp = 25;
-    int Kp = 2;
+    int Kp = 4;
 
     int lastError = 0;
     int Turn = 0;
@@ -395,8 +395,9 @@ void followLine(int aantalKeerTeGaan) // aantalKeerTeGaan = aantal keer dat de s
                 break;
             }
             lightvalue = Light3.reflected;
+						cout << lightvalue << endl;
             error = ((lightvalue-1700)/40)+30 - offset;
-						cout << "error: " << error << endl;
+						// cout << "error: " << error << endl;
 
             Turn = error * Kp;
             Turn = Turn;
