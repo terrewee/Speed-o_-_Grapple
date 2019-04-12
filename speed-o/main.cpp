@@ -349,6 +349,7 @@ bool stopVoorObject(){
 		}
 		return false;
 	}
+  return false;
 }
 
 //Moves robot set amount of crossroads forwards, aantalKeerTeGaan = aantal keer dat de scout 1 kant op moet.
@@ -895,6 +896,7 @@ int main(){
   }
   cout << endl << "Initialized" << endl;
 
+
 	//Reset the encoders
 	BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
 	BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
@@ -981,5 +983,6 @@ int main(){
     }
 	}
 	cout << "exit(0)";
+  BP.reset_all();
 	return 0;
 }
