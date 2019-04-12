@@ -957,7 +957,7 @@ void driveBack(string followedRoute, gridPoints & GP){
 		cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 	}
 
-	dockScout(GP);
+	//dockScout(GP);
 }
 
 //Driveback without line assistance.
@@ -1015,7 +1015,7 @@ void driveBackVirtual(string followedRoute, gridPoints & GP){
 		cout << GP.currentLocation.x << "," << GP.currentLocation.y << ";" << GP.direction << "|";
 	}
 
-	dockScoutVirtual(GP);
+	//dockScoutVirtual(GP);
 }
 
 
@@ -1116,7 +1116,7 @@ int main(){
         break;
 			case 4:
 				// testFunctie(GP, grid);
-				moveToHomepoint(GP);
+				//moveToHomepoint(GP);
 				resetCurrentLocation(GP);
 				followRoute(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
@@ -1144,7 +1144,7 @@ int main(){
 				break;
 			case 7:
 				// testFunctie(GP, grid);
-				moveToHomepointVirtual(GP);
+				//moveToHomepointVirtual(GP);
 				resetCurrentLocation(GP);
 				followRouteVirtual(followedRoute, destinationArrived, GP, grid, obstakel);
 				cout << "followed route" << endl;
