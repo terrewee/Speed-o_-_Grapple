@@ -291,7 +291,7 @@ void resetMotors(){
 void moveForward(int lspd, int rspd){
 	BP.set_motor_power(PORT_B,-lspd);
 	BP.set_motor_power(PORT_C,-rspd);
-	sleep(2);
+	sleep(1);
 }
 
 //Turns the rorbot to the right, and updates the value of GP.direction.
