@@ -543,7 +543,7 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
-		if 			(answer == "w")		{followLine(1);}
+		if 			(answer == "w")		{moveForward(20, 20); usleep(500000); resetMotors(); followLine(1);}
 		else if (answer == "a")		{turnLeft(GP); followLine(1);}
 		else if (answer == "d")		{turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
