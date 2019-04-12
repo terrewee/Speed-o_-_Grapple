@@ -268,15 +268,12 @@ void updateLocation(gridPoints & GP, int distance){
   }
 }
 
-//Returns routecount struct from string input.
 routeCount initRouteCount(const string & myRoute) {
-  routeCount tStruct;
-  tStruct.direction.push_back(' ');
-  tStruct.amount.push_back(0);
+  routeCount tStruct = {.direction.push_back(''), .amount.push_back(0)};
   int sIndex = 0;
-  for(char direction : myRoute){
+  for(char direction in myRoute){
     if (tStruct.direction[sIndex] == direction) tStruct.amount[sIndex]++;
-    else if (tStruct.direction[sIndex] == ' ') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
+    else if (tStruct.direction[sIndex] == '') {tStruct.direction[sIndex] = direction; tStruct.amount[sIndex]++;}
     else {tStruct.direction.push_back(direction); tStruct.amount.push_back(1); sIndex++;}
   }
   return tStruct;
