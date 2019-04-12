@@ -543,9 +543,9 @@ string manualControl(gridPoints &GP){
 	string answer;
 	while(true){
 		cin >> answer;
-		if 			(answer == "w")		{moveForward(20, 20); usleep(500000); resetMotors(); followLine(1);}
-		else if (answer == "a")		{turnLeft(GP); followLine(1);}
-		else if (answer == "d")		{turnRight(GP); followLine(1);}
+		if 			(answer == "w")		{moveForward(15,15); usleep(300000); resetMotors(); followLine(1);}
+		else if (answer == "a")		{moveForward(15,15); usleep(200000); resetMotors(); turnLeft(GP); followLine(1);}
+		else if (answer == "d")		{moveForward(15,15); usleep(200000); resetMotors(); turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
