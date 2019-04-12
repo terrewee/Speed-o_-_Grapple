@@ -148,6 +148,7 @@ void gelijdelijkDownLoop() {
         encodeMotorB(10);
         usleep(500000);
         encoder = encoder - 10;
+    }
     while(encoder > -160) {
         encodeMotorB(5);
         usleep(500000);
