@@ -144,7 +144,7 @@ void brengNaarKantelPunt() {
 
 void gelijdelijkDownLoop() {
     int32_t encoder = -80;
-    while(encoder > -140) {
+    while(encoder > -160) {
         encodeMotorB(5);
         usleep(500000);
         encoder = encoder - 5;
@@ -153,7 +153,7 @@ void gelijdelijkDownLoop() {
 
 void klauwOmhoog() {
     BP.set_motor_limits(PORT_B, 80, 0);
-    encodeMotorB(160);  // zelfde als totale neerwaartse beweging
+    encodeMotorB(-160);  // zelfde als totale neerwaartse beweging
     sleep(2);
 }
 
@@ -593,6 +593,8 @@ int main() {
                 sleep(1);
                 cout << "klauwOmhoog" << endl;
                 klauwOmhoog();
+                cout << "gelijdelijkDownLoop" << endl;
+                gelijdelijkDownLoop();
                 cout << " resetMotor" << endl;
                 resetMotor();
             case 0:{ // functie om programma te stoppen
