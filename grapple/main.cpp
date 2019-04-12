@@ -138,13 +138,13 @@ void encodeMotorB(int32_t pos) {
 
 void brengNaarKantelPunt() {
     BP.set_motor_limits(PORT_B, 40, 0);
-    encodeMotorB(80);
+    encodeMotorB(60);
     sleep(1);
 }
 
 void gelijdelijkDownLoop() {
-    int32_t encoder = -80;
-    while(encoder > -160) {
+    int32_t encoder = -60;
+    while(encoder > -150) {
         encodeMotorB(5);
         usleep(500000);
         encoder = encoder - 5;
