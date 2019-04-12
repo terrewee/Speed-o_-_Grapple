@@ -445,21 +445,21 @@ void navigation(vector<char> route) {
     resetMotor();
     cout << "Arrived at destination" << endl;
     sleep(1);
-
-    //***************************************************************************************************************
-    if (color_object(whatIsInAColor())) {
-      cout << "Pak het op" << endl;
-        backUpFromObject()
-        brengNaarKantelPunt();
-      klauwOpen();
-      gelijdelijkDownLoop();
-      klauwDicht();
-      sleep(1);
-      klauwOmhoog();
-      resetMotor();
-        brengNaarKantelPunt();
-        resetMotor();
-        cout << "Picked up ze object, time to head back" << endl;
+    
+        //***************************************************************************************************************
+        if (color_object(whatIsInAColor())) {
+            cout << "Pak het op" << endl;
+            backUpFromObject();
+            brengNaarKantelPunt();
+            klauwOpen();
+            gelijdelijkDownLoop();
+            klauwDicht();
+            sleep(0.2);
+            klauwOmhoog();
+            resetMotor();
+            brengNaarKantelPunt();
+            resetMotor();
+            cout << "Picked up ze object, time to head back" << endl;
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
