@@ -878,7 +878,6 @@ void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridP
 			else{
 				followedRoute += directions[i];
 				turn(directions[i], GP);
-				cout << "moveForward()" << endl;
 				moveForward(29,25);
 				resetMotors();
 
