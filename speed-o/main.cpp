@@ -311,8 +311,8 @@ void turnLeft(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, -110);
-	BP.set_motor_position_relative(PORT_C, 110);
+	BP.set_motor_position_relative(PORT_B, -90);
+	BP.set_motor_position_relative(PORT_C, 90);
 	sleep(1);
 }
 
@@ -333,8 +333,8 @@ void turnRight(gridPoints & GP){
 
 	BP.get_motor_encoder(PORT_B);
 	BP.get_motor_encoder(PORT_C);
-	BP.set_motor_position_relative(PORT_B, 110);
-	BP.set_motor_position_relative(PORT_C, -110);
+	BP.set_motor_position_relative(PORT_B, 90);
+	BP.set_motor_position_relative(PORT_C, -90);
 	sleep(1);
 }
 
@@ -534,8 +534,8 @@ string manualControl(gridPoints &GP){
 	while(true){
 		cin >> answer;
 		if 			(answer == "w")		{followLine(1);}
-		else if (answer == "a")		{moveForward(10,10); sleep(0.2); resetMotors(); turnLeft(GP); followLine(1);}
-		else if (answer == "d")		{moveForward(10,10); sleep(0.2); resetMotors(); turnRight(GP); followLine(1);}
+		else if (answer == "a")		{turnLeft(GP); followLine(1);}
+		else if (answer == "d")		{turnRight(GP); followLine(1);}
 		else if (answer == "esc")	{break;}
 		else 											{cout << "invalid input." << endl; continue;}
 
@@ -1018,7 +1018,7 @@ int main(){
 
     switch(uChoice) {
 			case 0:
-        runProgram = false;
+        {runProgram = false;}
 				break;
       case 1:
         cout << "Message: " << endl;
