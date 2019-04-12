@@ -14,6 +14,7 @@
 #include <sstream>        // for converting char256 to vector
 
 using namespace std;
+bool running = true;
 
 //---------------------------------------ESSENTIALS---------------------------------------------
 
@@ -316,8 +317,8 @@ void fwd(const int lspd, const int rspd) {
 
 
 void backUpFromObject(){
-    fwd(-10, -10);
-    sleep(3);
+    fwd(-25, -25);
+    sleep(2);
     resetMotor();
 }
 
@@ -392,8 +393,7 @@ int moveForward() {
 void drive(char direction) {
     if (direction == 'f') {
         //ga 1 grid plek
-        //moveForward();
-        followLine();
+        moveForward();
     }
     else if (direction == 'r') {
         //ga 90 graden links
@@ -414,7 +414,6 @@ void drive(char direction) {
 
 
 void navigation(vector<char> route) {
-    te
     bool gotAObject = true;
     route.insert(route.begin(), 1, 'n');    //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
     for (int i = 1; i < route.size(); ++i) { // rij naar het object toe aan de hand van de route
@@ -460,6 +459,8 @@ void navigation(vector<char> route) {
     if (color_object(whatIsInAColor())) {
         cout << "Pak het op" << endl;
         backUpFromObject();
+        resetMotor();
+        sleep(1);
         brengNaarKantelPunt();
         klauwOpen();
         gelijdelijkDownLoop();
@@ -473,8 +474,8 @@ void navigation(vector<char> route) {
     }
     else {
       cout << "Pak het niet op ga terug" << endl;
-      gotAObject = false;
     }
+    
     //***************************************************************************************************************
 
     route.push_back('n'); //zorg dat ook het eerste echte coordinaat een relatief punt heeft om vanaf te bewegen
@@ -576,9 +577,30 @@ int main() {
                 checkSensor();
                 break;
             case 5: //test pls dont delete this time duur :D
-            {   vector<char> vec/* = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'}*/;
+            {   vector<char> vec = {'n', 'w', 'w', 'n', 'e', 'e' ,'w', 'n'};
                 navigation(vec);
                 break;
+            }
+            case 6: {
+                // pick up object
+                if (color_object(whatIsInAColor())) {
+                    cout << "Pak het op" << endl;
+                    backUpFromObject();
+                    resetMotor();
+                    sleep(1);
+                    brengNaarKantelPunt();
+                    klauwOpen();
+                    gelijdelijkDownLoop();
+                    klauwDicht();
+                    sleep(0.2);
+                    klauwOmhoog();
+                    resetMotor();
+                    brengNaarKantelPunt();
+                    resetMotor();
+                    cout << "Picked up ze object, time to head back" << endl;
+                } else {
+                    cout << "Pak het niet op ga terug" << endl;
+                }
             }
             case 0:{ // functie om programma te stoppen
                 runProgram = false;
