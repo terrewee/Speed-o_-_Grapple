@@ -337,19 +337,8 @@ void turnLeft() {
     sleep(2);
     resetMotor();
     sleep(0.5);
-    fwd(40, -50);
-    sleep(1);
-    if (BP.get_sensor(PORT_1, Light1) == 0) {
-        sleep(0.5);
-        int lightvalue;
-        while (true) {
-            lightvalue = Light1.reflected;
-            cout << lightvalue << endl;
-            if (lightvalue >= 2800){
-                break;
-            }
-        }
-    }
+    fwd(30, 8);
+    sleep(5);
     resetMotor();
 }
 
@@ -360,18 +349,8 @@ void turnRight() {
     sleep(2);
     resetMotor();
     sleep(0.5);
-    fwd(-50, 40);
-    sleep(1);
-    if (BP.get_sensor(PORT_1, Light1) == 0) {
-        int lightvalue;
-        while (true) {
-            lightvalue = Light1.reflected;
-            cout << lightvalue << endl;
-            if (lightvalue >= 2800){
-                break;
-            }
-        }
-    }
+    fwd(8, 30);
+    sleep(5);
     resetMotor();
 }
 
@@ -387,7 +366,7 @@ int moveForward() {
     int offset = 45;
     int Tp = 15;
 
-    int Kp = 4;
+    int Kp = 3;
 
     int Turn = 0;
     int lightvalue = 0;
