@@ -1,4 +1,4 @@
-//#include "BrickPi3.h"	// for BrickPi3
+#include "BrickPi3.h"	// for BrickPi3
 //#include "Navigation.h"	// for Navigation
 #include <stdio.h>      // for printf
 #include <unistd.h>     // for usleep
@@ -651,7 +651,7 @@ void driveBack(string followedRoute, gridPoints & GP){
 
 int main(){
 	signal(SIGINT, exit_signal_handler);
-	//BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
+	BP.detect();	//Make sure that the BrickPi3 is communicating and that the filmware is compatible with the drivers/
 
 	//Reset the encoders
 	// BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
