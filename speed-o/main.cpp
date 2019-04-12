@@ -483,7 +483,7 @@ void moveToHomepointVirtual(gridPoints GP){
 	GP.direction = 'n';
 	if(GP.targetCoordinates.y == 0 && GP.targetCoordinates.x == 0){/*communicate();*/}
 	turn('e', GP);
- 	moveForward(29,25);
+ 	moveForward(49,45);
 	if(GP.targetCoordinates.y == 0){
 		if		 (GP.targetCoordinates.x > 0){turnRight(GP);}
 		else if(GP.targetCoordinates.x < 0){turnLeft(GP); turnLeft(GP);}
@@ -878,7 +878,7 @@ void followRouteVirtual(string & followedRoute, bool & destinationArrived, gridP
 			else{
 				followedRoute += directions[i];
 				turn(directions[i], GP);
-				moveForward(29,25);
+				moveForward(49,45);
 				resetMotors();
 
 				if(i == directions.size() - 1){
@@ -902,7 +902,7 @@ void dockScout(gridPoints & GP){
 //Docks scout without line assistance.
 void dockScoutVirtual(gridPoints & GP){
 	turn('e', GP);
-	moveForward(29,25);
+	moveForward(49,45);
 	turn('n', GP);
 }
 
@@ -995,19 +995,19 @@ void driveBackVirtual(string followedRoute, gridPoints & GP){
 
 		if(followedRoute[j] == 'n'){
 			turn('n', GP);
-			moveForward(29,25);
+			moveForward(49,45);
 		}
 		else if(followedRoute[j] == 'e'){
 			turn('e', GP);
-			moveForward(29,25);
+			moveForward(49,45);
 		}
 		else if(followedRoute[j] == 's'){
 			turn('s', GP);
-			moveForward(29,25);
+			moveForward(49,45);
 		}
 		else if(followedRoute[j] == 'w'){
 			turn('w', GP);
-			moveForward(29,25);
+			moveForward(49,45);
 		}
 
 		cout << j << "  " << followedRoute[j] << ":";
