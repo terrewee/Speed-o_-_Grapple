@@ -133,7 +133,7 @@ void batteryLevel() {
 //---------------------------------------ARM---------------------------------------------
 
 void encodeMotorB(int32_t pos) {
-    BP.set_motor_position_relative(PORT_B, pos);
+    BP.set_motor_position_relative(PORT_B, -pos);
     sleep(1);
 }
 
