@@ -153,7 +153,7 @@ void gelijdelijkDownLoop() {
 
 void klauwOmhoog() {
     BP.set_motor_limits(PORT_B, 80, 0);
-    encodeMotorB(-160);  // zelfde als totale neerwaartse beweging
+    encodeMotorB(-140);  // zelfde als totale neerwaartse beweging
     sleep(2);
 }
 
@@ -593,6 +593,7 @@ int main() {
                 sleep(1);
                 cout << "klauwOmhoog" << endl;
                 klauwOmhoog();
+                sleep(1)
                 cout << "gelijdelijkDownLoop" << endl;
                 gelijdelijkDownLoop();
                 cout << " resetMotor" << endl;
