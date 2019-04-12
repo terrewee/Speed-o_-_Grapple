@@ -484,6 +484,7 @@ void navigation(vector<char> route) {
     //***************************************************************************************************************
     if (color_object(whatIsInAColor())) {
         cout << "Pak het op" << endl;
+        backUpFromObject()
         brengNaarKantelPunt();
         klauwOpen();
         gelijdelijkDownLoop();
